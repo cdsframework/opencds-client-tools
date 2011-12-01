@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <nextCatalog catalog="../../../../.netbeans/7.0/var/cache/mavencachedirs/1855622192/retriever/catalog.xml"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/src/main/resources/OmgDssSchema.xsd" uri="src/main/resources/jaxb/opencds/OmgDssSchema.xsd"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/cdsInput.xsd" uri="src/main/resources/jaxb/cdsInput/cdsInput.xsd"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/cdsOutput.xsd" uri="src/main/resources/jaxb/cdsOutput/cdsOutput.xsd"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/testcases.xsd" uri="src/main/resources/jaxb/ice/testcases.xsd"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/testcase.xsd" uri="src/main/resources/jaxb/opencds/testcase.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsInput.xsd" uri="src/main/resources/jaxb/opencds/cdsInput.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsOutput.xsd" uri="src/main/resources/jaxb/opencds/cdsOutput.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/datatypes.xsd" uri="src/main/resources/jaxb/opencds/datatypes.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/vmr.xsd" uri="src/main/resources/jaxb/opencds/vmr.xsd"/>
+</catalog>
