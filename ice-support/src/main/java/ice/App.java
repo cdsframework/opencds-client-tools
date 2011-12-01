@@ -13,17 +13,6 @@ public class App {
 
     public static void main(String[] args) throws IceException {
         logger.info("Starting...");
-//        File file = new File("src/main/resources/sample.xml");
-//        InputStream in = new FileInputStream(file);
-//        long length = file.length();
-//        byte[] bytes = new byte[(int) length];
-//        int offset = 0;
-//        int numRead = 0;
-//        while (offset < bytes.length
-//                && (numRead = in.read(bytes, offset, bytes.length - offset)) >= 0) {
-//            offset += numRead;
-//        }
-//        in.close();
 
         VmrAssist vmrAssist = new VmrAssist();
 
