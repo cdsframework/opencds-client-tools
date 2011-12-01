@@ -1,0 +1,5 @@
+syntax: glob
+ice-support/sample-out*.xml
+ice-support/target/
+ice-web/target/
+ice-support/opencds.log*
