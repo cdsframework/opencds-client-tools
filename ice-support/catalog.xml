@@ -5,9 +5,9 @@
     <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/cdsInput.xsd" uri="src/main/resources/jaxb/cdsInput/cdsInput.xsd"/>
     <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/cdsOutput.xsd" uri="src/main/resources/jaxb/cdsOutput/cdsOutput.xsd"/>
     <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/testcases.xsd" uri="src/main/resources/jaxb/ice/testcases.xsd"/>
-    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/testcase.xsd" uri="src/main/resources/jaxb/opencds/testcase.xsd"/>
-    <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsInput.xsd" uri="src/main/resources/jaxb/opencds/cdsInput.xsd"/>
-    <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsOutput.xsd" uri="src/main/resources/jaxb/opencds/cdsOutput.xsd"/>
-    <system systemId="file:/C:/Users/admin/Desktop/vmr/datatypes.xsd" uri="src/main/resources/jaxb/opencds/datatypes.xsd"/>
-    <system systemId="file:/C:/Users/admin/Desktop/vmr/vmr.xsd" uri="src/main/resources/jaxb/opencds/vmr.xsd"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/../../../../Desktop/vmr/testcase.xsd" uri="src/main/resources/jaxb/testcase/testcase.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsInput.xsd" uri="src/main/resources/jaxb/testcase/cdsInput.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsOutput.xsd" uri="src/main/resources/jaxb/testcase/cdsOutput.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/datatypes.xsd" uri="src/main/resources/jaxb/testcase/datatypes.xsd"/>
+    <system systemId="file:/C:/Users/admin/Desktop/vmr/vmr.xsd" uri="src/main/resources/jaxb/testcase/vmr.xsd"/>
 </catalog>

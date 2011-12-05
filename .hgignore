@@ -3,3 +3,4 @@ ice-support/sample-out*.xml
 ice-support/target/
 ice-web/target/
 ice-support/opencds.log*
+ice-support/imported-tests/*.xml

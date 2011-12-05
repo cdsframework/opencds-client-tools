@@ -1,5 +1,6 @@
-package ice.support;
+package ice.service;
 
+import ice.dto.support.CdsObjectAssist;
 import ice.exception.IceException;
 import java.util.Date;
 import java.util.List;
@@ -15,8 +16,8 @@ import org.omg.spec.cdss._201105.dsswsdl.RequiredDataNotProvidedExceptionFault;
 import org.omg.spec.cdss._201105.dsswsdl.UnrecognizedLanguageExceptionFault;
 import org.omg.spec.cdss._201105.dsswsdl.UnrecognizedScopedEntityExceptionFault;
 import org.omg.spec.cdss._201105.dsswsdl.UnsupportedLanguageExceptionFault;
-import org.opencds.CDSInput;
-import org.opencds.CDSOutput;
+import org.opencds.CdsInput;
+import org.opencds.CdsOutput;
 
 /**
  *
@@ -25,12 +26,11 @@ import org.opencds.CDSOutput;
 public class OpenCdsAssist {
 
     private final static OpenCdsService openCdsService = new OpenCdsService();
-    private final static VmrAssist vmrAssist = new VmrAssist();
 
-    public static CDSOutput evaluate(CDSInput cdsInput, String businessId, Date executionDate) throws IceException {
-        byte[] cdsObjectToByteArray = vmrAssist.cdsObjectToByteArray(cdsInput);
+    public static CdsOutput evaluate(CdsInput cdsInput, String businessId, Date executionDate) throws IceException {
+        byte[] cdsObjectToByteArray = CdsObjectAssist.cdsObjectToByteArray(cdsInput, CdsInput.class);
         byte[] evaluation = evaluate(cdsObjectToByteArray, businessId, executionDate);
-        CDSOutput cdsOutput = vmrAssist.cdsOutputFromByteArray(evaluation);
+        CdsOutput cdsOutput = CdsObjectAssist.cdsObjectFromByteArray(evaluation, CdsOutput.class);
         return cdsOutput;
     }
 

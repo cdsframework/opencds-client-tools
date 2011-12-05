@@ -21,7 +21,7 @@
         <level value="debug"/>
     </logger>
     <root>
-        <priority value ="info" />
+        <priority value ="debug" />
         <appender-ref ref="ConsoleAppender"/>
         <appender-ref ref="MainFileAppender"/>
     </root>

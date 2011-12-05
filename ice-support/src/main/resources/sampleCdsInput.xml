@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:cdsInput xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="org.opencds.vmr.v1_0.schema.cdsinput jaxb/opencds/cdsInput.xsd"
+ xmlns:ns2="dto.ice"
+ xmlns:ns4="org.opencds.vmr.v1_0.schema.cdsoutput"
+ xmlns:ns3="org.opencds.vmr.v1_0.schema.cdsinput"
+ xmlns:ns5="org.opencds.vmr.v1_0.schema.vmr">
+    <templateId root="2.16.840.1.113883.3.795.11.1.1"/>
+    <cdsContext>
+        <cdsSystemUserPreferredLanguage displayName="English" codeSystem="1.2.3" code="en"/>
+    </cdsContext>
+    <vmrInput>
+        <templateId root="2.16.840.1.113883.3.795.11.1.1"/>
+        <patient>
+            <templateId root="2.16.840.1.113883.3.795.11.2.1"/>
+            <id root="e47e5402-9222-4b8f-84f6-9c652c020074"/>
+            <demographics>
+                <birthTime value="19830630"/>
+                <gender displayName="Female" codeSystem="2.16.840.1.113883.1.11.1" code="F"/>
+            </demographics>
+            <clinicalStatements>
+                <substanceAdministrationEvents>
+                    <substanceAdministrationEvent>
+                        <templateId root="2.16.840.1.113883.3.795"/>
+                        <id root="4264710d-21ef-4bab-b1f7-51bd1de2dce9"/>
+                        <substanceAdministrationGeneralPurpose displayName="Immunization/vaccination management (procedure)" codeSystemName="SNOMED CT" codeSystem="2.16.840.1.113883.6.5" code="384810002"/>
+                        <substance>
+                            <id root="0fd63555-df86-4973-badc-ee6434664063"/>
+                            <substanceCode displayName="TBD" codeSystem="2.16.840.1.113883.12.292" code="08"/>
+                        </substance>
+                        <administrationTimeInterval high="20080223" low="20080223"/>
+                    </substanceAdministrationEvent>
+                    <substanceAdministrationEvent>
+                        <templateId root="2.16.840.1.113883.3.795"/>
+                        <id root="9b029947-91fb-40b1-987e-8bd550573f76"/>
+                        <substanceAdministrationGeneralPurpose displayName="Immunization/vaccination management (procedure)" codeSystemName="SNOMED CT" codeSystem="2.16.840.1.113883.6.5" code="384810002"/>
+                        <substance>
+                            <id root="d2c9531a-858d-4589-be93-8ccf980aad35"/>
+                            <substanceCode displayName="TBD" codeSystem="2.16.840.1.113883.12.292" code="08"/>
+                        </substance>
+                        <administrationTimeInterval high="20090223" low="20090223"/>
+                    </substanceAdministrationEvent>
+                    <substanceAdministrationEvent>
+                        <templateId root="2.16.840.1.113883.3.795"/>
+                        <id root="fb5fc119-c885-4892-9644-958d088cdfa9"/>
+                        <substanceAdministrationGeneralPurpose displayName="Immunization/vaccination management (procedure)" codeSystemName="SNOMED CT" codeSystem="2.16.840.1.113883.6.5" code="384810002"/>
+                        <substance>
+                            <id root="c4dbcd18-d3b4-464c-a570-db0ccac14cca"/>
+                            <substanceCode displayName="TBD" codeSystem="2.16.840.1.113883.12.292" code="43"/>
+                        </substance>
+                        <administrationTimeInterval high="20080223" low="20080223"/>
+                    </substanceAdministrationEvent>
+                    <substanceAdministrationEvent>
+                        <templateId root="2.16.840.1.113883.3.795"/>
+                        <id root="622cc960-3dca-4bbc-950b-776d798fa310"/>
+                        <substanceAdministrationGeneralPurpose displayName="Immunization/vaccination management (procedure)" codeSystemName="SNOMED CT" codeSystem="2.16.840.1.113883.6.5" code="384810002"/>
+                        <substance>
+                            <id root="8eeaf4a1-f4b8-456b-9f9b-b11b6d54d926"/>
+                            <substanceCode displayName="TBD" codeSystem="2.16.840.1.113883.12.292" code="43"/>
+                        </substance>
+                        <administrationTimeInterval high="20090223" low="20090223"/>
+                    </substanceAdministrationEvent>
+                </substanceAdministrationEvents>
+            </clinicalStatements>
+        </patient>
+    </vmrInput>
+</ns3:cdsInput>
