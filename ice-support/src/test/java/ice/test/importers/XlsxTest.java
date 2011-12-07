@@ -1,5 +1,6 @@
 package ice.test.importers;
 
+import org.junit.Ignore;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -37,11 +38,13 @@ public class XlsxTest {
 
     /**
      * Test of importFromFile method, of class Xlsx.
+     * @throws Exception
      */
+    @Ignore
     @Test
     public void testImportFromFile() throws Exception {
         logger.info("importFromFile");
-        String filename = "ICE3 Test Cases - HepB - 11282011.xlsx";
+        String filename = "ICE3 Test Cases - HepB.xlsx";
         Xlsx.importFromFile(filename);
         assertTrue(true);
     }

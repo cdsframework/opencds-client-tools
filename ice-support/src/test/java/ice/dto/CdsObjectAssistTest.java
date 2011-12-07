@@ -4,6 +4,8 @@ import java.io.File;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
 import ice.dto.support.CdsObjectAssist;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.opencds.SubstanceAdministrationEvent;
 
 /**
  *
@@ -43,7 +46,10 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        output.addSubstanceAdministrationEvent("100", "08", "20080223", "VALIDITY", "VALID", "");
+        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        components.add(hepBComponent);
+        output.addSubstanceAdministrationEvent("08", "20080223", components);
         output.addSubstanceAdministrationProposal("100", "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
 
         logger.info(CdsObjectAssist.cdsObjectToString(output.getCdsObject(), CdsOutput.class));
@@ -57,7 +63,10 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        output.addSubstanceAdministrationEvent("100", "08", "20080223", "VALIDITY", "VALID", "");
+        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        components.add(hepBComponent);
+        output.addSubstanceAdministrationEvent("08", "20080223", components);
         output.addSubstanceAdministrationProposal("100", "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
 
         tmp = CdsObjectAssist.cdsObjectToByteArray(output.getCdsObject(), CdsOutput.class);
@@ -71,7 +80,10 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        output.addSubstanceAdministrationEvent("100", "08", "20080223", "VALIDITY", "VALID", "");
+        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        components.add(hepBComponent);
+        output.addSubstanceAdministrationEvent("08", "20080223", components);
         output.addSubstanceAdministrationProposal("100", "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
 
         tmp = CdsObjectAssist.cdsObjectToByteArray(output.getCdsObject(), CdsOutput.class);
@@ -106,7 +118,10 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        output.addSubstanceAdministrationEvent("100", "08", "20080223", "VALIDITY", "VALID", "");
+        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        components.add(hepBComponent);
+        output.addSubstanceAdministrationEvent("08", "20080223", components);
         output.addSubstanceAdministrationProposal("100", "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
 
         String filename = CdsObjectAssist.cdsObjectToFile(output.getCdsObject(), null, "sampleCdsOutput.xml");

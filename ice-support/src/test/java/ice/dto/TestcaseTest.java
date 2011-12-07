@@ -1,5 +1,8 @@
 package ice.dto;
 
+import org.opencds.SubstanceAdministrationEvent;
+import java.util.List;
+import java.util.ArrayList;
 import ice.util.Utilities;
 import java.util.Date;
 import org.opencds.Testcase;
@@ -64,10 +67,25 @@ public class TestcaseTest {
         testcase.setTestfocus("Evaluation");
         testcase.setVaccinegroup("100");
         testcase.setVersion("1.0.0");
-        testcase.addSubstanceAdministrationEvent("100", "08", "20080223", "VALIDITY", "VALID", "");
-        testcase.addSubstanceAdministrationEvent("100", "08", "20090223", "VALIDITY", "INVALID", "TOO_RED");
-        testcase.addSubstanceAdministrationEvent("200", "43", "20080223", "VALIDITY", "INVALID", "TOO_RED");
-        testcase.addSubstanceAdministrationEvent("200", "43", "20090223", "VALIDITY", "VALID", "");
+        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        SubstanceAdministrationEvent hepBComponent =
+                testcase.getEvaluationSubstanceAdministrationEvent("43", "20080223", true, "VALIDITY (HEP B COMPONENT)", "VALID", "");
+        SubstanceAdministrationEvent hepAComponent =
+                testcase.getEvaluationSubstanceAdministrationEvent("84", "20080223", false, "VALIDITY (HEP A COMPONENT)", "INVALID", "TOO_GHASTLY");
+        SubstanceAdministrationEvent polioComponent =
+                testcase.getEvaluationSubstanceAdministrationEvent("10", "20080223", false, "VALIDITY (POLIO)", "INVALID", "TOO_EGGY");
+
+        components.add(hepBComponent);
+        testcase.addSubstanceAdministrationEvent("43", "20080223", components);
+
+        components = new ArrayList<SubstanceAdministrationEvent>();
+        components.add(hepAComponent);
+        testcase.addSubstanceAdministrationEvent("08", "20090223", components);
+
+        components = new ArrayList<SubstanceAdministrationEvent>();
+        components.add(polioComponent);
+        testcase.addSubstanceAdministrationEvent("43", "20080223", components);
+
         testcase.addSubstanceAdministrationProposal("200", "43", "20090223", "PROPOSAL", "RECOMMENDED", "DUE_NOW");
         testcase.addSubstanceAdministrationProposal("100", "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
         Utilities.logDuration("testcase init", start);

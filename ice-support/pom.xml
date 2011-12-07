@@ -20,14 +20,14 @@
                 <includes>
                     <include>jax-ws-catalog.xml</include>
                     <include>wsdl/**</include>
-                    <include>log4j.xml</include>
+                    <!-- <include>log4j.xml</include> -->
                 </includes>
             </resource>
             <resource>
                 <targetPath></targetPath>
                 <directory></directory>
                 <includes>
-                    <include>log4j.xml</include>
+                    <!-- <include>log4j.xml</include> -->
                 </includes>
             </resource>
         </resources>

@@ -19,6 +19,7 @@
 	<xs:element name="numdoses" type="xs:int"/>
 	<xs:element name="ruletotest" type="xs:string"/>
 	<xs:element name="notes" type="xs:string"/>
+	<xs:element name="immune" type="xs:boolean"/>
 	<xs:element name="executiondate" type="xs:dateTime"/>
 	<xs:complexType name="Testcase">
 		<xs:sequence>
@@ -34,6 +35,7 @@
 			<xs:element ref="tc:numdoses"/>
 			<xs:element ref="tc:ruletotest"/>
 			<xs:element ref="tc:notes"/>
+			<xs:element ref="tc:immune"/>
 			<xs:element ref="tc:executiondate" minOccurs="0"/>
 			<xs:element ref="in:cdsInput"/>
 			<xs:element ref="out:cdsOutput"/>

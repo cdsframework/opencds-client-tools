@@ -102,8 +102,15 @@ public class Xlsx {
                     testcase.setNotes(testNotes.getStringCellValue());
                     logger.debug("    Test notes: " + testcase.getNotes());
 
+                    // immunity
+                    testCurrentRowNum += 3;
+                    testCurrentRow = testSheet.getRow(testCurrentRowNum);
+                    XSSFCell immune = testCurrentRow.getCell(2);
+                    testcase.setImmune("Y".equalsIgnoreCase(immune.getStringCellValue()));
+                    logger.debug("    Immune: " + testcase.isImmune());
+
                     // set the execution date
-                    testCurrentRowNum += 5;
+                    testCurrentRowNum += 2;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell executionDate = testCurrentRow.getCell(2);
                     if (executionDate != null && executionDate.getDateCellValue() != null) {

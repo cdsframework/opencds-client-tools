@@ -5,11 +5,16 @@ import ice.exception.IceException;
 import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.opencds.AdministrableSubstance;
+import org.opencds.BL;
 import org.opencds.CD;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
+import org.opencds.EvaluatedPerson.ClinicalStatements;
+import org.opencds.EvaluatedPerson.ClinicalStatements.SubstanceAdministrationEvents;
+import org.opencds.EvaluatedPerson.ClinicalStatements.SubstanceAdministrationProposals;
 import org.opencds.EvaluatedPerson.Demographics;
 import org.opencds.II;
+import org.opencds.IVLTS;
 import org.opencds.ObservationResult;
 import org.opencds.ObservationResult.ObservationValue;
 import org.opencds.RelatedClinicalStatement;
@@ -112,6 +117,36 @@ public abstract class BaseCdsObject<T> {
         return substanceAdministrationProposal;
     }
 
+    protected static SubstanceAdministrationProposals getSubstanceAdministrationProposals(Vmr vmr) throws IceException {
+        ClinicalStatements clinicalStatements = vmr.getPatient().getClinicalStatements();
+        SubstanceAdministrationProposals substanceAdministrationProposals = clinicalStatements.getSubstanceAdministrationProposals();
+        if (substanceAdministrationProposals == null) {
+            substanceAdministrationProposals = getSubstanceAdministrationProposals();
+            clinicalStatements.setSubstanceAdministrationProposals(substanceAdministrationProposals);
+        }
+        return substanceAdministrationProposals;
+    }
+
+    protected static SubstanceAdministrationProposals getSubstanceAdministrationProposals() {
+        SubstanceAdministrationProposals substanceAdministrationProposals = new SubstanceAdministrationProposals();
+        return substanceAdministrationProposals;
+    }
+
+    protected static SubstanceAdministrationEvents getSubstanceAdministrationEvents(Vmr vmr) throws IceException {
+        ClinicalStatements clinicalStatements = vmr.getPatient().getClinicalStatements();
+        SubstanceAdministrationEvents substanceAdministrationEvents = clinicalStatements.getSubstanceAdministrationEvents();
+        if (substanceAdministrationEvents == null) {
+            substanceAdministrationEvents = getSubstanceAdministrationEvents();
+            clinicalStatements.setSubstanceAdministrationEvents(substanceAdministrationEvents);
+        }
+        return substanceAdministrationEvents;
+    }
+
+    protected static SubstanceAdministrationEvents getSubstanceAdministrationEvents() {
+        SubstanceAdministrationEvents substanceAdministrationEvents = new SubstanceAdministrationEvents();
+        return substanceAdministrationEvents;
+    }
+
     protected static RelatedClinicalStatement getRelatedClinicalStatement(String code) {
         final String METHODNAME = "getRelatedClinicalStatement ";
         RelatedClinicalStatement relatedClinicalStatement = new RelatedClinicalStatement();
@@ -122,11 +157,15 @@ public abstract class BaseCdsObject<T> {
         return relatedClinicalStatement;
     }
 
-    protected static <S> S addObservationResult(S substanceAdministrationObject, String focus, String value, String interpretation)
+    protected static <S> S addObservationResult(S substanceAdministrationObject, boolean valid, String focus, String value, String interpretation)
             throws IceException {
         RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement("IND");
         if (substanceAdministrationObject instanceof SubstanceAdministrationEvent) {
-            ((SubstanceAdministrationEvent)substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
+            SubstanceAdministrationEvent substanceAdministrationEvent = (SubstanceAdministrationEvent)substanceAdministrationObject;
+            BL bl = new BL();
+            bl.setValue(valid);
+            substanceAdministrationEvent.setIsValid(bl);
+            substanceAdministrationEvent.getRelatedClinicalStatements().add(relatedClinicalStatement);
         } else if (substanceAdministrationObject instanceof SubstanceAdministrationProposal) {
             ((SubstanceAdministrationProposal)substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
         } else {
@@ -205,7 +244,57 @@ public abstract class BaseCdsObject<T> {
         demographics.setGender(cd);
     }
 
-    protected abstract SubstanceAdministrationEvent addSubstanceAdministrationEvent(String vaccineGroup, String substanceCode, String administrationTimeInterval) throws IceException;
-    protected abstract SubstanceAdministrationProposal addSubstanceAdministrationProposal(String vaccineGroup, String substanceCode, String administrationTimeInterval) throws IceException;
+    protected SubstanceAdministrationEvent getSubstanceAdministrationEvent(String substanceCode, String administrationTimeInterval) {
+        SubstanceAdministrationEvent substanceAdministrationEvent = getSubstanceAdministrationEvent();
+
+        AdministrableSubstance substance = getAdministrableSubstance();
+        substanceAdministrationEvent.setSubstance(substance);
+        substance.getSubstanceCode().setCode(substanceCode);
+        substance.getSubstanceCode().setDisplayName("TBD - CVX VACCODE NAME");
+
+        IVLTS ivlts = new IVLTS();
+        ivlts.setHigh(administrationTimeInterval);
+        ivlts.setLow(administrationTimeInterval);
+
+        substanceAdministrationEvent.setAdministrationTimeInterval(ivlts);
+
+        return substanceAdministrationEvent;
+    }
+
+    protected SubstanceAdministrationEvent addSubstanceAdministrationEvent(Vmr vmr, String substanceCode, String administrationTimeInterval)
+            throws IceException {
+        SubstanceAdministrationEvent substanceAdministrationEvent = getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        SubstanceAdministrationEvents substanceAdministrationEvents = getSubstanceAdministrationEvents(vmr);
+        substanceAdministrationEvents.getSubstanceAdministrationEvents().add(substanceAdministrationEvent);
+        return substanceAdministrationEvent;
+    }
+
+    protected SubstanceAdministrationProposal addSubstanceAdministrationProposal(Vmr vmr, String vaccineGroup, String substanceCode, String administrationTimeInterval)
+            throws IceException {
+
+
+        SubstanceAdministrationProposal substanceAdministrationProposal = getSubstanceAdministrationProposal();
+        SubstanceAdministrationProposals substanceAdministrationProposals = getSubstanceAdministrationProposals(vmr);
+        substanceAdministrationProposals.getSubstanceAdministrationProposals().add(substanceAdministrationProposal);
+
+
+
+        AdministrableSubstance substance = getAdministrableSubstance();
+        substanceAdministrationProposal.setSubstance(substance);
+        if ((substanceCode != null && !substanceCode.trim().isEmpty()) || (vaccineGroup != null && !vaccineGroup.trim().isEmpty())) {
+            substance.getSubstanceCode().setCode(vaccineGroup);
+            substance.getSubstanceCode().setDisplayName("TBD - vaccine group: " + vaccineGroup + " - substance code: " + substanceCode);
+        }
+
+        if (administrationTimeInterval != null && !administrationTimeInterval.trim().isEmpty()) {
+            IVLTS ivlts = new IVLTS();
+            ivlts.setHigh(administrationTimeInterval);
+            ivlts.setLow(administrationTimeInterval);
+
+            substanceAdministrationProposal.setProposedAdministrationTimeInterval(ivlts);
+        }
+
+        return substanceAdministrationProposal;
+    }
 
 }

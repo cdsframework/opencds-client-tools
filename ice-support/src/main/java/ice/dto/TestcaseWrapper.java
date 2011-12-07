@@ -4,7 +4,9 @@ import ice.dto.support.CdsObjectAssist;
 import ice.exception.IceException;
 import ice.util.DateUtils;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import org.opencds.SubstanceAdministrationEvent;
 import org.opencds.SubstanceAdministrationProposal;
@@ -109,6 +111,14 @@ public class TestcaseWrapper {
         testcase.setNotes(value);
     }
 
+    public boolean isImmune() throws IceException {
+        return testcase.isImmune();
+    }
+
+    public void setImmune(boolean value) {
+        testcase.setImmune(value);
+    }
+
     public int getNumdoses() throws IceException {
         return testcase.getNumdoses();
     }
@@ -183,15 +193,22 @@ public class TestcaseWrapper {
         output.setPatientGender(value);
     }
 
-    public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
-            String vaccineGroup,
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
+            boolean valid,
             String focus,
             String value,
             String interpretation) throws IceException {
-        input.addSubstanceAdministrationEvent(vaccineGroup, substanceCode, administrationTimeInterval);
-        return output.addSubstanceAdministrationEvent(vaccineGroup, substanceCode, administrationTimeInterval, focus, value, interpretation);
+        return output.getEvaluationSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, valid, focus, value, interpretation);
+    }
+
+    public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
+            String substanceCode,
+            String administrationTimeInterval,
+            List<SubstanceAdministrationEvent> components) throws IceException {
+        input.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, components);
     }
 
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(

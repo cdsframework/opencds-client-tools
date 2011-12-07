@@ -60,10 +60,8 @@ public class OpenCdsAssistTest {
         start = System.nanoTime();
         input.setPatientGender("F");
         input.setPatientBirthTime("19830630");
-        input.addSubstanceAdministrationEvent("100", "08", "20080223");
-        input.addSubstanceAdministrationEvent("100", "08", "20090223");
-        input.addSubstanceAdministrationEvent("200", "43", "20080223");
-        input.addSubstanceAdministrationEvent("200", "43", "20090223");
+        input.addSubstanceAdministrationEvent("104", "20080223");
+        input.addSubstanceAdministrationEvent("10", "20080223");
         Utilities.logDuration("input init", start);
 
         String businessId = "bounce";
