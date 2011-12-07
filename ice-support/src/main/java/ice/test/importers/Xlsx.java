@@ -82,8 +82,11 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell doseFocus = testCurrentRow.getCell(2);
-                    testcase.setDosefocus(Integer.parseInt(doseFocus.getStringCellValue().substring(doseFocus.getStringCellValue().length() - 1)));
+                    String doseFocusValue = doseFocus.getStringCellValue();
+                    if (doseFocusValue != null && !doseFocusValue.isEmpty()) {
+                        testcase.setDosefocus(Integer.parseInt(doseFocusValue.substring(doseFocus.getStringCellValue().length() - 1)));
                     logger.debug("    Dose focus: " + testcase.getDosefocus());
+                    }
                     XSSFCell numDoses = testCurrentRow.getCell(9);
                     testcase.setNumdoses((int) numDoses.getNumericCellValue());
                     logger.debug("    Number of valid doses: " + testcase.getNumdoses());
@@ -162,7 +165,7 @@ public class Xlsx {
                     XSSFCell shot1Vaccine = testCurrentRow.getCell(2);
                     logger.debug("    Shot 1 vaccine: " + shot1Vaccine);
                     XSSFCell shot1Cvx = testCurrentRow.getCell(3);
-                    logger.debug("    Shot 1 CVX: " + shot1Cvx.getStringCellValue());
+                    logger.debug("    Shot 1 CVX: " + shot1Cvx.getRawValue());
                     XSSFCell shot1Evaluation = testCurrentRow.getCell(4);
                     logger.debug("    Shot 1 evaluation: " + shot1Evaluation);
                     XSSFCell shot1InvalidReason1Code = testCurrentRow.getCell(5);
@@ -183,7 +186,7 @@ public class Xlsx {
                     XSSFCell shot2Vaccine = testCurrentRow.getCell(2);
                     logger.debug("    Shot 2 vaccine: " + shot2Vaccine);
                     XSSFCell shot2Cvx = testCurrentRow.getCell(3);
-                    logger.debug("    Shot 2 CVX: " + shot2Cvx.getStringCellValue());
+                    logger.debug("    Shot 2 CVX: " + shot2Cvx.getRawValue());
                     XSSFCell shot2Evaluation = testCurrentRow.getCell(4);
                     logger.debug("    Shot 2 evaluation: " + shot2Evaluation);
                     XSSFCell shot2InvalidReason1Code = testCurrentRow.getCell(5);
@@ -202,7 +205,7 @@ public class Xlsx {
                     XSSFCell shot3Vaccine = testCurrentRow.getCell(2);
                     logger.debug("    Shot 3 vaccine: " + shot3Vaccine);
                     XSSFCell shot3Cvx = testCurrentRow.getCell(3);
-                    logger.debug("    Shot 3 CVX: " + shot3Cvx.getStringCellValue());
+                    logger.debug("    Shot 3 CVX: " + shot3Cvx.getRawValue());
                     XSSFCell shot3Evaluation = testCurrentRow.getCell(4);
                     logger.debug("    Shot 3 evaluation: " + shot3Evaluation);
                     XSSFCell shot3InvalidReason1Code = testCurrentRow.getCell(5);
@@ -221,7 +224,7 @@ public class Xlsx {
                     XSSFCell shot4Vaccine = testCurrentRow.getCell(2);
                     logger.debug("    Shot 4 vaccine: " + shot4Vaccine);
                     XSSFCell shot4Cvx = testCurrentRow.getCell(3);
-                    logger.debug("    Shot 4 CVX: " + shot4Cvx.getStringCellValue());
+                    logger.debug("    Shot 4 CVX: " + shot4Cvx.getRawValue());
                     XSSFCell shot4Evaluation = testCurrentRow.getCell(4);
                     logger.debug("    Shot 4 evaluation: " + shot4Evaluation);
                     XSSFCell shot4InvalidReason1Code = testCurrentRow.getCell(5);
@@ -240,7 +243,7 @@ public class Xlsx {
                     XSSFCell shot5Vaccine = testCurrentRow.getCell(2);
                     logger.debug("    Shot 5 vaccine: " + shot5Vaccine);
                     XSSFCell shot5Cvx = testCurrentRow.getCell(3);
-                    logger.debug("    Shot 5 CVX: " + shot5Cvx.getStringCellValue());
+                    logger.debug("    Shot 5 CVX: " + shot5Cvx.getRawValue());
                     XSSFCell shot5Evaluation = testCurrentRow.getCell(4);
                     logger.debug("    Shot 5 evaluation: " + shot5Evaluation);
                     XSSFCell shot5InvalidReason1Code = testCurrentRow.getCell(5);

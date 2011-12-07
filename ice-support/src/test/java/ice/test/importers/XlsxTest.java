@@ -40,7 +40,6 @@ public class XlsxTest {
      * Test of importFromFile method, of class Xlsx.
      * @throws Exception
      */
-    @Ignore
     @Test
     public void testImportFromFile() throws Exception {
         logger.info("importFromFile");
