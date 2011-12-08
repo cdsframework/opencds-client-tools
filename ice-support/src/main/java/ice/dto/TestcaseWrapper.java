@@ -1,13 +1,13 @@
 package ice.dto;
 
 import ice.dto.support.CdsObjectAssist;
+import ice.dto.support.Reason;
 import ice.exception.IceException;
 import ice.util.DateUtils;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
+import org.opencds.ObservationResult;
 import org.opencds.SubstanceAdministrationEvent;
 import org.opencds.SubstanceAdministrationProposal;
 import org.opencds.Testcase;
@@ -111,14 +111,6 @@ public class TestcaseWrapper {
         testcase.setNotes(value);
     }
 
-    public boolean isImmune() throws IceException {
-        return testcase.isImmune();
-    }
-
-    public void setImmune(boolean value) {
-        testcase.setImmune(value);
-    }
-
     public int getNumdoses() throws IceException {
         return testcase.getNumdoses();
     }
@@ -155,11 +147,11 @@ public class TestcaseWrapper {
         testcase.setTestfocus(value);
     }
 
-    public String getVaccinegroup() throws IceException {
+    public int getVaccinegroup() throws IceException {
         return testcase.getVaccinegroup();
     }
 
-    public void setVaccinegroup(String value) {
+    public void setVaccinegroup(int value) {
         testcase.setVaccinegroup(value);
     }
 
@@ -181,7 +173,8 @@ public class TestcaseWrapper {
     }
 
     public void setPatientBirthTime(Date value) throws IceException {
-        setPatientBirthTime(DateUtils.getISODateFormat(value));
+        input.setPatientBirthTime(value);
+        output.setPatientBirthTime(value);
     }
 
     public String getPatientGender() throws IceException {
@@ -200,25 +193,107 @@ public class TestcaseWrapper {
             String focus,
             String value,
             String interpretation) throws IceException {
-        return output.getEvaluationSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, valid, focus, value, interpretation);
+        return output.getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                administrationTimeInterval,
+                valid,
+                focus,
+                value,
+                interpretation);
+    }
+
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            boolean valid,
+            String focus,
+            String value,
+            String interpretation) throws IceException {
+        return output.getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                administrationTimeIntervalDate,
+                valid,
+                focus,
+                value,
+                interpretation);
+    }
+
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            String administrationTimeInterval,
+            boolean valid,
+            Reason[] reasons) throws IceException {
+        return output.getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                administrationTimeInterval,
+                valid,
+                reasons);
+    }
+
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            boolean valid,
+            Reason[] reasons) throws IceException {
+        return output.getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                administrationTimeIntervalDate,
+                valid,
+                reasons);
     }
 
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
-            List<SubstanceAdministrationEvent> components) throws IceException {
+            SubstanceAdministrationEvent[] components) throws IceException {
         input.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
         return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, components);
     }
 
+    public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            SubstanceAdministrationEvent[] components) throws IceException {
+        input.addSubstanceAdministrationEvent(substanceCode, administrationTimeIntervalDate);
+        return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeIntervalDate, components);
+    }
+
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
-            String vaccineGroup,
+            int vaccineGroup,
             String substanceCode,
             String administrationTimeInterval,
             String focus,
             String value,
             String interpretation) throws IceException {
-        return output.addSubstanceAdministrationProposal(vaccineGroup, substanceCode, administrationTimeInterval, focus, value, interpretation);
+        return output.addSubstanceAdministrationProposal(
+                vaccineGroup,
+                substanceCode,
+                administrationTimeInterval,
+                focus,
+                value,
+                interpretation);
     }
 
+    public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
+            int vaccineGroup,
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            String focus,
+            String value,
+            String interpretation) throws IceException {
+        return output.addSubstanceAdministrationProposal(
+                vaccineGroup,
+                substanceCode,
+                administrationTimeIntervalDate,
+                focus,
+                value,
+                interpretation);
+    }
+
+    public ObservationResult addImmunityObservationResult(boolean immune, int vaccineGroup)
+            throws IceException {
+        ObservationResult addImmunityObservationResult = input.addImmunityObservationResult(immune, vaccineGroup);
+        output.addObservationResult(addImmunityObservationResult);
+        return addImmunityObservationResult;
+    }
 }

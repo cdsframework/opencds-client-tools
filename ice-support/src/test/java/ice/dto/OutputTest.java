@@ -53,7 +53,8 @@ public class OutputTest {
         start = System.nanoTime();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        output.addImmunityObservationResult(true, 500);
+
         SubstanceAdministrationEvent hepBComponent =
                 output.getEvaluationSubstanceAdministrationEvent("43", "20080223", true, "VALIDITY (HEP B COMPONENT)", "VALID", "");
         SubstanceAdministrationEvent hepAComponent =
@@ -61,19 +62,15 @@ public class OutputTest {
         SubstanceAdministrationEvent polioComponent =
                 output.getEvaluationSubstanceAdministrationEvent("10", "20080223", false, "VALIDITY (POLIO)", "INVALID", "TOO_EGGY");
 
-        components.add(hepBComponent);
-        components.add(hepAComponent);
-        output.addSubstanceAdministrationEvent("104", "20080223", components);
+        output.addSubstanceAdministrationEvent("104", "20080223", new SubstanceAdministrationEvent[]{hepBComponent, hepAComponent});
 
-        components = new ArrayList<SubstanceAdministrationEvent>();
-        components.add(polioComponent);
-        output.addSubstanceAdministrationEvent("10", "20080223", components);
+        output.addSubstanceAdministrationEvent("10", "20080223", new SubstanceAdministrationEvent[]{polioComponent});
 
-        output.addSubstanceAdministrationProposal("810", "104", "20111201", "PROPOSAL (HEP A)", "RECOMMENDED", "DUE_NOW");
-        output.addSubstanceAdministrationProposal("100", "104", "20111201", "PROPOSAL (HEP B)", "RECOMMENDED", "DUE_NOW");
-        output.addSubstanceAdministrationProposal("400", "10", "20111201", "PROPOSAL (POLIO)", "RECOMMENDED", "DUE_NOW");
+        output.addSubstanceAdministrationProposal(810, "104", "20111201", "PROPOSAL (HEP A)", "RECOMMENDED", "DUE_NOW");
+        output.addSubstanceAdministrationProposal(100, "104", "20111201", "PROPOSAL (HEP B)", "RECOMMENDED", "DUE_NOW");
+        output.addSubstanceAdministrationProposal(400, "10", "20111201", "PROPOSAL (POLIO)", "RECOMMENDED", "DUE_NOW");
 
-        output.addSubstanceAdministrationProposal("500", "", "", "PROPOSAL (MMR)", "NOT_RECOMMENDED", "COMPLETED");
+        output.addSubstanceAdministrationProposal(500, "", "", "PROPOSAL (MMR)", "NOT_RECOMMENDED", "COMPLETED");
 
         Utilities.logDuration("output init", start);
 

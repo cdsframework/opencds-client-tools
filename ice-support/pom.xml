@@ -20,14 +20,27 @@
                 <includes>
                     <include>jax-ws-catalog.xml</include>
                     <include>wsdl/**</include>
-                    <!-- <include>log4j.xml</include> -->
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>META-INF/xsd</targetPath>
+                <directory>src/main/resources/jaxb/opencds</directory>
+                <includes>
+                    <include>*.xsd</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>META-INF/xsd</targetPath>
+                <directory>src/main/resources/jaxb/testcase</directory>
+                <includes>
+                    <include>*.xsd</include>
                 </includes>
             </resource>
             <resource>
                 <targetPath></targetPath>
                 <directory></directory>
                 <includes>
-                    <!-- <include>log4j.xml</include> -->
+                    <include>log4j.xml</include>
                 </includes>
             </resource>
         </resources>
@@ -73,6 +86,16 @@
                 <version>2.3.2</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <debug>false</debug>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>log4j.xml</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>

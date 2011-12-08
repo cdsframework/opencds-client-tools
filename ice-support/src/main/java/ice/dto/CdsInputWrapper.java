@@ -2,7 +2,10 @@ package ice.dto;
 
 import ice.base.BaseCdsObject;
 import ice.exception.IceException;
+import ice.util.DateUtils;
+import java.util.Date;
 import org.opencds.CdsInput;
+import org.opencds.ObservationResult;
 import org.opencds.SubstanceAdministrationEvent;
 
 /**
@@ -21,6 +24,25 @@ public class CdsInputWrapper extends BaseCdsObject<CdsInput> {
 
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(String substanceCode, String administrationTimeInterval)
             throws IceException {
-        return this.addSubstanceAdministrationEvent(this.getCdsObject().getVmrInput(), substanceCode, administrationTimeInterval);
+        return addSubstanceAdministrationEvent(this.getCdsObject().getVmrInput(), substanceCode, administrationTimeInterval);
+    }
+
+    public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate)
+            throws IceException {
+        return addSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate));
+    }
+
+    public ObservationResult addImmunityObservationResult(boolean immune, int vaccineGroup)
+            throws IceException {
+        return addImmunityObservationResult(this.getCdsObject().getVmrInput(), immune, vaccineGroup);
+    }
+
+    public void addObservationResult(ObservationResult observationResult)
+            throws IceException {
+        addObservationResult(this.getCdsObject().getVmrInput(), observationResult);
     }
 }

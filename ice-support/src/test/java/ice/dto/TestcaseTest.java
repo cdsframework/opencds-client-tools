@@ -1,8 +1,6 @@
 package ice.dto;
 
 import org.opencds.SubstanceAdministrationEvent;
-import java.util.List;
-import java.util.ArrayList;
 import ice.util.Utilities;
 import java.util.Date;
 import org.opencds.Testcase;
@@ -65,9 +63,9 @@ public class TestcaseTest {
         testcase.setRuletotest("asjdfhla asdf alksd pdf ahf apahwfe qwefh3984 qenka sd87134tu3hpjahfiq asdf");
         testcase.setSeries("Peds");
         testcase.setTestfocus("Evaluation");
-        testcase.setVaccinegroup("100");
+        testcase.setVaccinegroup(100);
         testcase.setVersion("1.0.0");
-        List<SubstanceAdministrationEvent> components = new ArrayList<SubstanceAdministrationEvent>();
+        testcase.addImmunityObservationResult(true, 500);
         SubstanceAdministrationEvent hepBComponent =
                 testcase.getEvaluationSubstanceAdministrationEvent("43", "20080223", true, "VALIDITY (HEP B COMPONENT)", "VALID", "");
         SubstanceAdministrationEvent hepAComponent =
@@ -75,19 +73,14 @@ public class TestcaseTest {
         SubstanceAdministrationEvent polioComponent =
                 testcase.getEvaluationSubstanceAdministrationEvent("10", "20080223", false, "VALIDITY (POLIO)", "INVALID", "TOO_EGGY");
 
-        components.add(hepBComponent);
-        testcase.addSubstanceAdministrationEvent("43", "20080223", components);
+        testcase.addSubstanceAdministrationEvent("43", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
 
-        components = new ArrayList<SubstanceAdministrationEvent>();
-        components.add(hepAComponent);
-        testcase.addSubstanceAdministrationEvent("08", "20090223", components);
+        testcase.addSubstanceAdministrationEvent("08", "20090223", new SubstanceAdministrationEvent[]{hepAComponent});
 
-        components = new ArrayList<SubstanceAdministrationEvent>();
-        components.add(polioComponent);
-        testcase.addSubstanceAdministrationEvent("43", "20080223", components);
+        testcase.addSubstanceAdministrationEvent("43", "20080223", new SubstanceAdministrationEvent[]{polioComponent});
 
-        testcase.addSubstanceAdministrationProposal("200", "43", "20090223", "PROPOSAL", "RECOMMENDED", "DUE_NOW");
-        testcase.addSubstanceAdministrationProposal("100", "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
+        testcase.addSubstanceAdministrationProposal(200, "43", "20090223", "PROPOSAL", "RECOMMENDED", "DUE_NOW");
+        testcase.addSubstanceAdministrationProposal(100, "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
         Utilities.logDuration("testcase init", start);
 
         start = System.nanoTime();
@@ -101,5 +94,4 @@ public class TestcaseTest {
         logger.info("Finished testTestcase...");
         assertTrue(true);
     }
-
 }

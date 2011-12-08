@@ -1,9 +1,13 @@
 package ice.dto;
 
 import ice.base.BaseCdsObject;
+import ice.dto.support.Reason;
 import ice.exception.IceException;
+import ice.util.DateUtils;
+import java.util.Date;
 import java.util.List;
 import org.opencds.CdsOutput;
+import org.opencds.ObservationResult;
 import org.opencds.RelatedClinicalStatement;
 import org.opencds.SubstanceAdministrationEvent;
 import org.opencds.SubstanceAdministrationProposal;
@@ -22,6 +26,16 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         return new CdsOutputWrapper();
     }
 
+    public ObservationResult addImmunityObservationResult(boolean immune, int vaccineGroup)
+            throws IceException {
+        return addImmunityObservationResult(this.getCdsObject().getVmrOutput(), immune, vaccineGroup);
+    }
+
+    public void addObservationResult(ObservationResult observationResult)
+            throws IceException {
+        addObservationResult(this.getCdsObject().getVmrOutput(), observationResult);
+    }
+
     public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
@@ -29,22 +43,72 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
             String focus,
             String value,
             String interpretation) throws IceException {
-        SubstanceAdministrationEvent substanceAdministrationEvent = getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
-        substanceAdministrationEvent = addObservationResult(substanceAdministrationEvent, valid, focus, value, interpretation);
+        SubstanceAdministrationEvent substanceAdministrationEvent =
+                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        substanceAdministrationEvent.setIsValid(getBL(valid));
+        substanceAdministrationEvent = addObservationResult(substanceAdministrationEvent, focus, value, interpretation);
         return substanceAdministrationEvent;
+    }
+
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            String administrationTimeInterval,
+            boolean valid,
+            Reason[] reasons) throws IceException {
+        SubstanceAdministrationEvent substanceAdministrationEvent =
+                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        substanceAdministrationEvent.setIsValid(getBL(valid));
+        for (Reason reason : reasons) {
+            if (reason.getInterpretation() != null && !reason.getInterpretation().isEmpty()) {
+                substanceAdministrationEvent = addObservationResult(
+                        substanceAdministrationEvent,
+                        reason.getFocus(),
+                        reason.getValue(),
+                        reason.getInterpretation());
+            }
+        }
+        return substanceAdministrationEvent;
+    }
+
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            boolean valid,
+            Reason[] reasons) throws IceException {
+        return getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                valid,
+                reasons);
+    }
+
+    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            boolean valid,
+            String focus,
+            String value,
+            String interpretation) throws IceException {
+        return getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                valid,
+                focus,
+                value,
+                interpretation);
     }
 
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
-            List<SubstanceAdministrationEvent> componentEvents)
+            SubstanceAdministrationEvent[] components)
             throws IceException {
 
         SubstanceAdministrationEvent substanceAdministrationEvent =
                 addSubstanceAdministrationEvent(this.getCdsObject().getVmrOutput(), substanceCode, administrationTimeInterval);
         List<RelatedClinicalStatement> relatedClinicalStatements = substanceAdministrationEvent.getRelatedClinicalStatements();
-        for (SubstanceAdministrationEvent sae : componentEvents) {
-            RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement("COMP");
+        for (SubstanceAdministrationEvent sae : components) {
+            RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement("PERT");
             relatedClinicalStatement.setSubstanceAdministrationEvent(sae);
             relatedClinicalStatements.add(relatedClinicalStatement);
         }
@@ -52,8 +116,19 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         return substanceAdministrationEvent;
     }
 
+    public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            SubstanceAdministrationEvent[] components)
+            throws IceException {
+        return addSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                components);
+    }
+
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
-            String vaccineGroup,
+            int vaccineGroup,
             String substanceCode,
             String administrationTimeInterval,
             String focus,
@@ -67,8 +142,25 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
                 substanceCode,
                 administrationTimeInterval);
 
-        substanceAdministrationProposal = addObservationResult(substanceAdministrationProposal, true, focus, value, interpretation);
+        substanceAdministrationProposal =
+                addObservationResult(substanceAdministrationProposal, focus, value, interpretation);
         return substanceAdministrationProposal;
     }
 
+    public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
+            int vaccineGroup,
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            String focus,
+            String value,
+            String interpretation)
+            throws IceException {
+        return addSubstanceAdministrationProposal(
+                vaccineGroup,
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                focus,
+                value,
+                interpretation);
+    }
 }

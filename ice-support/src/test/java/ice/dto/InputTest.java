@@ -53,6 +53,7 @@ public class InputTest {
         input.setPatientBirthTime("19830630");
         input.addSubstanceAdministrationEvent("104", "20080223");
         input.addSubstanceAdministrationEvent("10", "20080223");
+        input.addImmunityObservationResult(true, 500);
         Utilities.logDuration("input init", start);
 
         start = System.nanoTime();

@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
 
@@ -45,6 +46,7 @@ public class OpenCdsAssistTest {
      * Test of evaluate method, of class OpenCdsAssist.
      * @throws Exception
      */
+    @Ignore
     @Test
     public void testEvaluate() throws Exception {
         long start;
