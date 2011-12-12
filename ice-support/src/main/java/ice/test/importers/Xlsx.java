@@ -6,9 +6,11 @@ import ice.dto.support.TestImportCallback;
 import ice.exception.IceException;
 import ice.util.DateUtils;
 import ice.util.StringUtils;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -27,10 +29,19 @@ public class Xlsx {
 
     private final static Logger logger = Logger.getLogger(Xlsx.class);
 
+    public static void importFromFile(byte[] data, TestImportCallback callback)
+            throws IceException, FileNotFoundException, IOException, DatatypeConfigurationException {
+         importFromFile(new ByteArrayInputStream(data), callback);
+    }
     public static void importFromFile(String filename, TestImportCallback callback)
             throws IceException, FileNotFoundException, IOException, DatatypeConfigurationException {
+        importFromFile(new FileInputStream(filename), callback);
+    }
+
+    public static void importFromFile(InputStream inputStream, TestImportCallback callback)
+            throws IceException, FileNotFoundException, IOException, DatatypeConfigurationException {
         List<String> importedTestcases = new ArrayList<String>();
-        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(filename));
+        XSSFWorkbook wb = new XSSFWorkbook(inputStream);
         XSSFSheet sheet = wb.getSheet("HepB Test Coverage Summary");
         int lastRowNum = sheet.getLastRowNum();
         logger.debug("LastRowNum: " + lastRowNum);

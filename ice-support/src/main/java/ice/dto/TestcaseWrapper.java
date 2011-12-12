@@ -10,6 +10,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import org.opencds.ObservationResult;
 import org.opencds.SubstanceAdministrationEvent;
 import org.opencds.SubstanceAdministrationProposal;
+import org.opencds.TS;
 import org.opencds.Testcase;
 
 /**
@@ -164,7 +165,12 @@ public class TestcaseWrapper {
     }
 
     public String getPatientBirthTime() throws IceException {
-        return input.getCdsObject().getVmrInput().getPatient().getDemographics().getBirthTime().getValue();
+        TS birthTime = input.getCdsObject().getVmrInput().getPatient().getDemographics().getBirthTime();
+        String birthtimeValue = null;
+        if (birthTime != null) {
+            birthtimeValue = birthTime.getValue();
+        }
+        return birthtimeValue;
     }
 
     public void setPatientBirthTime(String value) throws IceException {
