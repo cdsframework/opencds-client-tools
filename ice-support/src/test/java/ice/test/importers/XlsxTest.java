@@ -54,9 +54,9 @@ public class XlsxTest {
         Xlsx.importFromFile(filename, new TestImportCallback() {
 
             @Override
-            public void callback(TestcaseWrapper testcase) throws IceException {
+            public void callback(TestcaseWrapper testcase, String Group, boolean success) throws IceException {
                 try {
-                    CdsObjectAssist.cdsObjectToFile(testcase.getTestcase(), "imported-tests", testcase.getName());
+                    CdsObjectAssist.cdsObjectToFile(testcase.getTestcase(), "imported-tests", testcase.getEncodedName());
                 } catch (FileNotFoundException e) {
                     throw new IceException(e.getMessage());
                 } catch (IOException e) {

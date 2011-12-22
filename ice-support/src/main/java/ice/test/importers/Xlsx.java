@@ -19,6 +19,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.opencds.ObservationResult;
+import org.opencds.RelatedClinicalStatement;
 import org.opencds.SubstanceAdministrationEvent;
 
 /**
@@ -60,23 +62,35 @@ public class Xlsx {
                 XSSFRow testCurrentRow = testSheet.getRow(testCurrentRowNum);
                 XSSFCell name = testCurrentRow.getCell(2);
                 if (!name.getStringCellValue().isEmpty()) {
-                    String testname = testSheetName + ": " + name.getStringCellValue();
+                    String localName = name.getStringCellValue();
+                    String globalName = testSheetName + ": " + localName;
                     testCount++;
                     TestcaseWrapper testcase = TestcaseWrapper.getTestcaseWrapper();
 
-                    logger.info("Row: " + i
+                    String location = "Row: " + i
                             + " - Test Sheet: " + testSheetName
                             + " - Test Sheet Cell Start: " + testSheetCellStart
                             + " - RowNum: " + testCurrentRowNum
-                            + " - Test Name: " + testname);
+                            + " - Test Name: " + localName;
+                    testcase.setFileLocation(location);
+
+                    logger.debug(location);
 
                     // test name + vaccine group
-                    testcase.setName(testname);
-                    String encodedFilename = StringUtils.getShaHashFromString(testname);
-                    if (importedTestcases.contains(encodedFilename)) {
-                        throw new IceException("File " + testname + " already exists as " + encodedFilename);
+                    testcase.setName(localName);
+                    String encodedName = StringUtils.getShaHashFromString(globalName);
+                    testcase.setEncodedName(encodedName);
+                    if (importedTestcases.contains(encodedName)) {
+                        int c = 1;
+                        while (importedTestcases.contains(encodedName)) {
+                            localName = localName + "(" + c + ")";
+                            globalName = testSheetName + ": " + localName;
+                            encodedName = StringUtils.getShaHashFromString(globalName);
+                            testcase.setName(localName);
+                            testcase.setEncodedName(encodedName);
+                        }
                     }
-                    importedTestcases.add(encodedFilename);
+                    importedTestcases.add(encodedName);
                     logger.debug("    Test name: " + testcase.getName());
                     XSSFCell vaccineGroup = testCurrentRow.getCell(10);
                     testcase.setVaccinegroup((int) vaccineGroup.getNumericCellValue());
@@ -98,7 +112,14 @@ public class Xlsx {
                     XSSFCell doseFocus = testCurrentRow.getCell(2);
                     String doseFocusValue = doseFocus.getStringCellValue();
                     if (doseFocusValue != null && !doseFocusValue.isEmpty()) {
-                        testcase.setDosefocus(Integer.parseInt(doseFocusValue.substring(doseFocus.getStringCellValue().length() - 1)));
+                        doseFocusValue = doseFocus.getStringCellValue().trim().toLowerCase();
+                        if ("extra dose".equals(doseFocusValue)) {
+                            testcase.setDosefocus(-1);
+                        } else if ("all doses".equals(doseFocusValue)) {
+                            testcase.setDosefocus(0);
+                        } else {
+                            testcase.setDosefocus(Integer.parseInt(doseFocusValue.substring(doseFocusValue.length() - 1)));
+                        }
                         logger.debug("    Dose focus: " + testcase.getDosefocus());
                     }
                     XSSFCell numDoses = testCurrentRow.getCell(9);
@@ -136,7 +157,7 @@ public class Xlsx {
                     XSSFCell executionDate = testCurrentRow.getCell(2);
                     if (executionDate != null && executionDate.getDateCellValue() != null) {
                         testcase.setExecutiondate(executionDate.getDateCellValue());
-                        logger.debug("    Execution date: " + testcase.getExecutiondate());
+                        logger.debug("    Execution date: " + testcase.getExecutiondatetime());
                     } else {
                         logger.warn("Execution Date is null.");
                     }
@@ -181,25 +202,25 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell shot1Vaccine = testCurrentRow.getCell(2);
-                    logger.debug("    Shot 1 vaccine: " + shot1Vaccine);
+                    logger.trace("    Shot 1 vaccine: " + shot1Vaccine);
                     XSSFCell shot1Cvx = testCurrentRow.getCell(3);
                     String shot1CvxCode = shot1Cvx.getRawValue();
                     if (shot1CvxCode != null && !shot1CvxCode.isEmpty()) {
-                        logger.debug("    Shot 1 CVX: " + shot1Cvx.getRawValue());
+                        logger.trace("    Shot 1 CVX: " + shot1Cvx.getRawValue());
                         XSSFCell shot1Evaluation = testCurrentRow.getCell(4);
-                        logger.debug("    Shot 1 evaluation: " + shot1Evaluation);
+                        logger.trace("    Shot 1 evaluation: " + shot1Evaluation);
                         XSSFCell shot1InvalidReason1Code = testCurrentRow.getCell(5);
-                        logger.debug("    Shot 1 invalid reason 1 code: " + shot1InvalidReason1Code);
+                        logger.trace("    Shot 1 invalid reason 1 code: " + shot1InvalidReason1Code);
                         XSSFCell shot1InvalidReason2Code = testCurrentRow.getCell(6);
-                        logger.debug("    Shot 1 invalid reason 2 code: " + shot1InvalidReason2Code);
+                        logger.trace("    Shot 1 invalid reason 2 code: " + shot1InvalidReason2Code);
                         XSSFCell shot1InvalidReason3Code = testCurrentRow.getCell(7);
-                        logger.debug("    Shot 1 invalid reason 3 code: " + shot1InvalidReason3Code);
+                        logger.trace("    Shot 1 invalid reason 3 code: " + shot1InvalidReason3Code);
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell shot1DateofAdministration = testCurrentRow.getCell(2);
-                        logger.debug("    Shot 1 date of administration: " + shot1DateofAdministration);
+                        logger.trace("    Shot 1 date of administration: " + shot1DateofAdministration);
                         XSSFCell recommendedReasonText = testCurrentRow.getCell(9);
-                        logger.debug("    Recommended reason text: " + recommendedReasonText.getStringCellValue());
+                        logger.trace("    Recommended reason text: " + recommendedReasonText.getStringCellValue());
 
                         SubstanceAdministrationEvent shot1EvaluationEvent =
                                 testcase.getEvaluationSubstanceAdministrationEvent(
@@ -229,23 +250,23 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell shot2Vaccine = testCurrentRow.getCell(2);
-                    logger.debug("    Shot 2 vaccine: " + shot2Vaccine);
+                    logger.trace("    Shot 2 vaccine: " + shot2Vaccine);
                     XSSFCell shot2Cvx = testCurrentRow.getCell(3);
                     String shot2CvxCode = shot2Cvx.getRawValue();
                     if (shot2CvxCode != null && !shot2CvxCode.isEmpty()) {
-                        logger.debug("    Shot 2 CVX: " + shot2Cvx.getRawValue());
+                        logger.trace("    Shot 2 CVX: " + shot2Cvx.getRawValue());
                         XSSFCell shot2Evaluation = testCurrentRow.getCell(4);
-                        logger.debug("    Shot 2 evaluation: " + shot2Evaluation);
+                        logger.trace("    Shot 2 evaluation: " + shot2Evaluation);
                         XSSFCell shot2InvalidReason1Code = testCurrentRow.getCell(5);
-                        logger.debug("    Shot 2 invalid reason 1 code: " + shot2InvalidReason1Code);
+                        logger.trace("    Shot 2 invalid reason 1 code: " + shot2InvalidReason1Code);
                         XSSFCell shot2InvalidReason2Code = testCurrentRow.getCell(6);
-                        logger.debug("    Shot 2 invalid reason 2 code: " + shot2InvalidReason2Code);
+                        logger.trace("    Shot 2 invalid reason 2 code: " + shot2InvalidReason2Code);
                         XSSFCell shot2InvalidReason3Code = testCurrentRow.getCell(7);
-                        logger.debug("    Shot 2 invalid reason 3 code: " + shot2InvalidReason3Code);
+                        logger.trace("    Shot 2 invalid reason 3 code: " + shot2InvalidReason3Code);
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell shot2DateofAdministration = testCurrentRow.getCell(2);
-                        logger.debug("    Shot 2 date of administration: " + shot2DateofAdministration);
+                        logger.trace("    Shot 2 date of administration: " + shot2DateofAdministration);
 
                         SubstanceAdministrationEvent shot2EvaluationEvent =
                                 testcase.getEvaluationSubstanceAdministrationEvent(
@@ -275,23 +296,23 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell shot3Vaccine = testCurrentRow.getCell(2);
-                    logger.debug("    Shot 3 vaccine: " + shot3Vaccine);
+                    logger.trace("    Shot 3 vaccine: " + shot3Vaccine);
                     XSSFCell shot3Cvx = testCurrentRow.getCell(3);
                     String shot3CvxCode = shot3Cvx.getRawValue();
                     if (shot3CvxCode != null && !shot3CvxCode.isEmpty()) {
-                        logger.debug("    Shot 3 CVX: " + shot3Cvx.getRawValue());
+                        logger.trace("    Shot 3 CVX: " + shot3Cvx.getRawValue());
                         XSSFCell shot3Evaluation = testCurrentRow.getCell(4);
-                        logger.debug("    Shot 3 evaluation: " + shot3Evaluation);
+                        logger.trace("    Shot 3 evaluation: " + shot3Evaluation);
                         XSSFCell shot3InvalidReason1Code = testCurrentRow.getCell(5);
-                        logger.debug("    Shot 3 invalid reason 1 code: " + shot3InvalidReason1Code);
+                        logger.trace("    Shot 3 invalid reason 1 code: " + shot3InvalidReason1Code);
                         XSSFCell shot3InvalidReason2Code = testCurrentRow.getCell(6);
-                        logger.debug("    Shot 3 invalid reason 2 code: " + shot3InvalidReason2Code);
+                        logger.trace("    Shot 3 invalid reason 2 code: " + shot3InvalidReason2Code);
                         XSSFCell shot3InvalidReason3Code = testCurrentRow.getCell(7);
-                        logger.debug("    Shot 3 invalid reason 3 code: " + shot3InvalidReason3Code);
+                        logger.trace("    Shot 3 invalid reason 3 code: " + shot3InvalidReason3Code);
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell shot3DateofAdministration = testCurrentRow.getCell(2);
-                        logger.debug("    Shot 3 date of administration: " + shot3DateofAdministration);
+                        logger.trace("    Shot 3 date of administration: " + shot3DateofAdministration);
 
                         SubstanceAdministrationEvent shot3EvaluationEvent =
                                 testcase.getEvaluationSubstanceAdministrationEvent(
@@ -321,23 +342,23 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell shot4Vaccine = testCurrentRow.getCell(2);
-                    logger.debug("    Shot 4 vaccine: " + shot4Vaccine);
+                    logger.trace("    Shot 4 vaccine: " + shot4Vaccine);
                     XSSFCell shot4Cvx = testCurrentRow.getCell(3);
                     String shot4CvxCode = shot4Cvx.getRawValue();
                     if (shot4CvxCode != null && !shot4CvxCode.isEmpty()) {
-                        logger.debug("    Shot 4 CVX: " + shot4Cvx.getRawValue());
+                        logger.trace("    Shot 4 CVX: " + shot4Cvx.getRawValue());
                         XSSFCell shot4Evaluation = testCurrentRow.getCell(4);
-                        logger.debug("    Shot 4 evaluation: " + shot4Evaluation);
+                        logger.trace("    Shot 4 evaluation: " + shot4Evaluation);
                         XSSFCell shot4InvalidReason1Code = testCurrentRow.getCell(5);
-                        logger.debug("    Shot 4 invalid reason 1 code: " + shot4InvalidReason1Code);
+                        logger.trace("    Shot 4 invalid reason 1 code: " + shot4InvalidReason1Code);
                         XSSFCell shot4InvalidReason2Code = testCurrentRow.getCell(6);
-                        logger.debug("    Shot 4 invalid reason 2 code: " + shot4InvalidReason2Code);
+                        logger.trace("    Shot 4 invalid reason 2 code: " + shot4InvalidReason2Code);
                         XSSFCell shot4InvalidReason3Code = testCurrentRow.getCell(7);
-                        logger.debug("    Shot 4 invalid reason 3 code: " + shot4InvalidReason3Code);
+                        logger.trace("    Shot 4 invalid reason 3 code: " + shot4InvalidReason3Code);
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell shot4DateofAdministration = testCurrentRow.getCell(2);
-                        logger.debug("    Shot 4 date of administration: " + shot4DateofAdministration);
+                        logger.trace("    Shot 4 date of administration: " + shot4DateofAdministration);
 
                         SubstanceAdministrationEvent shot4EvaluationEvent =
                                 testcase.getEvaluationSubstanceAdministrationEvent(
@@ -367,23 +388,23 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell shot5Vaccine = testCurrentRow.getCell(2);
-                    logger.debug("    Shot 5 vaccine: " + shot5Vaccine);
+                    logger.trace("    Shot 5 vaccine: " + shot5Vaccine);
                     XSSFCell shot5Cvx = testCurrentRow.getCell(3);
                     String shot5CvxCode = shot5Cvx.getRawValue();
                     if (shot5CvxCode != null && !shot5CvxCode.isEmpty()) {
-                        logger.debug("    Shot 5 CVX: " + shot5Cvx.getRawValue());
+                        logger.trace("    Shot 5 CVX: " + shot5Cvx.getRawValue());
                         XSSFCell shot5Evaluation = testCurrentRow.getCell(4);
-                        logger.debug("    Shot 5 evaluation: " + shot5Evaluation);
+                        logger.trace("    Shot 5 evaluation: " + shot5Evaluation);
                         XSSFCell shot5InvalidReason1Code = testCurrentRow.getCell(5);
-                        logger.debug("    Shot 5 invalid reason 1 code: " + shot5InvalidReason1Code);
+                        logger.trace("    Shot 5 invalid reason 1 code: " + shot5InvalidReason1Code);
                         XSSFCell shot5InvalidReason2Code = testCurrentRow.getCell(6);
-                        logger.debug("    Shot 5 invalid reason 2 code: " + shot5InvalidReason2Code);
+                        logger.trace("    Shot 5 invalid reason 2 code: " + shot5InvalidReason2Code);
                         XSSFCell shot5InvalidReason3Code = testCurrentRow.getCell(7);
-                        logger.debug("    Shot 5 invalid reason 3 code: " + shot5InvalidReason3Code);
+                        logger.trace("    Shot 5 invalid reason 3 code: " + shot5InvalidReason3Code);
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell shot5DateofAdministration = testCurrentRow.getCell(2);
-                        logger.debug("    Shot 5 date of administration: " + shot5DateofAdministration);
+                        logger.trace("    Shot 5 date of administration: " + shot5DateofAdministration);
 
                         SubstanceAdministrationEvent shot5EvaluationEvent =
                                 testcase.getEvaluationSubstanceAdministrationEvent(
@@ -409,7 +430,25 @@ public class Xlsx {
                                 shot5DateofAdministration.getDateCellValue(),
                                 new SubstanceAdministrationEvent[]{shot5EvaluationEvent});
                     }
-                    callback.callback(testcase);
+                    int count = 0;
+                    for (SubstanceAdministrationEvent sae : testcase.getSubstanceAdministrationEvents()) {
+                        count ++;
+                        logger.debug("Shot " + count + " present: " + sae.getSubstance().getSubstanceCode().getCode() + "/" + sae.getAdministrationTimeInterval().getHigh());
+                        int count2 = 0;
+                        for (RelatedClinicalStatement rcs : sae.getRelatedClinicalStatements()) {
+                            count2++;
+                            SubstanceAdministrationEvent csae = rcs.getSubstanceAdministrationEvent();
+                            logger.debug("Shot " + count + " Component " + count2 + " present: " + csae.getSubstance().getSubstanceCode().getCode() + "/" + csae.getAdministrationTimeInterval().getHigh() + "/" + csae.getIsValid().isValue());
+                            int count3 = 0;
+                            for (RelatedClinicalStatement crcs : csae.getRelatedClinicalStatements()) {
+                                count3++;
+                                ObservationResult cor = crcs.getObservationResult();
+                                logger.debug("Shot " + count + " Component " + count2 + " OR " + count3 + " present: " + cor.getObservationFocus().getCode() + "/" + cor.getObservationValue().getConcept().getCode() + "/" + cor.getInterpretations().get(0).getCode());
+                            }
+                        }
+                    }
+
+                    callback.callback(testcase, testSheetName, true);
                 } else {
                     // logger.warn("Sheet '" + testSheetName + "' - Row " + i + ": test name was null.");
                 }
@@ -419,7 +458,7 @@ public class Xlsx {
         }
         logger.info("Number of tests imported: " + testCount);
         if (testCount != importedTestcases.size()) {
-            throw new IceException("Count mismatch: " + testCount + " - " + importedTestcases.size());
+            logger.warn("Count mismatch: " + testCount + " - " + importedTestcases.size());
         }
     }
 }

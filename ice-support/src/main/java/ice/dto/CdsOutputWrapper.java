@@ -107,6 +107,7 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         SubstanceAdministrationEvent substanceAdministrationEvent =
                 addSubstanceAdministrationEvent(this.getCdsObject().getVmrOutput(), substanceCode, administrationTimeInterval);
         List<RelatedClinicalStatement> relatedClinicalStatements = substanceAdministrationEvent.getRelatedClinicalStatements();
+
         for (SubstanceAdministrationEvent sae : components) {
             RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement("PERT");
             relatedClinicalStatement.setSubstanceAdministrationEvent(sae);

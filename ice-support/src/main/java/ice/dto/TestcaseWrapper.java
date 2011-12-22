@@ -5,8 +5,12 @@ import ice.dto.support.Reason;
 import ice.exception.IceException;
 import ice.util.DateUtils;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
+import org.opencds.EvaluatedPerson.ClinicalStatements.ObservationResults;
+import org.opencds.EvaluatedPerson.ClinicalStatements.SubstanceAdministrationEvents;
 import org.opencds.ObservationResult;
 import org.opencds.SubstanceAdministrationEvent;
 import org.opencds.SubstanceAdministrationProposal;
@@ -22,6 +26,9 @@ public class TestcaseWrapper {
     private Testcase testcase = CdsObjectAssist.getTestcase();
     private CdsInputWrapper input = CdsInputWrapper.getCdsInputWrapper();
     private CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
+    private String encodedName;
+    private String fileLocation;
+    private String errorMessage;
 
     public TestcaseWrapper() {
         testcase.setCdsInput(input.getCdsObject());
@@ -84,8 +91,12 @@ public class TestcaseWrapper {
         testcase.setDosefocus(value);
     }
 
-    public String getExecutiondate() throws IceException {
+    public String getExecutiondatetime() throws IceException {
         return DateUtils.getISODateFormat(testcase.getExecutiondate());
+    }
+
+    public Date getExecutiondate() throws IceException, ParseException {
+        return testcase.getExecutiondate();
     }
 
     public void setExecutiondate(String value) throws DatatypeConfigurationException, ParseException {
@@ -164,6 +175,30 @@ public class TestcaseWrapper {
         testcase.setVersion(value);
     }
 
+    public String getEncodedName() {
+        return encodedName;
+    }
+
+    public void setEncodedName(String encodedName) {
+        this.encodedName = encodedName;
+    }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public String getPatientBirthTime() throws IceException {
         TS birthTime = input.getCdsObject().getVmrInput().getPatient().getDemographics().getBirthTime();
         String birthtimeValue = null;
@@ -171,6 +206,10 @@ public class TestcaseWrapper {
             birthtimeValue = birthTime.getValue();
         }
         return birthtimeValue;
+    }
+
+    public Date getPatientBirthDate() throws IceException, ParseException {
+        return DateUtils.parseISODateFormat(getPatientBirthTime());
     }
 
     public void setPatientBirthTime(String value) throws IceException {
@@ -301,5 +340,32 @@ public class TestcaseWrapper {
         ObservationResult addImmunityObservationResult = input.addImmunityObservationResult(immune, vaccineGroup);
         output.addObservationResult(addImmunityObservationResult);
         return addImmunityObservationResult;
+    }
+
+    public List<ObservationResult> getImmunityObservationResults() {
+        List<ObservationResult> result;
+        ObservationResults observationResults = input.getCdsObject().getVmrInput().getPatient().getClinicalStatements().getObservationResults();
+        if (observationResults == null) {
+            result = new ArrayList<ObservationResult>();
+        } else {
+            result = observationResults.getObservationResults();
+        }
+        return result;
+    }
+
+
+    public List<SubstanceAdministrationProposal> getSubstanceAdministrationProposals() {
+        return output.getCdsObject().getVmrOutput().getPatient().getClinicalStatements().getSubstanceAdministrationProposals().getSubstanceAdministrationProposals();
+    }
+
+    public List<SubstanceAdministrationEvent> getSubstanceAdministrationEvents() {
+        List<SubstanceAdministrationEvent> result;
+        SubstanceAdministrationEvents substanceAdministrationEvents = output.getCdsObject().getVmrOutput().getPatient().getClinicalStatements().getSubstanceAdministrationEvents();
+        if (substanceAdministrationEvents == null) {
+            result = new ArrayList<SubstanceAdministrationEvent>();
+        } else {
+            result = substanceAdministrationEvents.getSubstanceAdministrationEvents();
+        }
+        return result;
     }
 }

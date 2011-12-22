@@ -398,10 +398,8 @@ public abstract class BaseCdsObject<T> {
 
         AdministrableSubstance substance = getAdministrableSubstance();
         substanceAdministrationProposal.setSubstance(substance);
-        if (substanceCode != null && !substanceCode.trim().isEmpty()) {
-            substance.getSubstanceCode().setCode(String.valueOf(vaccineGroup));
-            substance.getSubstanceCode().setDisplayName("TBD - vaccine group: " + vaccineGroup + " - cvx: " + substanceCode);
-        }
+        substance.getSubstanceCode().setCode(String.valueOf(vaccineGroup));
+        substance.getSubstanceCode().setDisplayName("TBD - vaccine group: " + vaccineGroup + " - cvx: " + substanceCode);
 
         if (administrationTimeInterval != null && !administrationTimeInterval.trim().isEmpty()) {
             IVLTS ivlts = new IVLTS();

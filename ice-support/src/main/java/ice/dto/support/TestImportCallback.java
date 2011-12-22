@@ -9,5 +9,5 @@ import ice.exception.IceException;
  */
 public abstract class TestImportCallback {
 
-    public abstract void callback(TestcaseWrapper testcase) throws IceException;
+    public abstract void callback(TestcaseWrapper testcase, String Group, boolean success) throws IceException;
 }

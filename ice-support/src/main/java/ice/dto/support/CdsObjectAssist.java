@@ -84,9 +84,9 @@ public class CdsObjectAssist {
 
     public static <S> String cdsObjectToFile(S cdsObject, String path, String filename)
             throws IceException, FileNotFoundException, IOException {
-        String encodedFilename = (path == null || path.isEmpty() ? "" : path + "/") + StringUtils.getShaHashFromString(filename) + ".xml";
+        String fullPath = (path == null || path.isEmpty() ? "" : path + "/") + filename + ".xml";
 
-        File file = new File(encodedFilename);
+        File file = new File(fullPath);
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         try {
             getMarshaller().marshal(cdsObject, fileOutputStream);
@@ -99,7 +99,7 @@ public class CdsObjectAssist {
                 logger.error(e);
             }
         }
-        return encodedFilename;
+        return fullPath;
     }
 
     public static <S> S cdsObjectFromByteArray(byte[] bytes, Class<S> cdsObjectClass) throws IceException {
