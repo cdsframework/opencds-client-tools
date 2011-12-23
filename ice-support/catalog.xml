@@ -10,4 +10,5 @@
     <system systemId="file:/C:/Users/admin/Desktop/vmr/cdsOutput.xsd" uri="src/main/resources/jaxb/testcase/cdsOutput.xsd"/>
     <system systemId="file:/C:/Users/admin/Desktop/vmr/datatypes.xsd" uri="src/main/resources/jaxb/testcase/datatypes.xsd"/>
     <system systemId="file:/C:/Users/admin/Desktop/vmr/vmr.xsd" uri="src/main/resources/jaxb/testcase/vmr.xsd"/>
+    <system systemId="file:/C:/Users/admin/Documents/NetBeansProjects/ice/ice-support/src/main/resources/codesets/SimpleTerminologyServiceSchema.xsd" uri="src/main/resources/jaxb/temservice/SimpleTerminologyServiceSchema.xsd"/>
 </catalog>

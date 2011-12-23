@@ -149,6 +149,25 @@
                         </configuration>
                         <id>jaxb-generate-testcase</id>
                     </execution>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-extension</arg>
+                            </args>
+                            <schemaIncludes>
+                                <include>jaxb/temservice/*.xsd</include>
+                            </schemaIncludes>
+                            <bindingIncludes>
+                                <include>jaxb/temservice/bindings.xjb</include>
+                            </bindingIncludes>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-temservice.episode</episodeFile>
+                            <generatePackage>org.opencds</generatePackage>
+                        </configuration>
+                        <id>jaxb-generate-temservice</id>
+                    </execution>
                 </executions>
                 <configuration>
                     <catalog>src/main/resources/jaxb/catalog.xml</catalog>

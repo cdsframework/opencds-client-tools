@@ -509,7 +509,7 @@ Similarly, related Entities can either be nested, or placed in the EntityLists e
 	</xs:complexType>
 	<xs:complexType name="Facility">
 		<xs:annotation>
-			<xs:documentation>A property such as a building that has been established to enable the performance of specific activities, typically be organizations.  E.g., a hospital or clinic.</xs:documentation>
+			<xs:documentation>A property such as a building that has been established to enable the performance of specific activities, typically by organizations.  E.g., a hospital or clinic.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="vmr:EntityBase">
@@ -1962,7 +1962,7 @@ To specify "patient takes an unknown drug", use a code for substance that repres
 					</xs:element>
 					<xs:element name="documentationTime" type="dt:IVL_TS" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Time time when the non-delivery of the substance was documented.</xs:documentation>
+							<xs:documentation>Time when the non-delivery of the substance was documented.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="relatedEntityInRole" type="vmr:RelatedClinicalStatementToEntityInRole" minOccurs="0" maxOccurs="unbounded"/>
