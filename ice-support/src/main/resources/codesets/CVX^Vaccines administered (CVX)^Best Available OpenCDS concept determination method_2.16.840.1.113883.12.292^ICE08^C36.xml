@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenCdsConceptMappingSpecificationFile>
+	<specificationNotes>Created manually.</specificationNotes>
+    <openCdsConcept code="ICE08" displayName="HepB peds &lt;20yrs"></openCdsConcept>
+    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
+    <membersForCodeSystem codeSystem="2.16.840.1.113883.12.292" codeSystemName="Vaccines administered (CVX)">
+    	<CD code="08" displayName="HepB peds &lt; 20yrs" />
+    	<CD code="51" displayName="Hib/HepB (Comvax)"/>
+    	<CD code="110" displayName="DTaP/HepB/IPV (Pediarix)"/>
+    </membersForCodeSystem>
+</OpenCdsConceptMappingSpecificationFile>     

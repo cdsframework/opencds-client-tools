@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenCdsConceptMappingSpecificationFile>
+	<specificationNotes>Created manually.</specificationNotes>
+    <openCdsConcept code="ICE210" displayName="Immunization Invalid (Insufficient Antigen)"></openCdsConcept>
+    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
+    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.3" codeSystemName="ICE3 Immunization Evaluation Reason">
+    	<CD code="INSUFFICIENT_ANTIGEN" displayName="Insufficient Antigen" />
+    </membersForCodeSystem>
+</OpenCdsConceptMappingSpecificationFile>
