@@ -79,7 +79,7 @@ public class OutputTest {
         Utilities.logDuration("cdsObjectToString", start);
 
         start = System.nanoTime();
-        CdsObjectAssist.validateCdsObject(output.getCdsObject(), "src/main/resources/jaxb/opencds/cdsOutput.xsd");
+        CdsObjectAssist.validateCdsObject(output.getCdsObject(), "src/main/resources/jaxb/testcase/cdsOutput.xsd");
         Utilities.logDuration("validateCdsObject", start);
 
         logger.info("Finished testCdsOutput...");

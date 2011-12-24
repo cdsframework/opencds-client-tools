@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tc="org.opencds"
+    xmlns:dt="org.opencds.vmr.v1_0.schema.datatypes"
+	targetNamespace="org.opencds">
+    <xs:import namespace="org.opencds.vmr.v1_0.schema.datatypes" schemaLocation="datatypes.xsd"/>
+    <xs:complexType name="openCdsConcept">
+        <xs:complexContent>
+            <xs:extension base="dt:CD"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="openCdsConceptMappingSpecification">
+        <xs:sequence>
+            <xs:element name="specificationNotes" type="xs:string"/>
+            <xs:element name="openCdsConcept" type="tc:openCdsConcept"/>
+            <xs:element name="conceptDeterminationMethod" type="tc:openCdsConcept"/>
+            <xs:element name="membersForCodeSystem">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CD" type="dt:CD" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="codeSystem" type="xs:string" use="required"/>
+                    <xs:attribute name="codeSystemName" type="xs:string" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="OpenCdsConceptMappingSpecificationFile"
+		type="tc:openCdsConceptMappingSpecification"/>
+</xs:schema>

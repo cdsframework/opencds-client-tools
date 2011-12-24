@@ -1,9 +1,13 @@
 package ice.dto;
 
 import java.io.File;
+import java.util.List;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
 import ice.dto.support.CdsObjectAssist;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,6 +16,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.opencds.CD;
+import org.opencds.OpenCdsConceptMappingSpecificationFile;
 import org.opencds.SubstanceAdministrationEvent;
 
 /**
@@ -71,7 +77,6 @@ public class CdsObjectAssistTest {
         assertTrue(true);
     }
 
-    @Ignore
     @Test
     public void testCdsObjectFromByteArray() throws Exception {
         logger.info("Starting testCdsObjectFromByteArray...");
@@ -92,7 +97,6 @@ public class CdsObjectAssistTest {
         assertTrue(true);
     }
 
-    @Ignore
     @Test
     public void testCdsObjectFromFile() throws Exception {
         logger.info("Starting testCdsObjectFromFile...");
@@ -109,7 +113,6 @@ public class CdsObjectAssistTest {
         assertTrue(true);
     }
 
-    @Ignore
     @Test
     public void testCdsObjectToFile() throws Exception {
         logger.info("Starting testCdsObjectToFile...");
@@ -128,5 +131,24 @@ public class CdsObjectAssistTest {
 
         logger.info("Finished testCdsObjectToFile...");
         assertTrue(true);
+    }
+
+    @Test
+    public void testGetCdsConcepts() throws Exception {
+        logger.info("Starting testGetCdsConcepts...");
+        Map<String, List<String>> codeSets = new HashMap<String, List<String>>();
+        List<CdsConceptWrapper> cdsConcepts = CdsObjectAssist.getCdsConcepts();
+        for (CdsConceptWrapper item : cdsConcepts) {
+            List<String> codeSetMembers = codeSets.get(item.getCdsConceptMap().getMembersForCodeSystem().getCodeSystem());
+            if (codeSetMembers == null) {
+                codeSetMembers = new ArrayList<String>();
+            }
+            for (CD cd : item.getCdsConceptMap().getMembersForCodeSystem().getCDS()) {
+                codeSetMembers.add(cd.getCode());
+                logger.info(item.getCdsConceptMap().getMembersForCodeSystem().getCodeSystem() + " - " + cd.getCode());
+            }
+            assertNotNull(item.getCdsConceptMap().getSpecificationNotes());
+        }
+        logger.info("Finished testGetCdsConcepts...");
     }
 }

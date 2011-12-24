@@ -1,6 +1,7 @@
 package ice.base;
 
 import ice.exception.IceException;
+import ice.util.Constants;
 import ice.util.DateUtils;
 import java.util.Date;
 import java.util.UUID;
@@ -81,15 +82,15 @@ public abstract class BaseCdsObject<T> {
     }
 
     private static CD getCD(String code, String codeSystem, String codeSystemName, String displayName) {
-        return getCD(code, codeSystem, null, displayName, null);
+        return getCD(code, codeSystem, codeSystemName, displayName, null);
     }
 
     private static CD getCD(String code, String codeSystem, String displayName) {
-        return getCD(code, codeSystem, null, displayName);
+        return getCD(code, codeSystem, null, displayName, null);
     }
 
     private static CD getCD(String code, String codeSystem) {
-        return getCD(code, codeSystem, null, null);
+        return getCD(code, codeSystem, null, null, null);
     }
 
     private static II getII(String rootId) {
@@ -112,7 +113,7 @@ public abstract class BaseCdsObject<T> {
 
     private static CdsInput getCdsInput() {
         CdsInput cdsInput = new CdsInput();
-        cdsInput.getTemplateIds().add(getII("2.16.840.1.113883.3.795.11.1.1"));
+        cdsInput.getTemplateIds().add(getII(Constants.CDS_INPUT_ROOT_OID));
         cdsInput.setCdsContext(getCDSContext());
         cdsInput.setVmrInput(getVmr());
         return cdsInput;
@@ -126,20 +127,23 @@ public abstract class BaseCdsObject<T> {
 
     private static CDSContext getCDSContext() {
         CDSContext cdsContext = new CDSContext();
-        cdsContext.setCdsSystemUserPreferredLanguage(getCD("en", "1.2.3", "English"));
+        cdsContext.setCdsSystemUserPreferredLanguage(
+                getCD(Constants.DEFAULT_LANG_CODE,
+                Constants.LANG_CODE_SYSTEM_OID,
+                Constants.DEFAULT_LANG_DISPLAY_NAME));
         return cdsContext;
     }
 
     private static Vmr getVmr() {
         Vmr vmr = new Vmr();
-        vmr.getTemplateIds().add(getII("2.16.840.1.113883.3.795.11.1.1"));
+        vmr.getTemplateIds().add(getII(Constants.VMR_ROOT_OID));
         vmr.setPatient(getEvaluatedPerson());
         return vmr;
     }
 
     private static EvaluatedPerson getEvaluatedPerson() {
         EvaluatedPerson evaluatedPerson = new EvaluatedPerson();
-        evaluatedPerson.getTemplateIds().add(getII("2.16.840.1.113883.3.795.11.2.1.1"));
+        evaluatedPerson.getTemplateIds().add(getII(Constants.EVALUATED_PERSON_ROOT_OID));
         evaluatedPerson.setId(getII());
         evaluatedPerson.setDemographics(getDemographics());
         evaluatedPerson.setClinicalStatements(getClinicalStatements());
@@ -158,7 +162,7 @@ public abstract class BaseCdsObject<T> {
 
     private static ObservationResult getObservationResult() {
         ObservationResult observationResult = new ObservationResult();
-        observationResult.getTemplateIds().add(getII("2.16.840.1.113883.3.795.11.6.3.1"));
+        observationResult.getTemplateIds().add(getII(Constants.OBSERVATION_RESULT_ROOT_OID));
         observationResult.setId(getII());
         return observationResult;
     }
@@ -166,17 +170,20 @@ public abstract class BaseCdsObject<T> {
     private static AdministrableSubstance getAdministrableSubstance() {
         AdministrableSubstance administerableSubstance = new AdministrableSubstance();
         administerableSubstance.setId(getII());
-        administerableSubstance.setSubstanceCode(getCD(null,"2.16.840.1.113883.12.292",null));
+        administerableSubstance.setSubstanceCode(getCD(null, Constants.ADMINISTERED_SUBSTANCE_ROOT_OID, null));
         return administerableSubstance;
     }
 
     private static CD getGeneralPurposeCode() {
-        return getCD("384810002", "2.16.840.1.113883.6.5", "SNOMED CT", "Immunization/vaccination management (procedure)");
+        return getCD(Constants.DEFAULT_GENERAL_PURPOSE_CODE,
+                Constants.GENERAL_PURPOSE_CODE_SYSTEM_OID,
+                Constants.DEFAULT_GENERAL_PURPOSE_CODE_SYSTEM_NAME,
+                Constants.DEFAULT_GENERAL_PURPOSE_CODE_SYSTEM_DISPLAY_NAME);
     }
 
     private static SubstanceAdministrationEvent getSubstanceAdministrationEvent() {
         SubstanceAdministrationEvent substanceAdministrationEvent = new SubstanceAdministrationEvent();
-        substanceAdministrationEvent.getTemplateIds().add(getII("2.16.840.1.113883.3.795.11.9.1.1"));
+        substanceAdministrationEvent.getTemplateIds().add(getII(Constants.SUBSTANCE_ADMINISTRATION_EVENT_ROOT_OID));
         substanceAdministrationEvent.setId(getII());
         substanceAdministrationEvent.setSubstanceAdministrationGeneralPurpose(getGeneralPurposeCode());
         return substanceAdministrationEvent;
@@ -184,7 +191,7 @@ public abstract class BaseCdsObject<T> {
 
     private static SubstanceAdministrationProposal getSubstanceAdministrationProposal() {
         SubstanceAdministrationProposal substanceAdministrationProposal = new SubstanceAdministrationProposal();
-        substanceAdministrationProposal.getTemplateIds().add(getII("2.16.840.1.113883.3.795.11.9.3.1"));
+        substanceAdministrationProposal.getTemplateIds().add(getII(Constants.SUBSTANCE_ADMINISTRATION_PROPOSAL_ROOT_OID));
         substanceAdministrationProposal.setId(getII());
         substanceAdministrationProposal.setSubstanceAdministrationGeneralPurpose(getGeneralPurposeCode());
         return substanceAdministrationProposal;
@@ -237,7 +244,7 @@ public abstract class BaseCdsObject<T> {
 
     protected static RelatedClinicalStatement getRelatedClinicalStatement(String code) {
         RelatedClinicalStatement relatedClinicalStatement = new RelatedClinicalStatement();
-        relatedClinicalStatement.setTargetRelationshipToSource(getCD(code, "2.16.840.1.113883.5.1002"));
+        relatedClinicalStatement.setTargetRelationshipToSource(getCD(code, Constants.TARGET_RELATIONSHIP_TO_SOURCE_CODE_SYSTEM_OID));
         return relatedClinicalStatement;
     }
 
@@ -254,14 +261,14 @@ public abstract class BaseCdsObject<T> {
         CD interpretationValue;
         if (substanceAdministrationObject instanceof SubstanceAdministrationEvent) {
             relatedClinicalStatement = getRelatedClinicalStatement("PERT");
-            SubstanceAdministrationEvent substanceAdministrationEvent = (SubstanceAdministrationEvent)substanceAdministrationObject;
+            SubstanceAdministrationEvent substanceAdministrationEvent = (SubstanceAdministrationEvent) substanceAdministrationObject;
             substanceAdministrationEvent.getRelatedClinicalStatements().add(relatedClinicalStatement);
             focusValue = getObservationFocus(focus, "TBD_IMMUNIZATION_EVAL_FOCUS", "TBD");
             observationValue = getObservationValue(value, "TBD_IMM_VALIDITY", "TBD");
             interpretationValue = getInterpretation(interpretation, "TBD_EVAL_REASON", "TBD");
         } else if (substanceAdministrationObject instanceof SubstanceAdministrationProposal) {
             relatedClinicalStatement = getRelatedClinicalStatement("RSON");
-            ((SubstanceAdministrationProposal)substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
+            ((SubstanceAdministrationProposal) substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
             focusValue = getObservationFocus(focus, "TBD_IMMUNIZATION_RECOMMENDATION_FOCUS", "TBD");
             observationValue = getObservationValue(value, "TBD_IMMUNIZATION_RECOMMENDATION", "TBD");
             interpretationValue = getInterpretation(interpretation, "TBD_RECOMMENDATION_REASON", "TBD");
@@ -333,7 +340,7 @@ public abstract class BaseCdsObject<T> {
             genderCode = "UN";
             displayName = "Undifferentiated";
         }
-        vmr.getPatient().getDemographics().setGender(getCD(genderCode, "2.16.840.1.113883.5.1", null, displayName, gender));
+        vmr.getPatient().getDemographics().setGender(getCD(genderCode, Constants.GENDER_CODE_SYSTEM_OID, null, displayName, gender));
     }
 
     protected static SubstanceAdministrationEvent getSubstanceAdministrationEvent(
@@ -435,5 +442,4 @@ public abstract class BaseCdsObject<T> {
     public void setPatientGender(String gender) throws IceException {
         setPatientGender(getCdsObjectVmr(), gender);
     }
-
 }

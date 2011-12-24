@@ -61,7 +61,7 @@ public class InputTest {
         Utilities.logDuration("cdsObjectToString", start);
 
         start = System.nanoTime();
-        CdsObjectAssist.validateCdsObject(input.getCdsObject(), "src/main/resources/jaxb/opencds/cdsInput.xsd");
+        CdsObjectAssist.validateCdsObject(input.getCdsObject(), "src/main/resources/jaxb/testcase/cdsInput.xsd");
         Utilities.logDuration("validateCdsObject", start);
 
         logger.info("Finished testCdsInput...");

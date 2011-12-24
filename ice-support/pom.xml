@@ -5,11 +5,11 @@
     <parent>
         <artifactId>ice</artifactId>
         <groupId>gov.nyc.health.cir</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
     <groupId>gov.nyc.health.cir</groupId>
     <artifactId>ice-support</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>ice-support</name>
     <url>http://maven.apache.org</url>
     <build>
@@ -23,10 +23,17 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>META-INF/xsd</targetPath>
-                <directory>src/main/resources/jaxb/opencds</directory>
+                <targetPath>META-INF</targetPath>
+                <directory>src/main/resources/</directory>
                 <includes>
-                    <include>*.xsd</include>
+                    <include>resourcelist.txt</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>META-INF/codesets</targetPath>
+                <directory>src/main/resources/codesets</directory>
+                <includes>
+                    <include>*.xml</include>
                 </includes>
             </resource>
             <resource>
@@ -34,6 +41,7 @@
                 <directory>src/main/resources/jaxb/testcase</directory>
                 <includes>
                     <include>*.xsd</include>
+                    <include>*.xsl</include>
                 </includes>
             </resource>
             <resource>
@@ -120,25 +128,6 @@
                                 <arg>-extension</arg>
                             </args>
                             <schemaIncludes>
-                                <include>jaxb/opencds/*.xsd</include>
-                            </schemaIncludes>
-                            <bindingIncludes>
-                                <include>jaxb/opencds/bindings.xjb</include>
-                            </bindingIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-opencds.episode</episodeFile>
-                            <generatePackage>org.opencds</generatePackage>
-                        </configuration>
-                        <id>jaxb-generate-opencds</id>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <args>
-                                <arg>-extension</arg>
-                            </args>
-                            <schemaIncludes>
                                 <include>jaxb/testcase/*.xsd</include>
                             </schemaIncludes>
                             <bindingIncludes>
@@ -149,25 +138,6 @@
                         </configuration>
                         <id>jaxb-generate-testcase</id>
                     </execution>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <args>
-                                <arg>-extension</arg>
-                            </args>
-                            <schemaIncludes>
-                                <include>jaxb/temservice/*.xsd</include>
-                            </schemaIncludes>
-                            <bindingIncludes>
-                                <include>jaxb/temservice/bindings.xjb</include>
-                            </bindingIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-temservice.episode</episodeFile>
-                            <generatePackage>org.opencds</generatePackage>
-                        </configuration>
-                        <id>jaxb-generate-temservice</id>
-                    </execution>
                 </executions>
                 <configuration>
                     <catalog>src/main/resources/jaxb/catalog.xml</catalog>
@@ -176,6 +146,33 @@
                     <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
                     <verbose>true</verbose>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>clean</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="rsrc.dir" value="${project.resources[0].directory}\main\resources\codesets\"/>
+                                <property name="excludes" value="${project.resources[0].excludes}"/>
+                                <property name="rsrc.list.out" value="src/main/resources/resourcelist.txt"/>
+
+                                <fileset id="resources.list" dir="${rsrc.dir}" excludes="${excludes}"/>
+                                <pathconvert pathsep="${line.separator}" property="resources.str" refid="resources.list">
+                                    <filtermapper>
+                                        <replacestring from="${rsrc.dir}" to="META-INF/codesets/"/>
+                                    </filtermapper>
+                                </pathconvert>
+                                <echo file="${rsrc.list.out}" append="false" message="${resources.str}"/>
+                                <echo>Including resources found in ${rsrc.dir} in list written to ${rsrc.list.out}</echo>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
