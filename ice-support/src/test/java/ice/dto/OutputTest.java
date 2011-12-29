@@ -53,7 +53,7 @@ public class OutputTest {
         start = System.nanoTime();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        output.addImmunityObservationResult(true, 500);
+        output.addImmunityObservationResult("500", "VALID", "IS_IMMUNE");
 
         SubstanceAdministrationEvent hepBComponent =
                 output.getEvaluationSubstanceAdministrationEvent("43", "20080223", true, "VALIDITY (HEP B COMPONENT)", "VALID", "");

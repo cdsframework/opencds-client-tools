@@ -36,9 +36,9 @@ public class CdsInputWrapper extends BaseCdsObject<CdsInput> {
                 DateUtils.getISODateFormat(administrationTimeIntervalDate));
     }
 
-    public ObservationResult addImmunityObservationResult(boolean immune, int vaccineGroup)
+    public ObservationResult addImmunityObservationResult(String focus, String value, String interpretation)
             throws IceException {
-        return addImmunityObservationResult(this.getCdsObject().getVmrInput(), immune, vaccineGroup);
+        return addImmunityObservationResult(this.getCdsObject().getVmrInput(), focus, value, interpretation);
     }
 
     public void addObservationResult(ObservationResult observationResult)

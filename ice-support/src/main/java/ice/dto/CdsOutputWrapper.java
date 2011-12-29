@@ -3,6 +3,7 @@ package ice.dto;
 import ice.base.BaseCdsObject;
 import ice.dto.support.Reason;
 import ice.exception.IceException;
+import ice.util.Constants;
 import ice.util.DateUtils;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +27,9 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         return new CdsOutputWrapper();
     }
 
-    public ObservationResult addImmunityObservationResult(boolean immune, int vaccineGroup)
+    public ObservationResult addImmunityObservationResult(String focus, String value, String interpretation)
             throws IceException {
-        return addImmunityObservationResult(this.getCdsObject().getVmrOutput(), immune, vaccineGroup);
+        return addImmunityObservationResult(this.getCdsObject().getVmrOutput(), focus, value, interpretation);
     }
 
     public void addObservationResult(ObservationResult observationResult)
@@ -109,7 +110,7 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         List<RelatedClinicalStatement> relatedClinicalStatements = substanceAdministrationEvent.getRelatedClinicalStatements();
 
         for (SubstanceAdministrationEvent sae : components) {
-            RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement("PERT");
+            RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement(Constants.TARGET_RELATIONSHIP_TO_SOURCE_PERTINENT_INFO_CODE);
             relatedClinicalStatement.setSubstanceAdministrationEvent(sae);
             relatedClinicalStatements.add(relatedClinicalStatement);
         }

@@ -335,9 +335,9 @@ public class TestcaseWrapper {
                 interpretation);
     }
 
-    public ObservationResult addImmunityObservationResult(boolean immune, int vaccineGroup)
+    public ObservationResult addImmunityObservationResult(String focus, String value, String interpretation)
             throws IceException {
-        ObservationResult addImmunityObservationResult = input.addImmunityObservationResult(immune, vaccineGroup);
+        ObservationResult addImmunityObservationResult = input.addImmunityObservationResult(focus, value, interpretation);
         output.addObservationResult(addImmunityObservationResult);
         return addImmunityObservationResult;
     }

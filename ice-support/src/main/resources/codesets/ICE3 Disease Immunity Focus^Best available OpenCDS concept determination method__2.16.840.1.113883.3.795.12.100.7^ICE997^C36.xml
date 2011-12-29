@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenCdsConceptMappingSpecificationFile>
+	<specificationNotes>Created manually.</specificationNotes>
+    <openCdsConcept code="ICE997" displayName="Disease Immunity Focus"></openCdsConcept>
+    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
+    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.7" codeSystemName="ICE3 Disease Immunity Focus">
+    	<CD code="200" displayName="Disease Immunity Focus (DTaP)" />
+    	<CD code="810" displayName="Disease Immunity Focus (Hep A)" />
+    	<CD code="100" displayName="Disease Immunity Focus (Hep B)" />
+    	<CD code="300" displayName="Disease Immunity Focus (Hib)" />
+    	<CD code="400" displayName="Disease Immunity Focus (IPV)" />
+    </membersForCodeSystem>
+</OpenCdsConceptMappingSpecificationFile>

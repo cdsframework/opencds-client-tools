@@ -4,6 +4,10 @@ META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept
 META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE45^C36.xml
 META-INF/codesets/HL7 administrative gender^Female^NQF__2.16.840.1.113883.5.1^C31^C45.xml
 META-INF/codesets/HL7 administrative gender^Male^Best available NQF concept determination method__2.16.840.1.113883.5.1^C30^C45.xml
+META-INF/codesets/HL7 administrative gender^Undifferentiated^Best available NQF concept determination method__2.16.840.1.113883.5.1^C30^C45.xml
+META-INF/codesets/ICE3 Disease Immunity Focus^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.7^ICE997^C36.xml
+META-INF/codesets/ICE3 Disease Immunity Reason^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.9^ICE999^C36.xml
+META-INF/codesets/ICE3 Disease Immunity^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.8^ICE998^C36.xml
 META-INF/codesets/ICE3 Immunization Evaluation Reason^Below Minimum Age^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.3^ICE213^C36.xml
 META-INF/codesets/ICE3 Immunization Evaluation Reason^Below Minimum Interval^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.3^ICE212^C36.xml
 META-INF/codesets/ICE3 Immunization Evaluation Reason^Extra Dose^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.3^ICE209^C36.xml

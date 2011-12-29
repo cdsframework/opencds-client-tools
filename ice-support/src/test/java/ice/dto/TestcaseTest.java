@@ -65,7 +65,7 @@ public class TestcaseTest {
         testcase.setTestfocus("Evaluation");
         testcase.setVaccinegroup(100);
         testcase.setVersion("1.0.0");
-        testcase.addImmunityObservationResult(true, 500);
+        testcase.addImmunityObservationResult("500", "VALID", "IS_IMMUNE");
         SubstanceAdministrationEvent hepBComponent =
                 testcase.getEvaluationSubstanceAdministrationEvent("43", "20080223", true, "VALIDITY (HEP B COMPONENT)", "VALID", "");
         SubstanceAdministrationEvent hepAComponent =

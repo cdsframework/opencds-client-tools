@@ -1,5 +1,6 @@
 package ice.dto;
 
+import org.opencds.CD;
 import ice.exception.IceException;
 import java.util.List;
 import org.junit.After;
@@ -81,10 +82,22 @@ public class CdsConceptWrapperTest {
     public void testGetCodeSystemMemberCodes() throws IceException {
         System.out.println("getCodeSystemMemberCodes");
         CdsConceptWrapper instance = new CdsConceptWrapper("src/main/resources/testCodeSet.xml");
-        List result = instance.getCodeSystemMemberCodes();
-        assertTrue(result.contains("08"));
-        assertTrue(result.contains("51"));
-        assertTrue(result.contains("110"));
-        assertTrue(result.size() == 3);
+        boolean contains08 = false;
+        boolean contains51 = false;
+        boolean contains110 = false;
+        for (CD cd : instance.getCodeSystemMemberCodes()) {
+            if ("08".equals(cd.getCode())) {
+                contains08 = true;
+            }
+            if ("51".equals(cd.getCode())) {
+                contains51 = true;
+            }
+            if ("110".equals(cd.getCode())) {
+                contains110 = true;
+            }
+        }
+        assertTrue(contains08);
+        assertTrue(contains51);
+        assertTrue(contains110);
     }
 }

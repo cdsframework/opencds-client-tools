@@ -3,7 +3,6 @@ package ice.dto;
 import ice.dto.support.CdsObjectAssist;
 import ice.exception.IceException;
 import ice.util.Constants;
-import java.util.ArrayList;
 import java.util.List;
 import org.opencds.CD;
 import org.opencds.OpenCdsConceptMappingSpecificationFile;
@@ -49,7 +48,7 @@ public class CdsConceptWrapper {
     }
 
 
-    public List<String> getCodeSystemMemberCodes() {
+    public List<CD> getCodeSystemMemberCodes() {
         if (cdsConceptMap == null) {
             return null;
         }
@@ -59,11 +58,7 @@ public class CdsConceptWrapper {
         if (cdsConceptMap.getMembersForCodeSystem().getCDS() == null) {
             return null;
         }
-        List<String> result = new ArrayList<String>();
-        for (CD cd : cdsConceptMap.getMembersForCodeSystem().getCDS()) {
-            result.add(cd.getCode());
-        }
-        return result;
+        return cdsConceptMap.getMembersForCodeSystem().getCDS();
     }
 
 }

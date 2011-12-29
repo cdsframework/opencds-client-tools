@@ -2,6 +2,8 @@ package ice.dto;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
 import ice.dto.support.CdsObjectAssist;
@@ -150,5 +152,15 @@ public class CdsObjectAssistTest {
             assertNotNull(item.getCdsConceptMap().getSpecificationNotes());
         }
         logger.info("Finished testGetCdsConcepts...");
+    }
+
+    @Test
+    public void testCodeSets() throws Exception {
+        logger.info("Starting testCodeSets...");
+        Map<String, Map<String, String>> codeSets = CdsObjectAssist.getCodeSets();
+        for (Entry<String, Map<String, String>> item : codeSets.entrySet()) {
+            logger.info("item.getKey(): " + item.getKey());
+        }
+        logger.info("Finished testCodeSets...");
     }
 }

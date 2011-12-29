@@ -1,9 +1,12 @@
 package ice.base;
 
+import ice.dto.support.CdsObjectAssist;
 import ice.exception.IceException;
 import ice.util.Constants;
 import ice.util.DateUtils;
 import java.util.Date;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.opencds.AdministrableSubstance;
@@ -91,6 +94,10 @@ public abstract class BaseCdsObject<T> {
 
     private static CD getCD(String code, String codeSystem) {
         return getCD(code, codeSystem, null, null, null);
+    }
+
+    private static CD getCD(String codeSystem) {
+        return getCD(null, codeSystem, null, null, null);
     }
 
     private static II getII(String rootId) {
@@ -260,18 +267,32 @@ public abstract class BaseCdsObject<T> {
         ObservationValue observationValue;
         CD interpretationValue;
         if (substanceAdministrationObject instanceof SubstanceAdministrationEvent) {
-            relatedClinicalStatement = getRelatedClinicalStatement("PERT");
+            relatedClinicalStatement = getRelatedClinicalStatement(Constants.TARGET_RELATIONSHIP_TO_SOURCE_PERTINENT_INFO_CODE);
             SubstanceAdministrationEvent substanceAdministrationEvent = (SubstanceAdministrationEvent) substanceAdministrationObject;
             substanceAdministrationEvent.getRelatedClinicalStatements().add(relatedClinicalStatement);
-            focusValue = getObservationFocus(focus, "TBD_IMMUNIZATION_EVAL_FOCUS", "TBD");
-            observationValue = getObservationValue(value, "TBD_IMM_VALIDITY", "TBD");
-            interpretationValue = getInterpretation(interpretation, "TBD_EVAL_REASON", "TBD");
+
+            focusValue = getCD(Constants.VALIDITY_FOCUS_CODE_SYSTEM_OID);
+            setConceptCode(focusValue, CdsObjectAssist.getValidityFocusCodeSet(), focus);
+
+            observationValue = getObservationValue(Constants.VALIDATION_CODE_SYSTEM_OID);
+            setConceptCode(observationValue.getConcept(), CdsObjectAssist.getValidationCodeSet(), value);
+
+            interpretationValue = getCD(Constants.EVALUATED_REASON_CODE_SYSTEM_OID);
+            setConceptCode(interpretationValue, CdsObjectAssist.getEvaluatedReasonCodeSet(), interpretation);
+
         } else if (substanceAdministrationObject instanceof SubstanceAdministrationProposal) {
-            relatedClinicalStatement = getRelatedClinicalStatement("RSON");
+            relatedClinicalStatement = getRelatedClinicalStatement(Constants.TARGET_RELATIONSHIP_TO_SOURCE_HAS_REASON_CODE);
             ((SubstanceAdministrationProposal) substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
-            focusValue = getObservationFocus(focus, "TBD_IMMUNIZATION_RECOMMENDATION_FOCUS", "TBD");
-            observationValue = getObservationValue(value, "TBD_IMMUNIZATION_RECOMMENDATION", "TBD");
-            interpretationValue = getInterpretation(interpretation, "TBD_RECOMMENDATION_REASON", "TBD");
+
+            focusValue = getCD(Constants.RECOMMENDED_FOCUS_CODE_SYSTEM_OID);
+            setConceptCode(focusValue, CdsObjectAssist.getRecommendedFocusCodeSet(), focus);
+
+            observationValue = getObservationValue(Constants.RECOMMENDATION_CODE_SYSTEM_OID);
+            setConceptCode(observationValue.getConcept(), CdsObjectAssist.getRecommendationCodeSet(), value);
+
+            interpretationValue = getCD(Constants.RECOMMENDED_ACTION_CODE_SYSTEM_OID);
+            setConceptCode(interpretationValue, CdsObjectAssist.getRecommendedActionCodeSet(), interpretation);
+
         } else {
             throw new IceException("Unexpected substance administration class: "
                     + substanceAdministrationObject.getClass().getSimpleName());
@@ -280,16 +301,19 @@ public abstract class BaseCdsObject<T> {
         return substanceAdministrationObject;
     }
 
-    private static CD getInterpretation(String code, String codeSystem, String displayName) {
-        return getCD(code, codeSystem, displayName);
+    private static void setConceptCode(CD cd, Map<String, String> codeset, String originalText) {
+        cd.setOriginalText(originalText);
+        for (Entry<String, String> entry : codeset.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(originalText)) {
+                cd.setCode(entry.getKey());
+                cd.setDisplayName(entry.getValue());
+                break;
+            }
+        }
     }
 
-    private static CD getObservationFocus(String code, String codeSystem, String displayName) {
-        return getCD(code, codeSystem, displayName);
-    }
-
-    private static ObservationValue getObservationValue(String code, String codeSystem, String displayName) {
-        CD cd = getCD(code, codeSystem, displayName);
+    private static ObservationValue getObservationValue(String codeSystem) {
+        CD cd = getCD(codeSystem);
         ObservationValue observationValue = new ObservationValue();
         observationValue.setConcept(cd);
         return observationValue;
@@ -327,31 +351,31 @@ public abstract class BaseCdsObject<T> {
     }
 
     protected static void setPatientGender(Vmr vmr, String gender) throws IceException {
-        String genderCode;
-        String displayName;
         CD cd = new CD();
-        if ("F".equalsIgnoreCase(gender) || "FEMALE".equalsIgnoreCase(gender)) {
-            genderCode = "F";
-            displayName = "Female";
-        } else if ("M".equalsIgnoreCase(gender) || "MALE".equalsIgnoreCase(gender)) {
-            genderCode = "M";
-            displayName = "Male";
-        } else {
-            genderCode = "UN";
-            displayName = "Undifferentiated";
+        cd.setCodeSystem(Constants.GENDER_CODE_SYSTEM_OID);
+        cd.setCode(Constants.GENDER_DEFAULT_CODE);
+        cd.setDisplayName(Constants.GENDER_DEFAULT_CODE_DISPLAY_NAME);
+        for (Entry<String, String> entry : CdsObjectAssist.getGenderCodeSet().entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(gender) || entry.getValue().equalsIgnoreCase(gender)) {
+                cd.setCode(entry.getKey());
+                cd.setDisplayName(entry.getValue());
+                cd.setOriginalText(gender);
+                break;
+            }
         }
-        vmr.getPatient().getDemographics().setGender(getCD(genderCode, Constants.GENDER_CODE_SYSTEM_OID, null, displayName, gender));
+        vmr.getPatient().getDemographics().setGender(cd);
     }
 
     protected static SubstanceAdministrationEvent getSubstanceAdministrationEvent(
             String substanceCode,
-            String administrationTimeInterval) {
+            String administrationTimeInterval) throws IceException {
         SubstanceAdministrationEvent substanceAdministrationEvent = getSubstanceAdministrationEvent();
 
         AdministrableSubstance substance = getAdministrableSubstance();
         substanceAdministrationEvent.setSubstance(substance);
-        substance.getSubstanceCode().setCode(substanceCode);
-        substance.getSubstanceCode().setDisplayName("TBD - CVX VACCODE NAME");
+
+        CD substanceCD = substance.getSubstanceCode();
+        setConceptCode(substanceCD, CdsObjectAssist.getSubstanceCodeSet(), substanceCode);
 
         IVLTS ivlts = new IVLTS();
         ivlts.setHigh(administrationTimeInterval);
@@ -380,11 +404,17 @@ public abstract class BaseCdsObject<T> {
         observationResults.getObservationResults().add(observationResult);
     }
 
-    protected static ObservationResult addImmunityObservationResult(Vmr vmr, boolean immune, int vaccineGroup)
+    protected static ObservationResult addImmunityObservationResult(Vmr vmr, String focus, String value, String interpretation)
             throws IceException {
-        CD focusValue = getObservationFocus(String.valueOf(vaccineGroup), "TBD_IMMUNIZATION_GROUP_FOCUS", "TBD");
-        ObservationValue observationValue = getObservationValue(String.valueOf(immune), "TBD_IMMUNITY_VALUE", "TBD");
-        CD interpretationValue = getInterpretation(immune ? "IMMUNE" : "NOT IMMUNE", "TBD_IMMUNITY_INTERPRETATION", "TBD");
+        CD focusValue = getCD(Constants.DISEASE_FOCUS_CODE_SYSTEM_OID);
+        setConceptCode(focusValue, CdsObjectAssist.getDiseaseFocusCodeSet(), focus);
+
+        ObservationValue observationValue = getObservationValue(Constants.IMMUNITY_VALUE_CODE_SYSTEM_OID);
+        setConceptCode(observationValue.getConcept(), CdsObjectAssist.getImmunityValueCodeSet(), value);
+
+        CD interpretationValue = getCD(Constants.IMMUNITY_INT_CODE_SYSTEM_OID);
+        setConceptCode(interpretationValue, CdsObjectAssist.getImmunityIntCodeSet(), interpretation);
+
         ObservationResult observationResult = getObservationResult(focusValue, observationValue, interpretationValue);
         addObservationResult(vmr, observationResult);
         return observationResult;
@@ -401,12 +431,20 @@ public abstract class BaseCdsObject<T> {
         SubstanceAdministrationProposals substanceAdministrationProposals = getSubstanceAdministrationProposals(vmr);
         substanceAdministrationProposals.getSubstanceAdministrationProposals().add(substanceAdministrationProposal);
 
-
-
         AdministrableSubstance substance = getAdministrableSubstance();
         substanceAdministrationProposal.setSubstance(substance);
-        substance.getSubstanceCode().setCode(String.valueOf(vaccineGroup));
-        substance.getSubstanceCode().setDisplayName("TBD - vaccine group: " + vaccineGroup + " - cvx: " + substanceCode);
+
+        CD substanceCD = substance.getSubstanceCode();
+        substanceCD.setOriginalText("vaccine group: " + vaccineGroup + " - cvx: " + substanceCode);
+
+        String vaccineGroupString = String.valueOf(vaccineGroup);
+        for (Entry<String, String> entry : CdsObjectAssist.getRecommendedFocusCodeSet().entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(vaccineGroupString)) {
+                substanceCD.setCode(entry.getKey());
+                substanceCD.setDisplayName(entry.getValue());
+                break;
+            }
+        }
 
         if (administrationTimeInterval != null && !administrationTimeInterval.trim().isEmpty()) {
             IVLTS ivlts = new IVLTS();

@@ -144,10 +144,10 @@ public class Xlsx {
                     testCurrentRowNum += 3;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell immune = testCurrentRow.getCell(2);
-                    boolean immunity = ("Y".equalsIgnoreCase(immune.getStringCellValue())
-                            || "Yes".equalsIgnoreCase(immune.getStringCellValue()));
-                    if (immunity) {
-                        testcase.addImmunityObservationResult(immunity, testcase.getVaccinegroup());
+                    String immunity = ("Y".equalsIgnoreCase(immune.getStringCellValue())
+                            || "Yes".equalsIgnoreCase(immune.getStringCellValue())) ? "VALID" : "INVALID";
+                    if (immune.getStringCellValue() != null && !immune.getStringCellValue().trim().isEmpty()) {
+                        testcase.addImmunityObservationResult(String.valueOf(testcase.getVaccinegroup()), immunity, "IS_IMMUNE");
                     }
                     logger.debug("    Immune: " + immunity);
 
@@ -195,7 +195,7 @@ public class Xlsx {
                             testcase.getVaccinegroup(),
                             recommendedVaccine.getStringCellValue(),
                             DateUtils.getISODateFormat(dueDate.getDateCellValue()),
-                            "PROPOSAL",
+                            String.valueOf(testcase.getVaccinegroup()),
                             recommendation.getStringCellValue(),
                             recommendationReason.getStringCellValue());
 
@@ -229,15 +229,15 @@ public class Xlsx {
                                 "Valid".equalsIgnoreCase(shot1Evaluation.getStringCellValue()),
                                 new Reason[]{
                                     new Reason(
-                                    "VALIDITY (" + shot1Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot1Evaluation.getStringCellValue().toUpperCase(),
                                     shot1InvalidReason1Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot1Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot1Evaluation.getStringCellValue().toUpperCase(),
                                     shot1InvalidReason2Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot1Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot1Evaluation.getStringCellValue().toUpperCase(),
                                     shot1InvalidReason3Code.getStringCellValue())
                                 });
@@ -275,15 +275,15 @@ public class Xlsx {
                                 "Valid".equalsIgnoreCase(shot2Evaluation.getStringCellValue()),
                                 new Reason[]{
                                     new Reason(
-                                    "VALIDITY (" + shot2Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot2Evaluation.getStringCellValue().toUpperCase(),
                                     shot2InvalidReason1Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot2Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot2Evaluation.getStringCellValue().toUpperCase(),
                                     shot2InvalidReason2Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot2Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot2Evaluation.getStringCellValue().toUpperCase(),
                                     shot2InvalidReason3Code.getStringCellValue())
                                 });
@@ -321,15 +321,15 @@ public class Xlsx {
                                 "Valid".equalsIgnoreCase(shot3Evaluation.getStringCellValue()),
                                 new Reason[]{
                                     new Reason(
-                                    "VALIDITY (" + shot3Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot3Evaluation.getStringCellValue().toUpperCase(),
                                     shot3InvalidReason1Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot3Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot3Evaluation.getStringCellValue().toUpperCase(),
                                     shot3InvalidReason2Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot3Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot3Evaluation.getStringCellValue().toUpperCase(),
                                     shot3InvalidReason3Code.getStringCellValue())
                                 });
@@ -367,15 +367,15 @@ public class Xlsx {
                                 "Valid".equalsIgnoreCase(shot4Evaluation.getStringCellValue()),
                                 new Reason[]{
                                     new Reason(
-                                    "VALIDITY (" + shot4Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot4Evaluation.getStringCellValue().toUpperCase(),
                                     shot4InvalidReason1Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot4Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot4Evaluation.getStringCellValue().toUpperCase(),
                                     shot4InvalidReason2Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot4Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot4Evaluation.getStringCellValue().toUpperCase(),
                                     shot4InvalidReason3Code.getStringCellValue())
                                 });
@@ -413,15 +413,15 @@ public class Xlsx {
                                 "Valid".equalsIgnoreCase(shot5Evaluation.getStringCellValue()),
                                 new Reason[]{
                                     new Reason(
-                                    "VALIDITY (" + shot5Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot5Evaluation.getStringCellValue().toUpperCase(),
                                     shot5InvalidReason1Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot5Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot5Evaluation.getStringCellValue().toUpperCase(),
                                     shot5InvalidReason2Code.getStringCellValue()),
                                     new Reason(
-                                    "VALIDITY (" + shot5Vaccine + " COMPONENT)",
+                                    String.valueOf(testcase.getVaccinegroup()),
                                     shot5Evaluation.getStringCellValue().toUpperCase(),
                                     shot5InvalidReason3Code.getStringCellValue())
                                 });
