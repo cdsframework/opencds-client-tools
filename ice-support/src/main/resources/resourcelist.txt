@@ -35,6 +35,7 @@ META-INF/codesets/ICE3 Immunization Validity Focus^Hep A Component^Best availabl
 META-INF/codesets/ICE3 Immunization Validity Focus^Hep B Component^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.1^ICE202^C36.xml
 META-INF/codesets/ICE3 Immunization Validity Focus^Hib Component^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.1^ICE204^C36.xml
 META-INF/codesets/ICE3 Immunization Validity Focus^IPV Component^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.1^ICE206^C36.xml
+META-INF/codesets/ICE3 Immunization Validity^Accepted Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE996^C36.xml
 META-INF/codesets/ICE3 Immunization Validity^Invalid Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE208^C36.xml
 META-INF/codesets/ICE3 Immunization Validity^Valid Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE207^C36.xml
 META-INF/codesets/SNOMED^Immunization-vaccination management^Best available OpenCDS concept determination method__2.16.840.1.113883.6.96^ICE201^C36.xml
