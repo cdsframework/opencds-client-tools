@@ -51,9 +51,9 @@ public class InputTest {
         start = System.nanoTime();
         input.setPatientGender("F");
         input.setPatientBirthTime("19830630");
-        input.addSubstanceAdministrationEvent("104", "20080223");
-        input.addSubstanceAdministrationEvent("10", "20080223");
-        input.addImmunityObservationResult("500", "VALID", "IS_IMMUNE");
+        input.addSubstanceAdministrationEvent("45", "20080223");
+        input.addSubstanceAdministrationEvent("08", "20080223");
+        input.addImmunityObservationResult("400", "VALID", "IS_IMMUNE");
         Utilities.logDuration("input init", start);
 
         start = System.nanoTime();

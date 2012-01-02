@@ -65,22 +65,15 @@ public class TestcaseTest {
         testcase.setTestfocus("Evaluation");
         testcase.setVaccinegroup(100);
         testcase.setVersion("1.0.0");
-        testcase.addImmunityObservationResult("500", "VALID", "IS_IMMUNE");
+        testcase.addImmunityObservationResult("400", "VALID", "IS_IMMUNE");
         SubstanceAdministrationEvent hepBComponent =
-                testcase.getEvaluationSubstanceAdministrationEvent("43", "20080223", true, "VALIDITY (HEP B COMPONENT)", "VALID", "");
-        SubstanceAdministrationEvent hepAComponent =
-                testcase.getEvaluationSubstanceAdministrationEvent("84", "20080223", false, "VALIDITY (HEP A COMPONENT)", "INVALID", "TOO_GHASTLY");
-        SubstanceAdministrationEvent polioComponent =
-                testcase.getEvaluationSubstanceAdministrationEvent("10", "20080223", false, "VALIDITY (POLIO)", "INVALID", "TOO_EGGY");
+                testcase.getEvaluationSubstanceAdministrationEvent("45", "20080223", true, "100", "VALID", "");
 
-        testcase.addSubstanceAdministrationEvent("43", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
+        testcase.addSubstanceAdministrationEvent("45", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
 
-        testcase.addSubstanceAdministrationEvent("08", "20090223", new SubstanceAdministrationEvent[]{hepAComponent});
 
-        testcase.addSubstanceAdministrationEvent("43", "20080223", new SubstanceAdministrationEvent[]{polioComponent});
-
-        testcase.addSubstanceAdministrationProposal(200, "43", "20090223", "PROPOSAL", "RECOMMENDED", "DUE_NOW");
-        testcase.addSubstanceAdministrationProposal(100, "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
+        testcase.addSubstanceAdministrationProposal(100, "", "20090223", "100", "RECOMMENDED", "DUE_NOW");
+        testcase.addSubstanceAdministrationProposal(810, "", "", "810", "NOT_RECOMMENDED", "COMPLETE");
         Utilities.logDuration("testcase init", start);
 
         start = System.nanoTime();

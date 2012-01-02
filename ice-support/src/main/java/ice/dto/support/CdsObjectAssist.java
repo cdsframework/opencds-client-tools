@@ -1,6 +1,7 @@
 package ice.dto.support;
 
 import ice.dto.CdsConceptWrapper;
+import ice.enumeration.CodeSystemOid;
 import ice.exception.IceException;
 import ice.util.Constants;
 import java.io.BufferedReader;
@@ -247,74 +248,74 @@ public class CdsObjectAssist {
         return codeSets;
     }
 
-    public static Map<String, String> getCodeSet(String key)
+    public static Map<String, String> getCodeSystemMap(CodeSystemOid codeSystemOid)
             throws IceException {
-        return getCodeSets().get(key);
+        return getCodeSets().get(codeSystemOid.getOid());
     }
-
-    // 2.16.840.1.113883.5.1
-    public static Map<String, String> getGenderCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.GENDER_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.12.292
-    public static Map<String, String> getSubstanceCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.ADMINISTERED_SUBSTANCE_ROOT_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.1
-    public static Map<String, String> getValidityFocusCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.VALIDITY_FOCUS_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.2
-    public static Map<String, String> getValidationCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.VALIDATION_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.3
-    public static Map<String, String> getEvaluatedReasonCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.EVALUATED_REASON_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.4
-    public static Map<String, String> getRecommendedFocusCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.RECOMMENDED_FOCUS_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.5
-    public static Map<String, String> getRecommendationCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.RECOMMENDATION_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.6
-    public static Map<String, String> getRecommendedActionCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.RECOMMENDED_ACTION_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.7
-    public static Map<String, String> getDiseaseFocusCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.DISEASE_FOCUS_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.8
-    public static Map<String, String> getImmunityValueCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.IMMUNITY_VALUE_CODE_SYSTEM_OID);
-    }
-
-    // 2.16.840.1.113883.3.795.12.100.9
-    public static Map<String, String> getImmunityIntCodeSet()
-            throws IceException {
-        return getCodeSet(Constants.IMMUNITY_INT_CODE_SYSTEM_OID);
-    }
+//
+//    // 2.16.840.1.113883.5.1
+//    public static Map<String, String> getGenderCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.GENDER_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.12.292
+//    public static Map<String, String> getSubstanceCodeSet()
+//            throws IceException {
+//        return getCodeSystemMap(Constants.ADMINISTERED_SUBSTANCE_ROOT_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.1
+//    public static Map<String, String> getValidityFocusCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.VALIDITY_FOCUS_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.2
+//    public static Map<String, String> getValidationCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.VALIDATION_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.3
+//    public static Map<String, String> getEvaluatedReasonCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.EVALUATED_REASON_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.4
+//    public static Map<String, String> getRecommendedFocusCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.RECOMMENDED_FOCUS_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.5
+//    public static Map<String, String> getRecommendationCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.RECOMMENDATION_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.6
+//    public static Map<String, String> getRecommendedActionCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.RECOMMENDED_ACTION_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.7
+//    public static Map<String, String> getDiseaseFocusCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.DISEASE_FOCUS_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.8
+//    public static Map<String, String> getImmunityValueCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.IMMUNITY_VALUE_CODE_SYSTEM_OID);
+//    }
+//
+//    // 2.16.840.1.113883.3.795.12.100.9
+//    public static Map<String, String> getImmunityIntCodeSet()
+//            throws IceException {
+//        return getCodeSet(Constants.IMMUNITY_INT_CODE_SYSTEM_OID);
+//    }
 }

@@ -238,7 +238,7 @@ public class TestcaseWrapper {
             String focus,
             String value,
             String interpretation) throws IceException {
-        return output.getEvaluationSubstanceAdministrationEvent(
+        return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeInterval,
                 valid,
@@ -254,7 +254,7 @@ public class TestcaseWrapper {
             String focus,
             String value,
             String interpretation) throws IceException {
-        return output.getEvaluationSubstanceAdministrationEvent(
+        return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeIntervalDate,
                 valid,
@@ -268,7 +268,7 @@ public class TestcaseWrapper {
             String administrationTimeInterval,
             boolean valid,
             Reason[] reasons) throws IceException {
-        return output.getEvaluationSubstanceAdministrationEvent(
+        return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeInterval,
                 valid,
@@ -280,7 +280,7 @@ public class TestcaseWrapper {
             Date administrationTimeIntervalDate,
             boolean valid,
             Reason[] reasons) throws IceException {
-        return output.getEvaluationSubstanceAdministrationEvent(
+        return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeIntervalDate,
                 valid,

@@ -1,9 +1,8 @@
 package ice.dto;
 
 import ice.base.BaseCdsObject;
-import ice.dto.support.Reason;
+import ice.enumeration.TargetRelationshipToSource;
 import ice.exception.IceException;
-import ice.util.Constants;
 import ice.util.DateUtils;
 import java.util.Date;
 import java.util.List;
@@ -37,68 +36,6 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         addObservationResult(this.getCdsObject().getVmrOutput(), observationResult);
     }
 
-    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            String administrationTimeInterval,
-            boolean valid,
-            String focus,
-            String value,
-            String interpretation) throws IceException {
-        SubstanceAdministrationEvent substanceAdministrationEvent =
-                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
-        substanceAdministrationEvent.setIsValid(getBL(valid));
-        substanceAdministrationEvent = addObservationResult(substanceAdministrationEvent, focus, value, interpretation);
-        return substanceAdministrationEvent;
-    }
-
-    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            String administrationTimeInterval,
-            boolean valid,
-            Reason[] reasons) throws IceException {
-        SubstanceAdministrationEvent substanceAdministrationEvent =
-                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
-        substanceAdministrationEvent.setIsValid(getBL(valid));
-        for (Reason reason : reasons) {
-            if (reason.getInterpretation() != null && !reason.getInterpretation().isEmpty()) {
-                substanceAdministrationEvent = addObservationResult(
-                        substanceAdministrationEvent,
-                        reason.getFocus(),
-                        reason.getValue(),
-                        reason.getInterpretation());
-            }
-        }
-        return substanceAdministrationEvent;
-    }
-
-    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            Date administrationTimeIntervalDate,
-            boolean valid,
-            Reason[] reasons) throws IceException {
-        return getEvaluationSubstanceAdministrationEvent(
-                substanceCode,
-                DateUtils.getISODateFormat(administrationTimeIntervalDate),
-                valid,
-                reasons);
-    }
-
-    public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            Date administrationTimeIntervalDate,
-            boolean valid,
-            String focus,
-            String value,
-            String interpretation) throws IceException {
-        return getEvaluationSubstanceAdministrationEvent(
-                substanceCode,
-                DateUtils.getISODateFormat(administrationTimeIntervalDate),
-                valid,
-                focus,
-                value,
-                interpretation);
-    }
-
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
@@ -110,7 +47,7 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         List<RelatedClinicalStatement> relatedClinicalStatements = substanceAdministrationEvent.getRelatedClinicalStatements();
 
         for (SubstanceAdministrationEvent sae : components) {
-            RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement(Constants.TARGET_RELATIONSHIP_TO_SOURCE_PERTINENT_INFO_CODE);
+            RelatedClinicalStatement relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.PERT);
             relatedClinicalStatement.setSubstanceAdministrationEvent(sae);
             relatedClinicalStatements.add(relatedClinicalStatement);
         }

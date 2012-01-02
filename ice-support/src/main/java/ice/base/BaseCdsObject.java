@@ -1,6 +1,10 @@
 package ice.base;
 
 import ice.dto.support.CdsObjectAssist;
+import ice.dto.support.Reason;
+import ice.enumeration.CodeSystemOid;
+import ice.enumeration.RootOid;
+import ice.enumeration.TargetRelationshipToSource;
 import ice.exception.IceException;
 import ice.util.Constants;
 import ice.util.DateUtils;
@@ -38,7 +42,7 @@ import org.opencds.Vmr;
  */
 public abstract class BaseCdsObject<T> {
 
-    protected final Logger logger;
+    protected static Logger logger = Logger.getLogger(BaseCdsObject.class);
     private Class<T> cdsObjectClass;
     private T cdsObject;
 
@@ -64,16 +68,13 @@ public abstract class BaseCdsObject<T> {
         return cdsObjectClass;
     }
 
-    private static CD getCD(String code, String codeSystem, String codeSystemName, String displayName, String originalText) {
+    private static CD getCD(String code, CodeSystemOid codeSystem, String displayName, String originalText) {
         CD cd = new CD();
         if (code != null) {
             cd.setCode(code);
         }
         if (codeSystem != null) {
-            cd.setCodeSystem(codeSystem);
-        }
-        if (codeSystemName != null) {
-            cd.setCodeSystemName(codeSystemName);
+            cd.setCodeSystem(codeSystem.getOid());
         }
         if (displayName != null) {
             cd.setDisplayName(displayName);
@@ -84,25 +85,21 @@ public abstract class BaseCdsObject<T> {
         return cd;
     }
 
-    private static CD getCD(String code, String codeSystem, String codeSystemName, String displayName) {
-        return getCD(code, codeSystem, codeSystemName, displayName, null);
+    private static CD getCD(String code, CodeSystemOid codeSystem, String displayName) {
+        return getCD(code, codeSystem, displayName, null);
     }
 
-    private static CD getCD(String code, String codeSystem, String displayName) {
-        return getCD(code, codeSystem, null, displayName, null);
+    private static CD getCD(String code, CodeSystemOid codeSystem) {
+        return getCD(code, codeSystem, null, null);
     }
 
-    private static CD getCD(String code, String codeSystem) {
-        return getCD(code, codeSystem, null, null, null);
+    private static CD getCD(CodeSystemOid codeSystem) {
+        return getCD(null, codeSystem, null, null);
     }
 
-    private static CD getCD(String codeSystem) {
-        return getCD(null, codeSystem, null, null, null);
-    }
-
-    private static II getII(String rootId) {
+    private static II getII(RootOid rootId) {
         II ii = new II();
-        ii.setRoot(rootId);
+        ii.setRoot(rootId.getOid());
         return ii;
     }
 
@@ -120,7 +117,7 @@ public abstract class BaseCdsObject<T> {
 
     private static CdsInput getCdsInput() {
         CdsInput cdsInput = new CdsInput();
-        cdsInput.getTemplateIds().add(getII(Constants.CDS_INPUT_ROOT_OID));
+        cdsInput.getTemplateIds().add(getII(RootOid.CDS_INPUT));
         cdsInput.setCdsContext(getCDSContext());
         cdsInput.setVmrInput(getVmr());
         return cdsInput;
@@ -136,21 +133,21 @@ public abstract class BaseCdsObject<T> {
         CDSContext cdsContext = new CDSContext();
         cdsContext.setCdsSystemUserPreferredLanguage(
                 getCD(Constants.DEFAULT_LANG_CODE,
-                Constants.LANG_CODE_SYSTEM_OID,
+                CodeSystemOid.LANG,
                 Constants.DEFAULT_LANG_DISPLAY_NAME));
         return cdsContext;
     }
 
     private static Vmr getVmr() {
         Vmr vmr = new Vmr();
-        vmr.getTemplateIds().add(getII(Constants.VMR_ROOT_OID));
+        vmr.getTemplateIds().add(getII(RootOid.VMR));
         vmr.setPatient(getEvaluatedPerson());
         return vmr;
     }
 
     private static EvaluatedPerson getEvaluatedPerson() {
         EvaluatedPerson evaluatedPerson = new EvaluatedPerson();
-        evaluatedPerson.getTemplateIds().add(getII(Constants.EVALUATED_PERSON_ROOT_OID));
+        evaluatedPerson.getTemplateIds().add(getII(RootOid.EVALUATED_PERSON));
         evaluatedPerson.setId(getII());
         evaluatedPerson.setDemographics(getDemographics());
         evaluatedPerson.setClinicalStatements(getClinicalStatements());
@@ -169,7 +166,7 @@ public abstract class BaseCdsObject<T> {
 
     private static ObservationResult getObservationResult() {
         ObservationResult observationResult = new ObservationResult();
-        observationResult.getTemplateIds().add(getII(Constants.OBSERVATION_RESULT_ROOT_OID));
+        observationResult.getTemplateIds().add(getII(RootOid.OBSERVATION_RESULT));
         observationResult.setId(getII());
         return observationResult;
     }
@@ -177,20 +174,17 @@ public abstract class BaseCdsObject<T> {
     private static AdministrableSubstance getAdministrableSubstance() {
         AdministrableSubstance administerableSubstance = new AdministrableSubstance();
         administerableSubstance.setId(getII());
-        administerableSubstance.setSubstanceCode(getCD(null, Constants.ADMINISTERED_SUBSTANCE_ROOT_OID, null));
         return administerableSubstance;
     }
 
     private static CD getGeneralPurposeCode() {
         return getCD(Constants.DEFAULT_GENERAL_PURPOSE_CODE,
-                Constants.GENERAL_PURPOSE_CODE_SYSTEM_OID,
-                Constants.DEFAULT_GENERAL_PURPOSE_CODE_SYSTEM_NAME,
-                Constants.DEFAULT_GENERAL_PURPOSE_CODE_SYSTEM_DISPLAY_NAME);
+                CodeSystemOid.GENERAL_PURPOSE);
     }
 
     private static SubstanceAdministrationEvent getSubstanceAdministrationEvent() {
         SubstanceAdministrationEvent substanceAdministrationEvent = new SubstanceAdministrationEvent();
-        substanceAdministrationEvent.getTemplateIds().add(getII(Constants.SUBSTANCE_ADMINISTRATION_EVENT_ROOT_OID));
+        substanceAdministrationEvent.getTemplateIds().add(getII(RootOid.SUBSTANCE_ADMINISTRATION_EVENT));
         substanceAdministrationEvent.setId(getII());
         substanceAdministrationEvent.setSubstanceAdministrationGeneralPurpose(getGeneralPurposeCode());
         return substanceAdministrationEvent;
@@ -198,7 +192,7 @@ public abstract class BaseCdsObject<T> {
 
     private static SubstanceAdministrationProposal getSubstanceAdministrationProposal() {
         SubstanceAdministrationProposal substanceAdministrationProposal = new SubstanceAdministrationProposal();
-        substanceAdministrationProposal.getTemplateIds().add(getII(Constants.SUBSTANCE_ADMINISTRATION_PROPOSAL_ROOT_OID));
+        substanceAdministrationProposal.getTemplateIds().add(getII(RootOid.SUBSTANCE_ADMINISTRATION_PROPOSAL));
         substanceAdministrationProposal.setId(getII());
         substanceAdministrationProposal.setSubstanceAdministrationGeneralPurpose(getGeneralPurposeCode());
         return substanceAdministrationProposal;
@@ -249,9 +243,9 @@ public abstract class BaseCdsObject<T> {
         return substanceAdministrationEvents;
     }
 
-    protected static RelatedClinicalStatement getRelatedClinicalStatement(String code) {
+    protected static RelatedClinicalStatement getRelatedClinicalStatement(TargetRelationshipToSource code) {
         RelatedClinicalStatement relatedClinicalStatement = new RelatedClinicalStatement();
-        relatedClinicalStatement.setTargetRelationshipToSource(getCD(code, Constants.TARGET_RELATIONSHIP_TO_SOURCE_CODE_SYSTEM_OID));
+        relatedClinicalStatement.setTargetRelationshipToSource(getCD(code.toString(), CodeSystemOid.TARGET_RELATIONSHIP_TO_SOURCE));
         return relatedClinicalStatement;
     }
 
@@ -267,31 +261,36 @@ public abstract class BaseCdsObject<T> {
         ObservationValue observationValue;
         CD interpretationValue;
         if (substanceAdministrationObject instanceof SubstanceAdministrationEvent) {
-            relatedClinicalStatement = getRelatedClinicalStatement(Constants.TARGET_RELATIONSHIP_TO_SOURCE_PERTINENT_INFO_CODE);
             SubstanceAdministrationEvent substanceAdministrationEvent = (SubstanceAdministrationEvent) substanceAdministrationObject;
+
+            if (!substanceAdministrationEvent.getIsValid().isValue() && (interpretation == null || interpretation.trim().isEmpty())) {
+                throw new IceException("Substance administration event is marked as invalid but no reason was given: "
+                        + substanceAdministrationEvent.getSubstance().getSubstanceCode().getCode() + "; "
+                        + substanceAdministrationEvent.getAdministrationTimeInterval().getHigh());
+            }
+            if (interpretation == null || interpretation.trim().isEmpty()) {
+                logger.info("Event is valid and reason is null or empty - skipping addObservationResult");
+                return substanceAdministrationObject;
+            }
+
+            relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.PERT);
             substanceAdministrationEvent.getRelatedClinicalStatements().add(relatedClinicalStatement);
 
-            focusValue = getCD(Constants.VALIDITY_FOCUS_CODE_SYSTEM_OID);
-            setConceptCode(focusValue, CdsObjectAssist.getValidityFocusCodeSet(), focus);
+            focusValue = getConceptCode(CodeSystemOid.VALIDITY_FOCUS, focus);
 
-            observationValue = getObservationValue(Constants.VALIDATION_CODE_SYSTEM_OID);
-            setConceptCode(observationValue.getConcept(), CdsObjectAssist.getValidationCodeSet(), value);
+            observationValue = getObservationValue(CodeSystemOid.VALIDATION, value);
 
-            interpretationValue = getCD(Constants.EVALUATED_REASON_CODE_SYSTEM_OID);
-            setConceptCode(interpretationValue, CdsObjectAssist.getEvaluatedReasonCodeSet(), interpretation);
+            interpretationValue = getConceptCode(CodeSystemOid.EVALUATED_REASON, interpretation);
 
         } else if (substanceAdministrationObject instanceof SubstanceAdministrationProposal) {
-            relatedClinicalStatement = getRelatedClinicalStatement(Constants.TARGET_RELATIONSHIP_TO_SOURCE_HAS_REASON_CODE);
+            relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.RSON);
             ((SubstanceAdministrationProposal) substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
 
-            focusValue = getCD(Constants.RECOMMENDED_FOCUS_CODE_SYSTEM_OID);
-            setConceptCode(focusValue, CdsObjectAssist.getRecommendedFocusCodeSet(), focus);
+            focusValue = getConceptCode(CodeSystemOid.RECOMMENDED_FOCUS, focus);
 
-            observationValue = getObservationValue(Constants.RECOMMENDATION_CODE_SYSTEM_OID);
-            setConceptCode(observationValue.getConcept(), CdsObjectAssist.getRecommendationCodeSet(), value);
+            observationValue = getObservationValue(CodeSystemOid.RECOMMENDATION, value);
 
-            interpretationValue = getCD(Constants.RECOMMENDED_ACTION_CODE_SYSTEM_OID);
-            setConceptCode(interpretationValue, CdsObjectAssist.getRecommendedActionCodeSet(), interpretation);
+            interpretationValue = getConceptCode(CodeSystemOid.RECOMMENDED_ACTION, interpretation);
 
         } else {
             throw new IceException("Unexpected substance administration class: "
@@ -301,19 +300,35 @@ public abstract class BaseCdsObject<T> {
         return substanceAdministrationObject;
     }
 
-    private static void setConceptCode(CD cd, Map<String, String> codeset, String originalText) {
+    private static CD getConceptCode(CodeSystemOid codeSystemOid, String originalText) throws IceException {
+        CD cd = getCD(codeSystemOid);
+        setConceptCode(cd, codeSystemOid, originalText);
+        return cd;
+    }
+
+    private static void setConceptCode(CD cd, CodeSystemOid codeSystemOid, String originalText) throws IceException {
+        Map<String, String> codeset = CdsObjectAssist.getCodeSystemMap(codeSystemOid);
+        String code = null;
+        String displayName = null;
         cd.setOriginalText(originalText);
         for (Entry<String, String> entry : codeset.entrySet()) {
             if (entry.getKey().equalsIgnoreCase(originalText)) {
-                cd.setCode(entry.getKey());
-                cd.setDisplayName(entry.getValue());
+                code = entry.getKey();
+                displayName = entry.getValue();
                 break;
             }
         }
+        if (code != null) {
+            cd.setCode(code);
+            cd.setDisplayName(displayName);
+        } else {
+            throw new IceException("Code value '" + originalText + "' not found in codeset: " + codeSystemOid.toString());
+        }
     }
 
-    private static ObservationValue getObservationValue(String codeSystem) {
-        CD cd = getCD(codeSystem);
+    private static ObservationValue getObservationValue(CodeSystemOid codeSystemOid, String value) throws IceException {
+        CD cd = getCD(codeSystemOid);
+        setConceptCode(cd, codeSystemOid, value);
         ObservationValue observationValue = new ObservationValue();
         observationValue.setConcept(cd);
         return observationValue;
@@ -324,11 +339,8 @@ public abstract class BaseCdsObject<T> {
             ObservationValue observationValue,
             CD interpretationValue) {
         ObservationResult observationResult = getObservationResult();
-
         observationResult.getInterpretations().add(interpretationValue);
-
         observationResult.setObservationValue(observationValue);
-
         observationResult.setObservationFocus(focusValue);
 
         return observationResult;
@@ -351,18 +363,7 @@ public abstract class BaseCdsObject<T> {
     }
 
     protected static void setPatientGender(Vmr vmr, String gender) throws IceException {
-        CD cd = new CD();
-        cd.setCodeSystem(Constants.GENDER_CODE_SYSTEM_OID);
-        cd.setCode(Constants.GENDER_DEFAULT_CODE);
-        cd.setDisplayName(Constants.GENDER_DEFAULT_CODE_DISPLAY_NAME);
-        for (Entry<String, String> entry : CdsObjectAssist.getGenderCodeSet().entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(gender) || entry.getValue().equalsIgnoreCase(gender)) {
-                cd.setCode(entry.getKey());
-                cd.setDisplayName(entry.getValue());
-                cd.setOriginalText(gender);
-                break;
-            }
-        }
+        CD cd = getConceptCode(CodeSystemOid.GENDER, gender);
         vmr.getPatient().getDemographics().setGender(cd);
     }
 
@@ -372,10 +373,9 @@ public abstract class BaseCdsObject<T> {
         SubstanceAdministrationEvent substanceAdministrationEvent = getSubstanceAdministrationEvent();
 
         AdministrableSubstance substance = getAdministrableSubstance();
-        substanceAdministrationEvent.setSubstance(substance);
+        substance.setSubstanceCode(getConceptCode(CodeSystemOid.ADMINISTERED_SUBSTANCE, substanceCode));
 
-        CD substanceCD = substance.getSubstanceCode();
-        setConceptCode(substanceCD, CdsObjectAssist.getSubstanceCodeSet(), substanceCode);
+        substanceAdministrationEvent.setSubstance(substance);
 
         IVLTS ivlts = new IVLTS();
         ivlts.setHigh(administrationTimeInterval);
@@ -384,6 +384,73 @@ public abstract class BaseCdsObject<T> {
         substanceAdministrationEvent.setAdministrationTimeInterval(ivlts);
 
         return substanceAdministrationEvent;
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            String administrationTimeInterval,
+            boolean valid,
+            String focus,
+            String value,
+            String interpretation) throws IceException {
+        SubstanceAdministrationEvent substanceAdministrationEvent =
+                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        substanceAdministrationEvent.setIsValid(getBL(valid));
+        if (!valid && (interpretation == null || interpretation.trim().isEmpty())) {
+            throw new IceException("Substance administration event is marked as invalid but no reason was given: " + substanceCode + "; " + administrationTimeInterval);
+        }
+        if (interpretation != null && !interpretation.trim().isEmpty()) {
+            substanceAdministrationEvent = addObservationResult(substanceAdministrationEvent, focus, value, interpretation);
+        }
+        return substanceAdministrationEvent;
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            String administrationTimeInterval,
+            boolean valid,
+            Reason[] reasons) throws IceException {
+        SubstanceAdministrationEvent substanceAdministrationEvent =
+                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        substanceAdministrationEvent.setIsValid(getBL(valid));
+        for (Reason reason : reasons) {
+            if (reason.getInterpretation() != null && !reason.getInterpretation().isEmpty()) {
+                substanceAdministrationEvent = addObservationResult(
+                        substanceAdministrationEvent,
+                        reason.getFocus(),
+                        reason.getValue(),
+                        reason.getInterpretation());
+            }
+        }
+        return substanceAdministrationEvent;
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            boolean valid,
+            Reason[] reasons) throws IceException {
+        return getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                valid,
+                reasons);
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            boolean valid,
+            String focus,
+            String value,
+            String interpretation) throws IceException {
+        return getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                valid,
+                focus,
+                value,
+                interpretation);
     }
 
     protected static SubstanceAdministrationEvent addSubstanceAdministrationEvent(
@@ -406,15 +473,9 @@ public abstract class BaseCdsObject<T> {
 
     protected static ObservationResult addImmunityObservationResult(Vmr vmr, String focus, String value, String interpretation)
             throws IceException {
-        CD focusValue = getCD(Constants.DISEASE_FOCUS_CODE_SYSTEM_OID);
-        setConceptCode(focusValue, CdsObjectAssist.getDiseaseFocusCodeSet(), focus);
-
-        ObservationValue observationValue = getObservationValue(Constants.IMMUNITY_VALUE_CODE_SYSTEM_OID);
-        setConceptCode(observationValue.getConcept(), CdsObjectAssist.getImmunityValueCodeSet(), value);
-
-        CD interpretationValue = getCD(Constants.IMMUNITY_INT_CODE_SYSTEM_OID);
-        setConceptCode(interpretationValue, CdsObjectAssist.getImmunityIntCodeSet(), interpretation);
-
+        CD focusValue = getConceptCode(CodeSystemOid.IMMUNITY_FOCUS, focus);
+        ObservationValue observationValue = getObservationValue(CodeSystemOid.IMMUNITY_VALUE, value);
+        CD interpretationValue = getConceptCode(CodeSystemOid.IMMUNITY_INTERPRETATION, interpretation);
         ObservationResult observationResult = getObservationResult(focusValue, observationValue, interpretationValue);
         addObservationResult(vmr, observationResult);
         return observationResult;
@@ -431,20 +492,12 @@ public abstract class BaseCdsObject<T> {
         SubstanceAdministrationProposals substanceAdministrationProposals = getSubstanceAdministrationProposals(vmr);
         substanceAdministrationProposals.getSubstanceAdministrationProposals().add(substanceAdministrationProposal);
 
-        AdministrableSubstance substance = getAdministrableSubstance();
-        substanceAdministrationProposal.setSubstance(substance);
-
-        CD substanceCD = substance.getSubstanceCode();
-        substanceCD.setOriginalText("vaccine group: " + vaccineGroup + " - cvx: " + substanceCode);
-
+        // TODO: ifblock to recommend either a vaccode or a vaccine group...hardcoded to vaccine group now...
         String vaccineGroupString = String.valueOf(vaccineGroup);
-        for (Entry<String, String> entry : CdsObjectAssist.getRecommendedFocusCodeSet().entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(vaccineGroupString)) {
-                substanceCD.setCode(entry.getKey());
-                substanceCD.setDisplayName(entry.getValue());
-                break;
-            }
-        }
+        AdministrableSubstance substance = getAdministrableSubstance();
+        substance.setSubstanceCode(getConceptCode(CodeSystemOid.RECOMMENDED_FOCUS, vaccineGroupString));
+
+        substanceAdministrationProposal.setSubstance(substance);
 
         if (administrationTimeInterval != null && !administrationTimeInterval.trim().isEmpty()) {
             IVLTS ivlts = new IVLTS();

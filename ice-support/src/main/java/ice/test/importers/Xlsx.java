@@ -33,8 +33,9 @@ public class Xlsx {
 
     public static void importFromFile(byte[] data, TestImportCallback callback)
             throws IceException, FileNotFoundException, IOException, DatatypeConfigurationException {
-         importFromFile(new ByteArrayInputStream(data), callback);
+        importFromFile(new ByteArrayInputStream(data), callback);
     }
+
     public static void importFromFile(String filename, TestImportCallback callback)
             throws IceException, FileNotFoundException, IOException, DatatypeConfigurationException {
         importFromFile(new FileInputStream(filename), callback);
@@ -185,19 +186,40 @@ public class Xlsx {
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell gender = testCurrentRow.getCell(2);
-                    testcase.setPatientGender(gender.getStringCellValue());
+                    String genderValue = gender.getStringCellValue();
+                    if ("female".equalsIgnoreCase(genderValue)) {
+                        genderValue = "F";
+                    } else if ("male".equalsIgnoreCase(genderValue)) {
+                        genderValue = "M";
+                    } else {
+                        logger.error("Gender unsupported - setting to UN: " + genderValue + " @ " + location);
+                        genderValue = "UN";
+                    }
+                    testcase.setPatientGender(genderValue);
                     logger.debug("    Gender: " + testcase.getPatientGender());
 
                     // not in use yet
                     XSSFCell recommendedVaccine = testCurrentRow.getCell(9);
                     logger.debug("    Recommended vaccine: " + recommendedVaccine);
-                    testcase.addSubstanceAdministrationProposal(
-                            testcase.getVaccinegroup(),
-                            recommendedVaccine.getStringCellValue(),
-                            DateUtils.getISODateFormat(dueDate.getDateCellValue()),
-                            String.valueOf(testcase.getVaccinegroup()),
-                            recommendation.getStringCellValue(),
-                            recommendationReason.getStringCellValue());
+                    String recommendationReasonValue = recommendationReason.getStringCellValue();
+                    if ("DUE_IN_FUTURE".equalsIgnoreCase(recommendationReasonValue)) {
+                        recommendationReasonValue = "FUTURE_RECOMMENDED";
+                    }
+                    try {
+                        testcase.addSubstanceAdministrationProposal(
+                                testcase.getVaccinegroup(),
+                                recommendedVaccine.getStringCellValue(),
+                                DateUtils.getISODateFormat(dueDate.getDateCellValue()),
+                                String.valueOf(testcase.getVaccinegroup()),
+                                recommendation.getStringCellValue(),
+                                recommendationReasonValue);
+                    } catch (IceException e) {
+                        logger.error("addSubstanceAdministrationProposal Error @ " + location);
+                        logger.error(e);
+                            testcase.setErrorMessage(e.getMessage());
+                            callback.callback(testcase, testSheetName, false);
+                            continue;
+                    }
 
                     testCurrentRowNum++;
                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
@@ -222,29 +244,37 @@ public class Xlsx {
                         XSSFCell recommendedReasonText = testCurrentRow.getCell(9);
                         logger.trace("    Recommended reason text: " + recommendedReasonText.getStringCellValue());
 
-                        SubstanceAdministrationEvent shot1EvaluationEvent =
-                                testcase.getEvaluationSubstanceAdministrationEvent(
-                                shot1CvxCode,
-                                shot1DateofAdministration.getDateCellValue(),
-                                "Valid".equalsIgnoreCase(shot1Evaluation.getStringCellValue()),
-                                new Reason[]{
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot1Evaluation.getStringCellValue().toUpperCase(),
-                                    shot1InvalidReason1Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot1Evaluation.getStringCellValue().toUpperCase(),
-                                    shot1InvalidReason2Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot1Evaluation.getStringCellValue().toUpperCase(),
-                                    shot1InvalidReason3Code.getStringCellValue())
-                                });
-                        testcase.addSubstanceAdministrationEvent(
-                                shot1CvxCode,
-                                shot1DateofAdministration.getDateCellValue(),
-                                new SubstanceAdministrationEvent[]{shot1EvaluationEvent});
+                        try {
+                            SubstanceAdministrationEvent shot1EvaluationEvent =
+                                    testcase.getEvaluationSubstanceAdministrationEvent(
+                                    shot1CvxCode,
+                                    shot1DateofAdministration.getDateCellValue(),
+                                    "Valid".equalsIgnoreCase(shot1Evaluation.getStringCellValue()),
+                                    new Reason[]{
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot1Evaluation.getStringCellValue().toUpperCase(),
+                                        shot1InvalidReason1Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot1Evaluation.getStringCellValue().toUpperCase(),
+                                        shot1InvalidReason2Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot1Evaluation.getStringCellValue().toUpperCase(),
+                                        shot1InvalidReason3Code.getStringCellValue())
+                                    });
+                            testcase.addSubstanceAdministrationEvent(
+                                    shot1CvxCode,
+                                    shot1DateofAdministration.getDateCellValue(),
+                                    new SubstanceAdministrationEvent[]{shot1EvaluationEvent});
+                        } catch (IceException e) {
+                            logger.error("addSubstanceAdministrationEvent shot 1 Error @ " + location);
+                            logger.error(e);
+                            testcase.setErrorMessage(e.getMessage());
+                            callback.callback(testcase, testSheetName, false);
+                            continue;
+                        }
                     }
 
                     testCurrentRowNum++;
@@ -268,29 +298,37 @@ public class Xlsx {
                         XSSFCell shot2DateofAdministration = testCurrentRow.getCell(2);
                         logger.trace("    Shot 2 date of administration: " + shot2DateofAdministration);
 
-                        SubstanceAdministrationEvent shot2EvaluationEvent =
-                                testcase.getEvaluationSubstanceAdministrationEvent(
-                                shot2CvxCode,
-                                shot2DateofAdministration.getDateCellValue(),
-                                "Valid".equalsIgnoreCase(shot2Evaluation.getStringCellValue()),
-                                new Reason[]{
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot2Evaluation.getStringCellValue().toUpperCase(),
-                                    shot2InvalidReason1Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot2Evaluation.getStringCellValue().toUpperCase(),
-                                    shot2InvalidReason2Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot2Evaluation.getStringCellValue().toUpperCase(),
-                                    shot2InvalidReason3Code.getStringCellValue())
-                                });
-                        testcase.addSubstanceAdministrationEvent(
-                                shot2CvxCode,
-                                shot2DateofAdministration.getDateCellValue(),
-                                new SubstanceAdministrationEvent[]{shot2EvaluationEvent});
+                        try {
+                            SubstanceAdministrationEvent shot2EvaluationEvent =
+                                    testcase.getEvaluationSubstanceAdministrationEvent(
+                                    shot2CvxCode,
+                                    shot2DateofAdministration.getDateCellValue(),
+                                    "Valid".equalsIgnoreCase(shot2Evaluation.getStringCellValue()),
+                                    new Reason[]{
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot2Evaluation.getStringCellValue().toUpperCase(),
+                                        shot2InvalidReason1Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot2Evaluation.getStringCellValue().toUpperCase(),
+                                        shot2InvalidReason2Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot2Evaluation.getStringCellValue().toUpperCase(),
+                                        shot2InvalidReason3Code.getStringCellValue())
+                                    });
+                            testcase.addSubstanceAdministrationEvent(
+                                    shot2CvxCode,
+                                    shot2DateofAdministration.getDateCellValue(),
+                                    new SubstanceAdministrationEvent[]{shot2EvaluationEvent});
+                        } catch (IceException e) {
+                            logger.error("addSubstanceAdministrationEvent shot 2 Error @ " + location);
+                            logger.error(e);
+                            testcase.setErrorMessage(e.getMessage());
+                            callback.callback(testcase, testSheetName, false);
+                            continue;
+                        }
                     }
 
                     testCurrentRowNum++;
@@ -314,29 +352,37 @@ public class Xlsx {
                         XSSFCell shot3DateofAdministration = testCurrentRow.getCell(2);
                         logger.trace("    Shot 3 date of administration: " + shot3DateofAdministration);
 
-                        SubstanceAdministrationEvent shot3EvaluationEvent =
-                                testcase.getEvaluationSubstanceAdministrationEvent(
-                                shot3CvxCode,
-                                shot3DateofAdministration.getDateCellValue(),
-                                "Valid".equalsIgnoreCase(shot3Evaluation.getStringCellValue()),
-                                new Reason[]{
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot3Evaluation.getStringCellValue().toUpperCase(),
-                                    shot3InvalidReason1Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot3Evaluation.getStringCellValue().toUpperCase(),
-                                    shot3InvalidReason2Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot3Evaluation.getStringCellValue().toUpperCase(),
-                                    shot3InvalidReason3Code.getStringCellValue())
-                                });
-                        testcase.addSubstanceAdministrationEvent(
-                                shot3CvxCode,
-                                shot3DateofAdministration.getDateCellValue(),
-                                new SubstanceAdministrationEvent[]{shot3EvaluationEvent});
+                        try {
+                            SubstanceAdministrationEvent shot3EvaluationEvent =
+                                    testcase.getEvaluationSubstanceAdministrationEvent(
+                                    shot3CvxCode,
+                                    shot3DateofAdministration.getDateCellValue(),
+                                    "Valid".equalsIgnoreCase(shot3Evaluation.getStringCellValue()),
+                                    new Reason[]{
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot3Evaluation.getStringCellValue().toUpperCase(),
+                                        shot3InvalidReason1Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot3Evaluation.getStringCellValue().toUpperCase(),
+                                        shot3InvalidReason2Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot3Evaluation.getStringCellValue().toUpperCase(),
+                                        shot3InvalidReason3Code.getStringCellValue())
+                                    });
+                            testcase.addSubstanceAdministrationEvent(
+                                    shot3CvxCode,
+                                    shot3DateofAdministration.getDateCellValue(),
+                                    new SubstanceAdministrationEvent[]{shot3EvaluationEvent});
+                        } catch (IceException e) {
+                            logger.error("addSubstanceAdministrationEvent shot 3 Error @ " + location);
+                            logger.error(e);
+                            testcase.setErrorMessage(e.getMessage());
+                            callback.callback(testcase, testSheetName, false);
+                            continue;
+                        }
                     }
 
                     testCurrentRowNum++;
@@ -360,29 +406,37 @@ public class Xlsx {
                         XSSFCell shot4DateofAdministration = testCurrentRow.getCell(2);
                         logger.trace("    Shot 4 date of administration: " + shot4DateofAdministration);
 
-                        SubstanceAdministrationEvent shot4EvaluationEvent =
-                                testcase.getEvaluationSubstanceAdministrationEvent(
-                                shot4CvxCode,
-                                shot4DateofAdministration.getDateCellValue(),
-                                "Valid".equalsIgnoreCase(shot4Evaluation.getStringCellValue()),
-                                new Reason[]{
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot4Evaluation.getStringCellValue().toUpperCase(),
-                                    shot4InvalidReason1Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot4Evaluation.getStringCellValue().toUpperCase(),
-                                    shot4InvalidReason2Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot4Evaluation.getStringCellValue().toUpperCase(),
-                                    shot4InvalidReason3Code.getStringCellValue())
-                                });
-                        testcase.addSubstanceAdministrationEvent(
-                                shot4CvxCode,
-                                shot4DateofAdministration.getDateCellValue(),
-                                new SubstanceAdministrationEvent[]{shot4EvaluationEvent});
+                        try {
+                            SubstanceAdministrationEvent shot4EvaluationEvent =
+                                    testcase.getEvaluationSubstanceAdministrationEvent(
+                                    shot4CvxCode,
+                                    shot4DateofAdministration.getDateCellValue(),
+                                    "Valid".equalsIgnoreCase(shot4Evaluation.getStringCellValue()),
+                                    new Reason[]{
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot4Evaluation.getStringCellValue().toUpperCase(),
+                                        shot4InvalidReason1Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot4Evaluation.getStringCellValue().toUpperCase(),
+                                        shot4InvalidReason2Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot4Evaluation.getStringCellValue().toUpperCase(),
+                                        shot4InvalidReason3Code.getStringCellValue())
+                                    });
+                            testcase.addSubstanceAdministrationEvent(
+                                    shot4CvxCode,
+                                    shot4DateofAdministration.getDateCellValue(),
+                                    new SubstanceAdministrationEvent[]{shot4EvaluationEvent});
+                        } catch (IceException e) {
+                            logger.error("addSubstanceAdministrationEvent shot 4 Error @ " + location);
+                            logger.error(e);
+                            testcase.setErrorMessage(e.getMessage());
+                            callback.callback(testcase, testSheetName, false);
+                            continue;
+                        }
                     }
 
                     testCurrentRowNum++;
@@ -406,44 +460,64 @@ public class Xlsx {
                         XSSFCell shot5DateofAdministration = testCurrentRow.getCell(2);
                         logger.trace("    Shot 5 date of administration: " + shot5DateofAdministration);
 
-                        SubstanceAdministrationEvent shot5EvaluationEvent =
-                                testcase.getEvaluationSubstanceAdministrationEvent(
-                                shot5CvxCode,
-                                shot5DateofAdministration.getDateCellValue(),
-                                "Valid".equalsIgnoreCase(shot5Evaluation.getStringCellValue()),
-                                new Reason[]{
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot5Evaluation.getStringCellValue().toUpperCase(),
-                                    shot5InvalidReason1Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot5Evaluation.getStringCellValue().toUpperCase(),
-                                    shot5InvalidReason2Code.getStringCellValue()),
-                                    new Reason(
-                                    String.valueOf(testcase.getVaccinegroup()),
-                                    shot5Evaluation.getStringCellValue().toUpperCase(),
-                                    shot5InvalidReason3Code.getStringCellValue())
-                                });
-                        testcase.addSubstanceAdministrationEvent(
-                                shot5CvxCode,
-                                shot5DateofAdministration.getDateCellValue(),
-                                new SubstanceAdministrationEvent[]{shot5EvaluationEvent});
+                        try {
+                            SubstanceAdministrationEvent shot5EvaluationEvent =
+                                    testcase.getEvaluationSubstanceAdministrationEvent(
+                                    shot5CvxCode,
+                                    shot5DateofAdministration.getDateCellValue(),
+                                    "Valid".equalsIgnoreCase(shot5Evaluation.getStringCellValue()),
+                                    new Reason[]{
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot5Evaluation.getStringCellValue().toUpperCase(),
+                                        shot5InvalidReason1Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot5Evaluation.getStringCellValue().toUpperCase(),
+                                        shot5InvalidReason2Code.getStringCellValue()),
+                                        new Reason(
+                                        String.valueOf(testcase.getVaccinegroup()),
+                                        shot5Evaluation.getStringCellValue().toUpperCase(),
+                                        shot5InvalidReason3Code.getStringCellValue())
+                                    });
+                            testcase.addSubstanceAdministrationEvent(
+                                    shot5CvxCode,
+                                    shot5DateofAdministration.getDateCellValue(),
+                                    new SubstanceAdministrationEvent[]{shot5EvaluationEvent});
+                        } catch (IceException e) {
+                            logger.error("addSubstanceAdministrationEvent shot 5 Error @ " + location);
+                            logger.error(e);
+                            testcase.setErrorMessage(e.getMessage());
+                            callback.callback(testcase, testSheetName, false);
+                            continue;
+                        }
                     }
+
                     int count = 0;
                     for (SubstanceAdministrationEvent sae : testcase.getSubstanceAdministrationEvents()) {
-                        count ++;
-                        logger.debug("Shot " + count + " present: " + sae.getSubstance().getSubstanceCode().getCode() + "/" + sae.getAdministrationTimeInterval().getHigh());
+                        count++;
+                        logger.debug("Shot " + count
+                                + " present: " + sae.getSubstance().getSubstanceCode().getCode()
+                                + "/" + sae.getAdministrationTimeInterval().getHigh());
                         int count2 = 0;
                         for (RelatedClinicalStatement rcs : sae.getRelatedClinicalStatements()) {
                             count2++;
                             SubstanceAdministrationEvent csae = rcs.getSubstanceAdministrationEvent();
-                            logger.debug("Shot " + count + " Component " + count2 + " present: " + csae.getSubstance().getSubstanceCode().getCode() + "/" + csae.getAdministrationTimeInterval().getHigh() + "/" + csae.getIsValid().isValue());
+                            logger.debug("Shot " + count
+                                    + " Component " + count2
+                                    + " present: " + csae.getSubstance().getSubstanceCode().getCode()
+                                    + "/" + csae.getAdministrationTimeInterval().getHigh()
+                                    + "/" + csae.getIsValid().isValue());
                             int count3 = 0;
                             for (RelatedClinicalStatement crcs : csae.getRelatedClinicalStatements()) {
                                 count3++;
                                 ObservationResult cor = crcs.getObservationResult();
-                                logger.debug("Shot " + count + " Component " + count2 + " OR " + count3 + " present: " + cor.getObservationFocus().getCode() + "/" + cor.getObservationValue().getConcept().getCode() + "/" + cor.getInterpretations().get(0).getCode());
+                                logger.debug("Shot " + count
+                                        + " Component " + count2
+                                        + " OR " + count3
+                                        + " present: " + cor.getObservationFocus().getCode()
+                                        + "/" + cor.getObservationValue().getConcept().getCode()
+                                        + "/" + cor.getInterpretations().get(0).getCode());
                             }
                         }
                     }

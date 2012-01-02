@@ -11,7 +11,7 @@ public class Utilities {
 
     public static void logDuration(String operation, long start) {
         StringBuilder sb = new StringBuilder();
-        logger.info(sb.append(operation).append(" duration(ms): ").append((System.nanoTime() - start)/1000000.0).toString());
+        logger.debug(sb.append(operation).append(" duration(ms): ").append((System.nanoTime() - start)/1000000.0).toString());
     }
 
 }

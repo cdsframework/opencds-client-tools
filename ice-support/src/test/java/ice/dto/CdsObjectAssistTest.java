@@ -3,7 +3,6 @@ package ice.dto;
 import java.io.File;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
 import ice.dto.support.CdsObjectAssist;
@@ -19,7 +18,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.opencds.CD;
-import org.opencds.OpenCdsConceptMappingSpecificationFile;
 import org.opencds.SubstanceAdministrationEvent;
 
 /**
@@ -54,9 +52,9 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        SubstanceAdministrationEvent hepBComponent = CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "100", "VALID", "");
         output.addSubstanceAdministrationEvent("08", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
-        output.addSubstanceAdministrationProposal(100, "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
+        output.addSubstanceAdministrationProposal(100, "", "", "100", "NOT_RECOMMENDED", "COMPLETE");
 
         logger.info(CdsObjectAssist.cdsObjectToString(output.getCdsObject(), CdsOutput.class));
         logger.info("Finished testCdsObjectToString...");
@@ -70,9 +68,9 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        SubstanceAdministrationEvent hepBComponent = CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "100", "VALID", "");
         output.addSubstanceAdministrationEvent("08", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
-        output.addSubstanceAdministrationProposal(100, "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
+        output.addSubstanceAdministrationProposal(100, "", "", "100", "NOT_RECOMMENDED", "COMPLETE");
 
         tmp = CdsObjectAssist.cdsObjectToByteArray(output.getCdsObject(), CdsOutput.class);
         logger.info("Finished testCdsObjectToByteArray...");
@@ -85,9 +83,9 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        SubstanceAdministrationEvent hepBComponent = CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "100", "VALID", "");
         output.addSubstanceAdministrationEvent("08", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
-        output.addSubstanceAdministrationProposal(100, "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
+        output.addSubstanceAdministrationProposal(100, "", "", "100", "NOT_RECOMMENDED", "COMPLETE");
 
         tmp = CdsObjectAssist.cdsObjectToByteArray(output.getCdsObject(), CdsOutput.class);
 
@@ -121,9 +119,9 @@ public class CdsObjectAssistTest {
         CdsOutputWrapper output = CdsOutputWrapper.getCdsOutputWrapper();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        SubstanceAdministrationEvent hepBComponent = output.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "VALIDITY", "VALID", "");
+        SubstanceAdministrationEvent hepBComponent = CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", true, "100", "VALID", "");
         output.addSubstanceAdministrationEvent("08", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
-        output.addSubstanceAdministrationProposal(100, "", "", "PROPOSAL", "NOT_RECOMMENDED", "COMPLETED");
+        output.addSubstanceAdministrationProposal(100, "", "", "100", "NOT_RECOMMENDED", "COMPLETE");
 
         String filename = CdsObjectAssist.cdsObjectToFile(output.getCdsObject(), null, "sampleCdsOutput.xml");
         File file = new File(filename);

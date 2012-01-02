@@ -1,4 +1,6 @@
 META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE08^C36.xml
+META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE104^C36.xml
+META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE120^C36.xml
 META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE42^C36.xml
 META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE43^C36.xml
 META-INF/codesets/CVX^Vaccines administered (CVX)^Best Available OpenCDS concept determination method_2.16.840.1.113883.12.292^ICE45^C36.xml
@@ -26,6 +28,7 @@ META-INF/codesets/ICE3 Immunization Recommendation Reason^High Risk^Best availab
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Proof of Immunity^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE230^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Too Old^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE227^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Wrong Gender^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE228^C36.xml
+META-INF/codesets/ICE3 Immunization Recommendation^Completed^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE995^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Conditional^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE220^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Future Recommeded^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE222^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Not Recommended^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE221^C36.xml
