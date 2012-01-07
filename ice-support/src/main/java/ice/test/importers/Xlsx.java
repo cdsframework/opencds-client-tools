@@ -202,9 +202,9 @@ public class Xlsx {
                     XSSFCell recommendedVaccine = testCurrentRow.getCell(9);
                     logger.debug("    Recommended vaccine: " + recommendedVaccine);
                     String recommendationReasonValue = recommendationReason.getStringCellValue();
-                    if ("DUE_IN_FUTURE".equalsIgnoreCase(recommendationReasonValue)) {
-                        recommendationReasonValue = "FUTURE_RECOMMENDED";
-                    }
+//                    if ("DUE_IN_FUTURE".equalsIgnoreCase(recommendationReasonValue)) {
+//                        recommendationReasonValue = "FUTURE_RECOMMENDED";
+//                    }
                     try {
                         testcase.addSubstanceAdministrationProposal(
                                 testcase.getVaccinegroup(),

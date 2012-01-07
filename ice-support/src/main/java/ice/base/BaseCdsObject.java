@@ -286,7 +286,7 @@ public abstract class BaseCdsObject<T> {
             relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.RSON);
             ((SubstanceAdministrationProposal) substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
 
-            focusValue = getConceptCode(CodeSystemOid.RECOMMENDED_FOCUS, focus);
+            focusValue = getConceptCode(CodeSystemOid.RECOMMENDED_GROUP_FOCUS, focus);
 
             observationValue = getObservationValue(CodeSystemOid.RECOMMENDATION, value);
 
@@ -492,10 +492,13 @@ public abstract class BaseCdsObject<T> {
         SubstanceAdministrationProposals substanceAdministrationProposals = getSubstanceAdministrationProposals(vmr);
         substanceAdministrationProposals.getSubstanceAdministrationProposals().add(substanceAdministrationProposal);
 
-        // TODO: ifblock to recommend either a vaccode or a vaccine group...hardcoded to vaccine group now...
-        String vaccineGroupString = String.valueOf(vaccineGroup);
         AdministrableSubstance substance = getAdministrableSubstance();
-        substance.setSubstanceCode(getConceptCode(CodeSystemOid.RECOMMENDED_FOCUS, vaccineGroupString));
+
+        if (substanceCode != null && !substanceCode.trim().isEmpty()) {
+            substance.setSubstanceCode(getConceptCode(CodeSystemOid.ADMINISTERED_SUBSTANCE, substanceCode));
+        } else {
+            substance.setSubstanceCode(getConceptCode(CodeSystemOid.RECOMMENDED_GROUP_FOCUS, String.valueOf(vaccineGroup)));
+        }
 
         substanceAdministrationProposal.setSubstance(substance);
 
