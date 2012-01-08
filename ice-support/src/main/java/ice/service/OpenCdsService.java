@@ -1,5 +1,6 @@
 package ice.service;
 
+import com.sun.xml.ws.client.BindingProviderProperties;
 import com.sun.xml.ws.developer.JAXWSProperties;
 import ice.dto.support.CdsObjectAssist;
 import ice.exception.IceException;
@@ -42,28 +43,49 @@ import org.opencds.CdsOutput;
 public class OpenCdsService {
 
     private final static Logger logger = Logger.getLogger(OpenCdsService.class);
+    private final static int DEFAULT_TIMEOUT = 10 * 1000;
     private final DecisionSupportService openCdsService = new DecisionSupportService();
     private final Evaluation evaluatePort = openCdsService.getEvaluate();
     private final String endPoint;
-
-    public OpenCdsService() {
-        endPoint = null;
-    }
+    private final int requestTimeout;
+    private final int connectTimeout;
 
     public OpenCdsService(String endPoint) {
+        this(endPoint, DEFAULT_TIMEOUT, DEFAULT_TIMEOUT);
+    }
+
+
+    public OpenCdsService(String endPoint, int timeout) {
+        this(endPoint, timeout, timeout);
+    }
+
+    public OpenCdsService(String endPoint, int requestTimeout, int connectTimeout) {
         super();
         this.endPoint = endPoint;
+        this.requestTimeout = requestTimeout;
+        this.connectTimeout = connectTimeout;
         Map<String, Object> ctxt = ((BindingProvider) evaluatePort).getRequestContext();
         ctxt.put(JAXWSProperties.HTTP_CLIENT_STREAMING_CHUNK_SIZE, 8192);
         ctxt.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endPoint);
-    }
-
-    public static OpenCdsService getOpenCDS() {
-        return new OpenCdsService();
+        ctxt.put(BindingProviderProperties.REQUEST_TIMEOUT, requestTimeout);
+        ctxt.put(BindingProviderProperties.CONNECT_TIMEOUT, connectTimeout);
+        ctxt.put("com.sun.xml.internal.ws.connect.timeout", connectTimeout);
+        ctxt.put("com.sun.xml.internal.ws.request.timeout", requestTimeout);
+        ctxt.put("org.jboss.ws.timeout", requestTimeout);
+        ctxt.put(JAXWSProperties.CONNECT_TIMEOUT, connectTimeout);
+        ctxt.put(JAXWSProperties.REQUEST_TIMEOUT, requestTimeout);
     }
 
     public static OpenCdsService getOpenCDS(String endPoint) {
         return new OpenCdsService(endPoint);
+    }
+
+    public static OpenCdsService getOpenCDS(String endPoint, int timeout) {
+        return new OpenCdsService(endPoint, timeout);
+    }
+
+    public static OpenCdsService getOpenCDS(String endPoint, int requestTimeout, int connectTimeout) {
+        return new OpenCdsService(endPoint, requestTimeout, connectTimeout);
     }
 
     public CdsOutput evaluate(CdsInput cdsInput, String businessId, Date executionDate) throws IceException {
@@ -75,7 +97,17 @@ public class OpenCdsService {
 
     public byte[] evaluate(byte[] cdsInputByteArray, String businessId, Date executionDate) throws IceException {
         final String METHODNAME = "evaluate ";
-        logger.debug(METHODNAME + "begin...");
+        if (logger.isDebugEnabled()) {
+            logger.debug(METHODNAME
+                    + "calling evaluate with businessId '"
+                    + businessId
+                    + "' @ "
+                    + endPoint
+                    + " with requestTimeout:"
+                    + requestTimeout
+                    + " and connectTimeout:"
+                    + connectTimeout);
+        }
         long start = System.nanoTime();
         EvaluationResponse response = null;
         byte[] result = null;

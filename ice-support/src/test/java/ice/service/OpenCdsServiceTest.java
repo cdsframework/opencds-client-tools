@@ -4,6 +4,7 @@ import ice.dto.CdsInputWrapper;
 import ice.dto.support.CdsObjectAssist;
 import ice.util.Utilities;
 import java.util.Date;
+import javax.xml.ws.WebServiceException;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.opencds.CdsInput;
 import org.opencds.CdsOutput;
 
@@ -45,17 +47,41 @@ public class OpenCdsServiceTest {
      * Test of evaluate method, of class OpenCdsAssist.
      * @throws Exception
      */
+    @Test(expected=WebServiceException.class)
+    public void testEvaluateConnect() throws Exception {
+        long start;
+        logger.info("Starting testEvaluateConnect...");
+
+        String endPoint = "http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate";
+
+        start = System.nanoTime();
+        OpenCdsService service = OpenCdsService.getOpenCDS(endPoint, 10, 10);
+        Utilities.logDuration("OpenCdsService init", start);
+        CdsInputWrapper cdsInputWrapper = CdsInputWrapper.getCdsInputWrapper();
+        String businessId = "bounce";
+        Date executionDate = new Date();
+        start = System.nanoTime();
+        CdsOutput output = service.evaluate(cdsInputWrapper.getCdsObject(), businessId, executionDate);
+        Utilities.logDuration("evaluate test 1", start);
+    }
+
+    /**
+     * Test of evaluate method, of class OpenCdsAssist.
+     * @throws Exception
+     */
     @Test
+    @Ignore
     public void testEvaluate() throws Exception {
         long start;
         logger.info("Starting testEvaluate...");
 
+        String endPoint = "http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate";
+
         // preform first to time get the static initialization of OpenCdsService out of the way
-        OpenCdsService.getOpenCDS();
+        OpenCdsService.getOpenCDS(endPoint);
 
         start = System.nanoTime();
-        OpenCdsService service = OpenCdsService.getOpenCDS();
-        //OpenCdsService service = OpenCdsService.getOpenCDS("http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate");
+        OpenCdsService service = OpenCdsService.getOpenCDS(endPoint);
         Utilities.logDuration("OpenCdsService init", start);
 
         // preform first to time get the static initialization of CdsObjectAssist out of the way
