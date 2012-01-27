@@ -8,9 +8,9 @@
         <version>1.0.1</version>
     </parent>
     <groupId>gov.nyc.health.cir</groupId>
-    <artifactId>ice-support</artifactId>
+    <artifactId>ice-dss</artifactId>
     <version>1.0.1</version>
-    <name>ice-support</name>
+    <name>ice-dss</name>
     <url>http://maven.apache.org</url>
     <build>
         <resources>
@@ -247,6 +247,11 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ice-support</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

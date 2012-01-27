@@ -29,8 +29,9 @@
         </plugins>
     </build>
     <modules>
-    <module>ice-support</module>
+    <module>ice-dss</module>
     <module>ice-web</module>
+    <module>ice-support</module>
   </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

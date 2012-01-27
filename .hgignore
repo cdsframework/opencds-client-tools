@@ -4,3 +4,6 @@ ice-support/target/
 ice-web/target/
 ice-support/opencds.log*
 ice-support/imported-tests/*.xml
+ice-dss/imported-tests/*
+ice-dss/opencds.log*
+ice-dss/target/
