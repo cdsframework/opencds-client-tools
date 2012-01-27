@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenCdsConceptMappingSpecificationFile>
 	<specificationNotes>Created manually.</specificationNotes>
-    <openCdsConcept code="ICE998" displayName="Disease Immunity Validity"></openCdsConcept>
+    <openCdsConcept code="ICE998" displayName="Disease Immunity Source"></openCdsConcept>
     <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.8" codeSystemName="ICE3 Disease Immunity Validity">
-    	<CD code="INVALID" displayName="Invalid Immunity" />
-    	<CD code="VALID" displayName="Valid Immunity" />
+    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.8" codeSystemName="ICE3 Disease Immunity Source">
+    	<CD code="DISEASE_DOCUMENTED" displayName="Disease Documented" />
+    	<CD code="PROOF_OF_IMMUNITY" displayName="Proof of Immunity" />
     </membersForCodeSystem>
 </OpenCdsConceptMappingSpecificationFile>

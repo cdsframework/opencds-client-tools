@@ -26,9 +26,9 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
         return new CdsOutputWrapper();
     }
 
-    public ObservationResult addImmunityObservationResult(String focus, String value, String interpretation)
+    public ObservationResult addImmunityObservationResult(Date observationEventTime, String focus, String value, String interpretation)
             throws IceException {
-        return addImmunityObservationResult(this.getCdsObject().getVmrOutput(), focus, value, interpretation);
+        return addImmunityObservationResult(this.getCdsObject().getVmrOutput(), observationEventTime, focus, value, interpretation);
     }
 
     public void addObservationResult(ObservationResult observationResult)
@@ -39,11 +39,12 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
+            String immId,
             SubstanceAdministrationEvent[] components)
             throws IceException {
 
         SubstanceAdministrationEvent substanceAdministrationEvent =
-                addSubstanceAdministrationEvent(this.getCdsObject().getVmrOutput(), substanceCode, administrationTimeInterval);
+                addSubstanceAdministrationEvent(this.getCdsObject().getVmrOutput(), substanceCode, administrationTimeInterval, immId);
         List<RelatedClinicalStatement> relatedClinicalStatements = substanceAdministrationEvent.getRelatedClinicalStatements();
 
         for (SubstanceAdministrationEvent sae : components) {
@@ -58,16 +59,18 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             Date administrationTimeIntervalDate,
+            String immId,
             SubstanceAdministrationEvent[] components)
             throws IceException {
         return addSubstanceAdministrationEvent(
                 substanceCode,
                 DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                immId,
                 components);
     }
 
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
-            int vaccineGroup,
+            String vaccineGroup,
             String substanceCode,
             String administrationTimeInterval,
             String focus,
@@ -82,12 +85,12 @@ public class CdsOutputWrapper extends BaseCdsObject<CdsOutput> {
                 administrationTimeInterval);
 
         substanceAdministrationProposal =
-                addObservationResult(substanceAdministrationProposal, focus, value, interpretation);
+                addObservationResult(substanceAdministrationProposal, focus, value, new String[]{interpretation});
         return substanceAdministrationProposal;
     }
 
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
-            int vaccineGroup,
+            String vaccineGroup,
             String substanceCode,
             Date administrationTimeIntervalDate,
             String focus,

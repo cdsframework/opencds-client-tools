@@ -47,7 +47,6 @@ public class XlsxTest {
      * @throws Exception
      */
     @Test
-    @Ignore
     public void testImportFromFile() throws Exception {
         logger.info("importFromFile");
         String filename = "ICE3 Test Cases - HepB.xlsx";

@@ -88,14 +88,14 @@ public class OpenCdsService {
         return new OpenCdsService(endPoint, requestTimeout, connectTimeout);
     }
 
-    public CdsOutput evaluate(CdsInput cdsInput, String businessId, Date executionDate) throws IceException {
+    public CdsOutput evaluate(CdsInput cdsInput, String scopingEntityId, String businessId, String version, Date executionDate) throws IceException {
         byte[] cdsObjectToByteArray = CdsObjectAssist.cdsObjectToByteArray(cdsInput, CdsInput.class);
-        byte[] evaluation = evaluate(cdsObjectToByteArray, businessId, executionDate);
+        byte[] evaluation = evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         CdsOutput cdsOutput = CdsObjectAssist.cdsObjectFromByteArray(evaluation, CdsOutput.class);
         return cdsOutput;
     }
 
-    public byte[] evaluate(byte[] cdsInputByteArray, String businessId, Date executionDate) throws IceException {
+    public byte[] evaluate(byte[] cdsInputByteArray, String scopingEntityId, String businessId, String version, Date executionDate) throws IceException {
         final String METHODNAME = "evaluate ";
         if (logger.isDebugEnabled()) {
             logger.debug(METHODNAME
@@ -116,7 +116,7 @@ public class OpenCdsService {
 
         try {
             InteractionIdentifier interactionIdentifier = getInteractionIdentifier(gc);
-            EvaluationRequest evaluationRequest = getEvaluationRequest(cdsInputByteArray, businessId);
+            EvaluationRequest evaluationRequest = getEvaluationRequest(cdsInputByteArray, scopingEntityId, businessId, version);
             Utilities.logDuration("evaluate init", start);
 
             start = System.nanoTime();
@@ -232,25 +232,25 @@ public class OpenCdsService {
         return interactionIdentifier;
     }
 
-    private EntityIdentifier getKMEntityIdentifier(String businessId) {
+    private EntityIdentifier getKMEntityIdentifier(String scopingEntityId, String businessId, String version) {
         EntityIdentifier kmEntityIdentifier = new EntityIdentifier();
-        kmEntityIdentifier.setScopingEntityId("org.opencds");
-        kmEntityIdentifier.setVersion("1.5.3");
+        kmEntityIdentifier.setScopingEntityId(scopingEntityId);
+        kmEntityIdentifier.setVersion(version);
         kmEntityIdentifier.setBusinessId(businessId);
         return kmEntityIdentifier;
     }
 
-    private KMEvaluationRequest getKMEvaluationRequest(String businessId) {
+    private KMEvaluationRequest getKMEvaluationRequest(String scopingEntityId, String businessId, String version) {
         KMEvaluationRequest kmEvaluationRequest = new KMEvaluationRequest();
-        kmEvaluationRequest.setKmId(getKMEntityIdentifier(businessId));
+        kmEvaluationRequest.setKmId(getKMEntityIdentifier(scopingEntityId, businessId, version));
         return kmEvaluationRequest;
     }
 
-    private EvaluationRequest getEvaluationRequest(byte[] cdsInputByteArray, String businessId) {
+    private EvaluationRequest getEvaluationRequest(byte[] cdsInputByteArray, String scopingEntityId, String businessId, String version) {
         EvaluationRequest evaluationRequest = new EvaluationRequest();
         evaluationRequest.setClientLanguage("");
         evaluationRequest.setClientTimeZoneOffset("");
-        evaluationRequest.getKmEvaluationRequest().add(getKMEvaluationRequest(businessId));
+        evaluationRequest.getKmEvaluationRequest().add(getKMEvaluationRequest(scopingEntityId, businessId, version));
         evaluationRequest.getDataRequirementItemData().add(getDataRequirementItemData(cdsInputByteArray, businessId));
         return evaluationRequest;
     }

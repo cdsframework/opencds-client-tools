@@ -15,11 +15,13 @@ public enum CodeSystemOid {
     IMMUNITY_VALUE("2.16.840.1.113883.3.795.12.100.8"),
     LANG("1.2.3"),
     RECOMMENDATION("2.16.840.1.113883.3.795.12.100.5"),
-    RECOMMENDED_ACTION("2.16.840.1.113883.3.795.12.100.6"),
+    RECOMMENDED_REASON("2.16.840.1.113883.3.795.12.100.6"),
     RECOMMENDED_GROUP_FOCUS("2.16.840.1.113883.3.795.12.100.4"),
     TARGET_RELATIONSHIP_TO_SOURCE("2.16.840.1.113883.5.1002"),
     VALIDATION("2.16.840.1.113883.3.795.12.100.2"),
-    VALIDITY_FOCUS("2.16.840.1.113883.3.795.12.100.1");
+    VALIDITY_FOCUS("2.16.840.1.113883.3.795.12.100.1"),
+    CIR_IMMUNIZATION_ID("2.16.840.1.113883.3.795.12.100.10"),
+    CIR_PATIENT_ID("2.16.840.1.113883.3.795.12.100.11");
     private final String oid;
 
     CodeSystemOid(String oid) {
@@ -28,5 +30,19 @@ public enum CodeSystemOid {
 
     public String getOid() {
         return oid;
+    }
+
+    public static CodeSystemOid valueOfOid(String oid) {
+        CodeSystemOid result = null;
+        for (CodeSystemOid item : CodeSystemOid.values()) {
+            if (item.getOid() != null && item.getOid().equals(oid)) {
+                result = item;
+                break;
+            }
+        }
+        if (result == null) {
+            throw new IllegalArgumentException("No enum const class " + EvaluationValidityType.class.getCanonicalName() + " for " + oid);
+        }
+        return result;
     }
 }

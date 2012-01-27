@@ -2,9 +2,9 @@ package ice.dto;
 
 import org.opencds.CdsOutput;
 import ice.dto.support.CdsObjectAssist;
+import ice.enumeration.EvaluationValidityType;
 import ice.util.Utilities;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -53,20 +53,20 @@ public class OutputTest {
         start = System.nanoTime();
         output.setPatientGender("F");
         output.setPatientBirthTime("19830630");
-        output.addImmunityObservationResult("400", "VALID", "IS_IMMUNE");
+        output.addImmunityObservationResult(new Date(), "070.30", "DISEASE_DOCUMENTED", "IS_IMMUNE");
 
         SubstanceAdministrationEvent hepBComponent1 =
-                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("45", "20080223", true, "100", "VALID", "");
+                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("45", "20080223", EvaluationValidityType.VALID, "100", "");
         SubstanceAdministrationEvent hepBComponent2 =
-                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", false, "100", "INVALID", "BELOW_MINIMUM_INTERVAL");
+                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", EvaluationValidityType.INVALID, "100", "BELOW_MINIMUM_INTERVAL");
         SubstanceAdministrationEvent hepBComponent3 =
-                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("110", "20080223", false, "100", "INVALID", "EXTRA_DOSE");
+                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("110", "20080223", EvaluationValidityType.INVALID, "100", "EXTRA_DOSE");
 
-        output.addSubstanceAdministrationEvent("45", "20080223", new SubstanceAdministrationEvent[]{hepBComponent1, hepBComponent2});
+        output.addSubstanceAdministrationEvent("45", "20080223", null, new SubstanceAdministrationEvent[]{hepBComponent1, hepBComponent2});
 
-        output.addSubstanceAdministrationEvent("110", "20080223", new SubstanceAdministrationEvent[]{hepBComponent3});
+        output.addSubstanceAdministrationEvent("110", "20080223", null, new SubstanceAdministrationEvent[]{hepBComponent3});
 
-        output.addSubstanceAdministrationProposal(100, "45", "20111201", "100", "RECOMMENDED", "DUE_NOW");
+        output.addSubstanceAdministrationProposal("100", "45", "20111201", "100", "RECOMMENDED", "DUE_NOW");
 
         Utilities.logDuration("output init", start);
 

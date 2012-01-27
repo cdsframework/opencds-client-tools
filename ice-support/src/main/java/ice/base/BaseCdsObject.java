@@ -1,14 +1,16 @@
 package ice.base;
 
 import ice.dto.support.CdsObjectAssist;
-import ice.dto.support.Reason;
 import ice.enumeration.CodeSystemOid;
 import ice.enumeration.RootOid;
 import ice.enumeration.TargetRelationshipToSource;
+import ice.enumeration.EvaluationValidityType;
 import ice.exception.IceException;
 import ice.util.Constants;
 import ice.util.DateUtils;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -253,24 +255,25 @@ public abstract class BaseCdsObject<T> {
             S substanceAdministrationObject,
             String focus,
             String value,
-            String interpretation)
+            String[] interpretations)
             throws IceException {
 
         RelatedClinicalStatement relatedClinicalStatement;
         CD focusValue;
         ObservationValue observationValue;
-        CD interpretationValue;
+        List<CD> interpretationValues = new ArrayList<CD>();
         if (substanceAdministrationObject instanceof SubstanceAdministrationEvent) {
             SubstanceAdministrationEvent substanceAdministrationEvent = (SubstanceAdministrationEvent) substanceAdministrationObject;
 
-            if (!substanceAdministrationEvent.getIsValid().isValue() && (interpretation == null || interpretation.trim().isEmpty())) {
-                throw new IceException("Substance administration event is marked as invalid but no reason was given: "
-                        + substanceAdministrationEvent.getSubstance().getSubstanceCode().getCode() + "; "
-                        + substanceAdministrationEvent.getAdministrationTimeInterval().getHigh());
-            }
-            if (interpretation == null || interpretation.trim().isEmpty()) {
-                logger.info("Event is valid and reason is null or empty - skipping addObservationResult");
-                return substanceAdministrationObject;
+            if (interpretations == null || interpretations.length == 0) {
+                if (!substanceAdministrationEvent.getIsValid().isValue()) {
+                    throw new IceException("Substance administration event is marked as invalid but no reason was given: "
+                            + substanceAdministrationEvent.getSubstance().getSubstanceCode().getCode() + "; "
+                            + substanceAdministrationEvent.getAdministrationTimeInterval().getHigh());
+                } else {
+                    logger.debug("Event is valid and reason is null or empty - skipping addObservationResult");
+                    return substanceAdministrationObject;
+                }
             }
 
             relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.PERT);
@@ -280,7 +283,11 @@ public abstract class BaseCdsObject<T> {
 
             observationValue = getObservationValue(CodeSystemOid.VALIDATION, value);
 
-            interpretationValue = getConceptCode(CodeSystemOid.EVALUATED_REASON, interpretation);
+            for (String interpretation : interpretations) {
+                if (interpretation != null && !interpretation.trim().isEmpty()) {
+                    interpretationValues.add(getConceptCode(CodeSystemOid.EVALUATED_REASON, interpretation));
+                }
+            }
 
         } else if (substanceAdministrationObject instanceof SubstanceAdministrationProposal) {
             relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.RSON);
@@ -290,13 +297,15 @@ public abstract class BaseCdsObject<T> {
 
             observationValue = getObservationValue(CodeSystemOid.RECOMMENDATION, value);
 
-            interpretationValue = getConceptCode(CodeSystemOid.RECOMMENDED_ACTION, interpretation);
+            for (String interpretation : interpretations) {
+                interpretationValues.add(getConceptCode(CodeSystemOid.RECOMMENDED_REASON, interpretation));
+            }
 
         } else {
             throw new IceException("Unexpected substance administration class: "
                     + substanceAdministrationObject.getClass().getSimpleName());
         }
-        addObservationResult(relatedClinicalStatement, focusValue, observationValue, interpretationValue);
+        addObservationResult(relatedClinicalStatement, focusValue, observationValue, interpretationValues);
         return substanceAdministrationObject;
     }
 
@@ -337,9 +346,9 @@ public abstract class BaseCdsObject<T> {
     protected static ObservationResult getObservationResult(
             CD focusValue,
             ObservationValue observationValue,
-            CD interpretationValue) {
+            List<CD> interpretationValues) {
         ObservationResult observationResult = getObservationResult();
-        observationResult.getInterpretations().add(interpretationValue);
+        observationResult.getInterpretations().addAll(interpretationValues);
         observationResult.setObservationValue(observationValue);
         observationResult.setObservationFocus(focusValue);
 
@@ -350,9 +359,9 @@ public abstract class BaseCdsObject<T> {
             RelatedClinicalStatement relatedClinicalStatement,
             CD focusValue,
             ObservationValue observationValue,
-            CD interpretationValue)
+            List<CD> interpretationValues)
             throws IceException {
-        ObservationResult observationResult = getObservationResult(focusValue, observationValue, interpretationValue);
+        ObservationResult observationResult = getObservationResult(focusValue, observationValue, interpretationValues);
         relatedClinicalStatement.setObservationResult(observationResult);
     }
 
@@ -386,80 +395,80 @@ public abstract class BaseCdsObject<T> {
         return substanceAdministrationEvent;
     }
 
+    // add substance administration event components with evaluation(s)
     public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
-            boolean valid,
+            EvaluationValidityType validity,
             String focus,
-            String value,
             String interpretation) throws IceException {
-        SubstanceAdministrationEvent substanceAdministrationEvent =
-                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
-        substanceAdministrationEvent.setIsValid(getBL(valid));
-        if (!valid && (interpretation == null || interpretation.trim().isEmpty())) {
-            throw new IceException("Substance administration event is marked as invalid but no reason was given: " + substanceCode + "; " + administrationTimeInterval);
-        }
-        if (interpretation != null && !interpretation.trim().isEmpty()) {
-            substanceAdministrationEvent = addObservationResult(substanceAdministrationEvent, focus, value, interpretation);
-        }
-        return substanceAdministrationEvent;
-    }
 
-    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            String administrationTimeInterval,
-            boolean valid,
-            Reason[] reasons) throws IceException {
-        SubstanceAdministrationEvent substanceAdministrationEvent =
-                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
-        substanceAdministrationEvent.setIsValid(getBL(valid));
-        for (Reason reason : reasons) {
-            if (reason.getInterpretation() != null && !reason.getInterpretation().isEmpty()) {
-                substanceAdministrationEvent = addObservationResult(
-                        substanceAdministrationEvent,
-                        reason.getFocus(),
-                        reason.getValue(),
-                        reason.getInterpretation());
-            }
-        }
-        return substanceAdministrationEvent;
-    }
-
-    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            Date administrationTimeIntervalDate,
-            boolean valid,
-            Reason[] reasons) throws IceException {
         return getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
-                DateUtils.getISODateFormat(administrationTimeIntervalDate),
-                valid,
-                reasons);
-    }
-
-    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
-            String substanceCode,
-            Date administrationTimeIntervalDate,
-            boolean valid,
-            String focus,
-            String value,
-            String interpretation) throws IceException {
-        return getEvaluationSubstanceAdministrationEvent(
-                substanceCode,
-                DateUtils.getISODateFormat(administrationTimeIntervalDate),
-                valid,
+                administrationTimeInterval,
+                validity,
                 focus,
-                value,
-                interpretation);
+                new String[]{interpretation});
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            EvaluationValidityType validity,
+            String focus,
+            String interpretation) throws IceException {
+        return getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                validity,
+                focus,
+                new String[]{interpretation});
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            Date administrationTimeIntervalDate,
+            EvaluationValidityType validity,
+            String focus,
+            String[] interpretations) throws IceException {
+        return getEvaluationSubstanceAdministrationEvent(
+                substanceCode,
+                DateUtils.getISODateFormat(administrationTimeIntervalDate),
+                validity,
+                focus,
+                interpretations);
+    }
+
+    public static SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
+            String substanceCode,
+            String administrationTimeInterval,
+            EvaluationValidityType validity,
+            String focus,
+            String[] interpretations) throws IceException {
+        boolean valid = validity != EvaluationValidityType.INVALID;
+        SubstanceAdministrationEvent substanceAdministrationEvent =
+                getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        substanceAdministrationEvent.setIsValid(getBL(valid));
+        substanceAdministrationEvent = addObservationResult(
+                substanceAdministrationEvent,
+                focus,
+                validity.toString(),
+                interpretations);
+        return substanceAdministrationEvent;
     }
 
     protected static SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             Vmr vmr,
             String substanceCode,
-            String administrationTimeInterval)
+            String administrationTimeInterval,
+            String immId)
             throws IceException {
         SubstanceAdministrationEvent substanceAdministrationEvent =
                 getSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
+        if (immId != null && !immId.trim().isEmpty()) {
+            substanceAdministrationEvent.getId().setRoot(CodeSystemOid.CIR_IMMUNIZATION_ID.getOid());
+            substanceAdministrationEvent.getId().setExtension(immId);
+        }
         SubstanceAdministrationEvents substanceAdministrationEvents = getSubstanceAdministrationEvents(vmr);
         substanceAdministrationEvents.getSubstanceAdministrationEvents().add(substanceAdministrationEvent);
         return substanceAdministrationEvent;
@@ -471,19 +480,26 @@ public abstract class BaseCdsObject<T> {
         observationResults.getObservationResults().add(observationResult);
     }
 
-    protected static ObservationResult addImmunityObservationResult(Vmr vmr, String focus, String value, String interpretation)
+    protected static ObservationResult addImmunityObservationResult(Vmr vmr, Date observationEventTime, String focus, String value, String interpretation)
             throws IceException {
         CD focusValue = getConceptCode(CodeSystemOid.IMMUNITY_FOCUS, focus);
         ObservationValue observationValue = getObservationValue(CodeSystemOid.IMMUNITY_VALUE, value);
+        List<CD> interpretationValues = new ArrayList<CD>();
         CD interpretationValue = getConceptCode(CodeSystemOid.IMMUNITY_INTERPRETATION, interpretation);
-        ObservationResult observationResult = getObservationResult(focusValue, observationValue, interpretationValue);
+        interpretationValues.add(interpretationValue);
+        ObservationResult observationResult = getObservationResult(focusValue, observationValue, interpretationValues);
+        String observationEventTimeString = DateUtils.getISODateFormat(observationEventTime);
+        IVLTS ivlts = new IVLTS();
+        ivlts.setHigh(observationEventTimeString);
+        ivlts.setLow(observationEventTimeString);
+        observationResult.setObservationEventTime(ivlts);
         addObservationResult(vmr, observationResult);
         return observationResult;
     }
 
     protected SubstanceAdministrationProposal addSubstanceAdministrationProposal(
             Vmr vmr,
-            int vaccineGroup,
+            String vaccineGroup,
             String substanceCode,
             String administrationTimeInterval)
             throws IceException {
@@ -497,7 +513,7 @@ public abstract class BaseCdsObject<T> {
         if (substanceCode != null && !substanceCode.trim().isEmpty()) {
             substance.setSubstanceCode(getConceptCode(CodeSystemOid.ADMINISTERED_SUBSTANCE, substanceCode));
         } else {
-            substance.setSubstanceCode(getConceptCode(CodeSystemOid.RECOMMENDED_GROUP_FOCUS, String.valueOf(vaccineGroup)));
+            substance.setSubstanceCode(getConceptCode(CodeSystemOid.RECOMMENDED_GROUP_FOCUS, vaccineGroup));
         }
 
         substanceAdministrationProposal.setSubstance(substance);
@@ -535,5 +551,22 @@ public abstract class BaseCdsObject<T> {
 
     public void setPatientGender(String gender) throws IceException {
         setPatientGender(getCdsObjectVmr(), gender);
+    }
+
+    public void setPatientId(String patientId) throws IceException {
+        Vmr cdsObjectVmr = getCdsObjectVmr();
+        if (cdsObjectVmr != null) {
+            EvaluatedPerson patient = cdsObjectVmr.getPatient();
+            if (patient != null) {
+                if (patientId != null && !patientId.trim().isEmpty()) {
+                    patient.getId().setRoot(CodeSystemOid.CIR_PATIENT_ID.getOid());
+                    patient.getId().setExtension(patientId);
+                }
+            } else {
+                throw new IceException("Retrieved patient object was null.");
+            }
+        } else {
+            throw new IceException("Retrieved VMR object was null.");
+        }
     }
 }

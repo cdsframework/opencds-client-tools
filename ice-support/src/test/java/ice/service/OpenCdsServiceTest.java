@@ -58,10 +58,12 @@ public class OpenCdsServiceTest {
         OpenCdsService service = OpenCdsService.getOpenCDS(endPoint, 10, 10);
         Utilities.logDuration("OpenCdsService init", start);
         CdsInputWrapper cdsInputWrapper = CdsInputWrapper.getCdsInputWrapper();
+        String scopingEntityId = "org.opencds";
         String businessId = "bounce";
+        String version = "1.0.0";
         Date executionDate = new Date();
         start = System.nanoTime();
-        CdsOutput output = service.evaluate(cdsInputWrapper.getCdsObject(), businessId, executionDate);
+        CdsOutput output = service.evaluate(cdsInputWrapper.getCdsObject(), scopingEntityId, businessId, version, executionDate);
         Utilities.logDuration("evaluate test 1", start);
     }
 
@@ -90,7 +92,7 @@ public class OpenCdsServiceTest {
         CdsInputWrapper input = CdsInputWrapper.getCdsInputWrapper();
         input.setPatientGender("F");
         input.setPatientBirthTime("19830630");
-        input.addSubstanceAdministrationEvent("45", "20080223");
+        input.addSubstanceAdministrationEvent("45", "20080223", null);
 
         start = System.nanoTime();
         input = CdsInputWrapper.getCdsInputWrapper();
@@ -99,7 +101,7 @@ public class OpenCdsServiceTest {
         start = System.nanoTime();
         input.setPatientGender("F");
         input.setPatientBirthTime("19830630");
-        input.addSubstanceAdministrationEvent("45", "20080223");
+        input.addSubstanceAdministrationEvent("45", "20080223", null);
 //        input.addSubstanceAdministrationEvent("10", "20080223");
 //        input.addImmunityObservationResult("500", "VALID", "IS_IMMUNE");
 //
@@ -113,7 +115,9 @@ public class OpenCdsServiceTest {
 
         Utilities.logDuration("input init", start);
 
+        String scopingEntityId = "org.opencds";
         String businessId = "bounce";
+        String version = "1.0.0";
         Date executionDate = new Date();
 
         start = System.nanoTime();
@@ -121,23 +125,23 @@ public class OpenCdsServiceTest {
         Utilities.logDuration("cdsObjectToByteArray", start);
 
         start = System.nanoTime();
-        byte[] evaluation = service.evaluate(cdsObjectToByteArray, businessId, executionDate);
+        byte[] evaluation = service.evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         Utilities.logDuration("evaluate test 1", start);
 
         start = System.nanoTime();
-        evaluation = service.evaluate(cdsObjectToByteArray, businessId, executionDate);
+        evaluation = service.evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         Utilities.logDuration("evaluate test 2", start);
 
         start = System.nanoTime();
-        evaluation = service.evaluate(cdsObjectToByteArray, businessId, executionDate);
+        evaluation = service.evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         Utilities.logDuration("evaluate test 3", start);
 
         start = System.nanoTime();
-        evaluation = service.evaluate(cdsObjectToByteArray, businessId, executionDate);
+        evaluation = service.evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         Utilities.logDuration("evaluate test 4", start);
 
         start = System.nanoTime();
-        evaluation = service.evaluate(cdsObjectToByteArray, businessId, executionDate);
+        evaluation = service.evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         Utilities.logDuration("evaluate test 5", start);
 
         start = System.nanoTime();

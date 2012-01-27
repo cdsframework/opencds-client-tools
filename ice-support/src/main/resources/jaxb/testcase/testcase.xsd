@@ -8,30 +8,24 @@
     <xs:import namespace="org.opencds.vmr.v1_0.schema.cdsinput" schemaLocation="cdsInput.xsd"/>
     <xs:import namespace="org.opencds.vmr.v1_0.schema.cdsoutput" schemaLocation="cdsOutput.xsd"/>
     <xs:element name="name" type="xs:string"/>
-    <xs:element name="description" type="xs:string"/>
-    <xs:element name="version" type="xs:string"/>
     <xs:element name="author" type="xs:string"/>
     <xs:element name="createdate" type="xs:date"/>
     <xs:element name="testfocus" type="xs:string"/>
-    <xs:element name="vaccinegroup" type="xs:int"/>
-    <xs:element name="dosefocus" type="xs:int"/>
+    <xs:element name="vaccinegroup" type="xs:string"/>
+    <xs:element name="dosefocus" type="xs:string"/>
     <xs:element name="series" type="xs:string"/>
-    <xs:element name="numdoses" type="xs:int"/>
     <xs:element name="ruletotest" type="xs:string"/>
     <xs:element name="notes" type="xs:string"/>
     <xs:element name="executiondate" type="xs:dateTime"/>
     <xs:complexType name="Testcase">
         <xs:sequence>
             <xs:element ref="tc:name"/>
-            <xs:element ref="tc:description" minOccurs="0"/>
-            <xs:element ref="tc:version" minOccurs="0"/>
             <xs:element ref="tc:author"/>
             <xs:element ref="tc:createdate"/>
             <xs:element ref="tc:testfocus"/>
             <xs:element ref="tc:vaccinegroup"/>
             <xs:element ref="tc:dosefocus"/>
             <xs:element ref="tc:series"/>
-            <xs:element ref="tc:numdoses"/>
             <xs:element ref="tc:ruletotest"/>
             <xs:element ref="tc:notes"/>
             <xs:element ref="tc:executiondate" minOccurs="0"/>

@@ -1,5 +1,6 @@
 package ice.dto;
 
+import ice.enumeration.EvaluationValidityType;
 import org.opencds.SubstanceAdministrationEvent;
 import ice.util.Utilities;
 import java.util.Date;
@@ -52,28 +53,25 @@ public class TestcaseTest {
         start = System.nanoTime();
         testcase.setAuthor("SDN");
         testcase.setCreatedate(new Date());
-        testcase.setDescription("this is a test - blah");
-        testcase.setDosefocus(3);
+        testcase.setDosefocus("3");
         testcase.setExecutiondate(new Date());
         testcase.setName("blah blah - hey hey");
         testcase.setNotes("blah blah blh blah blah ghlsdf sdfh aof asodiv das vasdvpoi asdv asdvsadvp asdfg");
-        testcase.setNumdoses(2);
         testcase.setPatientBirthTime("19700130");
         testcase.setPatientGender("M");
         testcase.setRuletotest("asjdfhla asdf alksd pdf ahf apahwfe qwefh3984 qenka sd87134tu3hpjahfiq asdf");
         testcase.setSeries("Peds");
         testcase.setTestfocus("Evaluation");
-        testcase.setVaccinegroup(100);
-        testcase.setVersion("1.0.0");
-        testcase.addImmunityObservationResult("400", "VALID", "IS_IMMUNE");
+        testcase.setVaccinegroup("100");
+        testcase.addImmunityObservationResult(new Date(), "070.30", "PROOF_OF_IMMUNITY", "IS_IMMUNE");
         SubstanceAdministrationEvent hepBComponent =
-                testcase.getEvaluationSubstanceAdministrationEvent("45", "20080223", true, "100", "VALID", "");
+                testcase.getEvaluationSubstanceAdministrationEvent("45", "20080223", EvaluationValidityType.VALID, "100", "");
 
-        testcase.addSubstanceAdministrationEvent("45", "20080223", new SubstanceAdministrationEvent[]{hepBComponent});
+        testcase.addSubstanceAdministrationEvent("45", "20080223", null, new SubstanceAdministrationEvent[]{hepBComponent});
 
 
-        testcase.addSubstanceAdministrationProposal(100, "", "20090223", "100", "RECOMMENDED", "DUE_NOW");
-        testcase.addSubstanceAdministrationProposal(810, "", "", "810", "NOT_RECOMMENDED", "COMPLETE");
+        testcase.addSubstanceAdministrationProposal("100", "", "20090223", "100", "RECOMMENDED", "DUE_NOW");
+        testcase.addSubstanceAdministrationProposal("810", "", "", "810", "NOT_RECOMMENDED", "COMPLETE");
         Utilities.logDuration("testcase init", start);
 
         start = System.nanoTime();

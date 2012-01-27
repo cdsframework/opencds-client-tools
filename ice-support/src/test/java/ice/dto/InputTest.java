@@ -1,5 +1,6 @@
 package ice.dto;
 
+import java.util.Date;
 import org.opencds.CdsInput;
 import ice.dto.support.CdsObjectAssist;
 import ice.util.Utilities;
@@ -51,9 +52,9 @@ public class InputTest {
         start = System.nanoTime();
         input.setPatientGender("F");
         input.setPatientBirthTime("19830630");
-        input.addSubstanceAdministrationEvent("45", "20080223");
-        input.addSubstanceAdministrationEvent("08", "20080223");
-        input.addImmunityObservationResult("400", "VALID", "IS_IMMUNE");
+        input.addSubstanceAdministrationEvent("45", "20080223", null);
+        input.addSubstanceAdministrationEvent("08", "20080223", null);
+        input.addImmunityObservationResult(new Date(), "070.30", "DISEASE_DOCUMENTED", "IS_IMMUNE");
         Utilities.logDuration("input init", start);
 
         start = System.nanoTime();

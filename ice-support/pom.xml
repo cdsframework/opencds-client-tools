@@ -151,6 +151,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>1</id>
                         <phase>clean</phase>
                         <configuration>
                             <tasks>
@@ -166,6 +167,18 @@
                                 </pathconvert>
                                 <echo file="${rsrc.list.out}" append="false" message="${resources.str}"/>
                                 <echo>Including resources found in ${rsrc.dir} in list written to ${rsrc.list.out}</echo>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>2</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <tasks>
+                                <copy todir="..\..\cir\lib" file="${project.build.directory}/${project.build.finalName}.${project.packaging}"/>
                             </tasks>
                         </configuration>
                         <goals>

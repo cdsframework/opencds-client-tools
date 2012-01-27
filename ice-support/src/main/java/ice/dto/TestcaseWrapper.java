@@ -1,7 +1,7 @@
 package ice.dto;
 
 import ice.dto.support.CdsObjectAssist;
-import ice.dto.support.Reason;
+import ice.enumeration.EvaluationValidityType;
 import ice.exception.IceException;
 import ice.util.DateUtils;
 import java.text.ParseException;
@@ -71,23 +71,11 @@ public class TestcaseWrapper {
         testcase.setCreatedate(value);
     }
 
-    public String getDescription() throws IceException {
-        return testcase.getDescription();
-    }
-
-    public void setDescription(String value) {
-        testcase.setDescription(value);
-    }
-
-    public int getDosefocus() throws IceException {
+    public String getDosefocus() throws IceException {
         return testcase.getDosefocus();
     }
 
     public void setDosefocus(String value) {
-        testcase.setDosefocus(Integer.parseInt(value));
-    }
-
-    public void setDosefocus(int value) {
         testcase.setDosefocus(value);
     }
 
@@ -123,18 +111,6 @@ public class TestcaseWrapper {
         testcase.setNotes(value);
     }
 
-    public int getNumdoses() throws IceException {
-        return testcase.getNumdoses();
-    }
-
-    public void setNumdoses(String value) {
-        testcase.setNumdoses(Integer.parseInt(value));
-    }
-
-    public void setNumdoses(int value) {
-        testcase.setNumdoses(value);
-    }
-
     public String getRuletotest() throws IceException {
         return testcase.getRuletotest();
     }
@@ -159,20 +135,12 @@ public class TestcaseWrapper {
         testcase.setTestfocus(value);
     }
 
-    public int getVaccinegroup() throws IceException {
+    public String getVaccinegroup() throws IceException {
         return testcase.getVaccinegroup();
     }
 
-    public void setVaccinegroup(int value) {
+    public void setVaccinegroup(String value) {
         testcase.setVaccinegroup(value);
-    }
-
-    public String getVersion() throws IceException {
-        return testcase.getVersion();
-    }
-
-    public void setVersion(String value) {
-        testcase.setVersion(value);
     }
 
     public String getEncodedName() {
@@ -234,77 +202,79 @@ public class TestcaseWrapper {
     public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
-            boolean valid,
+            EvaluationValidityType validity,
             String focus,
-            String value,
             String interpretation) throws IceException {
         return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeInterval,
-                valid,
+                validity,
                 focus,
-                value,
                 interpretation);
     }
 
     public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             Date administrationTimeIntervalDate,
-            boolean valid,
+            EvaluationValidityType validity,
             String focus,
-            String value,
             String interpretation) throws IceException {
         return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeIntervalDate,
-                valid,
+                validity,
                 focus,
-                value,
                 interpretation);
     }
 
     public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
-            boolean valid,
-            Reason[] reasons) throws IceException {
+            EvaluationValidityType validity,
+            String focus,
+            String[] reasons) throws IceException {
         return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeInterval,
-                valid,
+                validity,
+                focus,
                 reasons);
     }
 
     public SubstanceAdministrationEvent getEvaluationSubstanceAdministrationEvent(
             String substanceCode,
             Date administrationTimeIntervalDate,
-            boolean valid,
-            Reason[] reasons) throws IceException {
+            EvaluationValidityType validity,
+            String focus,
+            String[] reasons) throws IceException {
         return CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent(
                 substanceCode,
                 administrationTimeIntervalDate,
-                valid,
+                validity,
+                focus,
                 reasons);
     }
 
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             String administrationTimeInterval,
+            String immId,
             SubstanceAdministrationEvent[] components) throws IceException {
-        input.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval);
-        return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, components);
+        input.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, immId);
+        return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeInterval, immId, components);
     }
 
     public SubstanceAdministrationEvent addSubstanceAdministrationEvent(
             String substanceCode,
             Date administrationTimeIntervalDate,
+            String immId,
             SubstanceAdministrationEvent[] components) throws IceException {
-        input.addSubstanceAdministrationEvent(substanceCode, administrationTimeIntervalDate);
-        return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeIntervalDate, components);
+        input.addSubstanceAdministrationEvent(substanceCode, administrationTimeIntervalDate, immId);
+        return output.addSubstanceAdministrationEvent(substanceCode, administrationTimeIntervalDate, immId, components);
     }
 
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
-            int vaccineGroup,
+            String vaccineGroup,
             String substanceCode,
             String administrationTimeInterval,
             String focus,
@@ -320,7 +290,7 @@ public class TestcaseWrapper {
     }
 
     public SubstanceAdministrationProposal addSubstanceAdministrationProposal(
-            int vaccineGroup,
+            String vaccineGroup,
             String substanceCode,
             Date administrationTimeIntervalDate,
             String focus,
@@ -335,9 +305,9 @@ public class TestcaseWrapper {
                 interpretation);
     }
 
-    public ObservationResult addImmunityObservationResult(String focus, String value, String interpretation)
+    public ObservationResult addImmunityObservationResult(Date observationEventTime, String focus, String value, String interpretation)
             throws IceException {
-        ObservationResult addImmunityObservationResult = input.addImmunityObservationResult(focus, value, interpretation);
+        ObservationResult addImmunityObservationResult = input.addImmunityObservationResult(observationEventTime, focus, value, interpretation);
         output.addObservationResult(addImmunityObservationResult);
         return addImmunityObservationResult;
     }
