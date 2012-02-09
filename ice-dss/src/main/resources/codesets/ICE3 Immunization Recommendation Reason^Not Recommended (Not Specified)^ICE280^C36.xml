@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenCdsConceptMappingSpecificationFile>
+	<specificationNotes>Created manually.</specificationNotes>
+    <openCdsConcept code="ICE280" displayName="Immunization Not Recommended (Not Specified)"></openCdsConcept>
+    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
+    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.6" codeSystemName="ICE3 Immunization Recommendation Reason">
+    	<CD code="NOT_SPECIFIED" displayName="Not Specified" />
+    </membersForCodeSystem>
+</OpenCdsConceptMappingSpecificationFile>

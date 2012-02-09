@@ -152,7 +152,12 @@ public abstract class BaseCdsObject<T> {
         evaluatedPerson.getTemplateIds().add(getII(RootOid.EVALUATED_PERSON));
         evaluatedPerson.setId(getII());
         evaluatedPerson.setDemographics(getDemographics());
-        evaluatedPerson.setClinicalStatements(getClinicalStatements());
+        ClinicalStatements clinicalStatements = getClinicalStatements();
+        evaluatedPerson.setClinicalStatements(clinicalStatements);
+        ObservationResults observationResults = clinicalStatements.getObservationResults();
+        if (observationResults == null) {
+            clinicalStatements.setObservationResults(getObservationResults());
+        }
         return evaluatedPerson;
     }
 
@@ -184,7 +189,7 @@ public abstract class BaseCdsObject<T> {
                 CodeSystemOid.GENERAL_PURPOSE);
     }
 
-    private static SubstanceAdministrationEvent getSubstanceAdministrationEvent() {
+    public static SubstanceAdministrationEvent getSubstanceAdministrationEvent() {
         SubstanceAdministrationEvent substanceAdministrationEvent = new SubstanceAdministrationEvent();
         substanceAdministrationEvent.getTemplateIds().add(getII(RootOid.SUBSTANCE_ADMINISTRATION_EVENT));
         substanceAdministrationEvent.setId(getII());
@@ -245,7 +250,7 @@ public abstract class BaseCdsObject<T> {
         return substanceAdministrationEvents;
     }
 
-    protected static RelatedClinicalStatement getRelatedClinicalStatement(TargetRelationshipToSource code) {
+    public static RelatedClinicalStatement getRelatedClinicalStatement(TargetRelationshipToSource code) {
         RelatedClinicalStatement relatedClinicalStatement = new RelatedClinicalStatement();
         relatedClinicalStatement.setTargetRelationshipToSource(getCD(code.toString(), CodeSystemOid.TARGET_RELATIONSHIP_TO_SOURCE));
         return relatedClinicalStatement;
@@ -271,14 +276,16 @@ public abstract class BaseCdsObject<T> {
                             + substanceAdministrationEvent.getSubstance().getSubstanceCode().getCode() + "; "
                             + substanceAdministrationEvent.getAdministrationTimeInterval().getHigh());
                 } else {
-                    logger.debug("Event is valid and reason is null or empty - skipping addObservationResult");
-                    return substanceAdministrationObject;
+                    logger.debug("Event is valid and reason is null or empty");
+                 //   interpretations = new String[]{"VALID_DOSE"};
                 }
             }
+            AdministrableSubstance substance = substanceAdministrationEvent.getSubstance();
 
             relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.PERT);
             substanceAdministrationEvent.getRelatedClinicalStatements().add(relatedClinicalStatement);
 
+            // TODO: maybe replace this with: focusValue = substance.getSubstanceCode()
             focusValue = getConceptCode(CodeSystemOid.VALIDITY_FOCUS, focus);
 
             observationValue = getObservationValue(CodeSystemOid.VALIDATION, value);
@@ -292,8 +299,9 @@ public abstract class BaseCdsObject<T> {
         } else if (substanceAdministrationObject instanceof SubstanceAdministrationProposal) {
             relatedClinicalStatement = getRelatedClinicalStatement(TargetRelationshipToSource.RSON);
             ((SubstanceAdministrationProposal) substanceAdministrationObject).getRelatedClinicalStatements().add(relatedClinicalStatement);
+            AdministrableSubstance substance = ((SubstanceAdministrationProposal) substanceAdministrationObject).getSubstance();
 
-            focusValue = getConceptCode(CodeSystemOid.RECOMMENDED_GROUP_FOCUS, focus);
+            focusValue = substance.getSubstanceCode();
 
             observationValue = getObservationValue(CodeSystemOid.RECOMMENDATION, value);
 

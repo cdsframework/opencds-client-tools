@@ -43,11 +43,11 @@ public class XlsxTest {
     }
 
     /**
-     * Test of importFromFile method, of class Xlsx.
+     * Test of importFromFile method, of class XlsxV1.
      * @throws Exception
      */
     @Test
-    public void testImportFromFile() throws Exception {
+    public void testImportFromFileV1() throws Exception {
         logger.info("importFromFile");
         String filename = "ICE3 Test Cases - HepB.xlsx";
         Xlsx.importFromFile(filename, new TestImportCallback() {
@@ -56,6 +56,30 @@ public class XlsxTest {
             public void callback(TestcaseWrapper testcase, String Group, boolean success) throws IceException {
                 try {
                     CdsObjectAssist.cdsObjectToFile(testcase.getTestcase(), "imported-tests", testcase.getEncodedName());
+                } catch (FileNotFoundException e) {
+                    throw new IceException(e.getMessage());
+                } catch (IOException e) {
+                    throw new IceException(e.getMessage());
+                }
+            }
+        });
+        assertTrue(true);
+    }
+
+    /**
+     * Test of importFromFile method, of class XlsxV2.
+     * @throws Exception
+     */
+    @Test
+    public void testImportFromFileV2() throws Exception {
+        logger.info("importFromFile");
+        String filename = "ICE3 Test Cases - HepA.xlsx";
+        Xlsx.importFromFile(filename, new TestImportCallback() {
+
+            @Override
+            public void callback(TestcaseWrapper testcase, String Group, boolean success) throws IceException {
+                try {
+                    CdsObjectAssist.cdsObjectToFile(testcase.getTestcase(), "imported-tests-v2", testcase.getEncodedName());
                 } catch (FileNotFoundException e) {
                     throw new IceException(e.getMessage());
                 } catch (IOException e) {

@@ -7,6 +7,7 @@ package ice.enumeration;
 public enum EvaluationValidityType {
 
     ACCEPTED,
+    IGNORE,
     INVALID,
     VALID;
 }

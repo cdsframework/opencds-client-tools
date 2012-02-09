@@ -338,4 +338,9 @@ public class TestcaseWrapper {
         }
         return result;
     }
+
+    public void setPatientId(String patientId) throws IceException {
+        input.setPatientId(patientId);
+        output.setPatientId(patientId);
+    }
 }

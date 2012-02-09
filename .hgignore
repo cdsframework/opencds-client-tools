@@ -7,3 +7,4 @@ ice-support/imported-tests/*.xml
 ice-dss/imported-tests/*
 ice-dss/opencds.log*
 ice-dss/target/
+ice-dss/imported-tests-v2/*

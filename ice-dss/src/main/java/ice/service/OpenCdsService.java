@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.BindingProvider;
 import org.apache.log4j.Logger;
 import org.omg.spec.cdss._201105.dss.DataRequirementItemData;
@@ -97,10 +98,16 @@ public class OpenCdsService {
 
     public byte[] evaluate(byte[] cdsInputByteArray, String scopingEntityId, String businessId, String version, Date executionDate) throws IceException {
         final String METHODNAME = "evaluate ";
-        if (logger.isDebugEnabled()) {
-            logger.debug(METHODNAME
-                    + "calling evaluate with businessId '"
+        if (true) {
+            logger.info(METHODNAME
+                    + "calling evaluateAtSpecifiedTime with businessId '"
                     + businessId
+                    + "; scopingEntityId "
+                    + scopingEntityId
+                    + "; version "
+                    + version
+                    + "; executionDate "
+                    + executionDate
                     + "' @ "
                     + endPoint
                     + " with requestTimeout:"
@@ -115,12 +122,14 @@ public class OpenCdsService {
         gc.setTime(executionDate);
 
         try {
-            InteractionIdentifier interactionIdentifier = getInteractionIdentifier(gc);
+            XMLGregorianCalendar executionTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+
+            InteractionIdentifier interactionIdentifier = getInteractionIdentifier();
             EvaluationRequest evaluationRequest = getEvaluationRequest(cdsInputByteArray, scopingEntityId, businessId, version);
             Utilities.logDuration("evaluate init", start);
 
             start = System.nanoTime();
-            response = evaluatePort.evaluate(interactionIdentifier, evaluationRequest);
+            response = evaluatePort.evaluateAtSpecifiedTime(interactionIdentifier, executionTime, evaluationRequest);
             Utilities.logDuration("evaluate execute", start);
 
             start = System.nanoTime();
@@ -224,11 +233,11 @@ public class OpenCdsService {
         return dataRequirementItemData;
     }
 
-    private InteractionIdentifier getInteractionIdentifier(GregorianCalendar gc) throws DatatypeConfigurationException {
+    private InteractionIdentifier getInteractionIdentifier() throws DatatypeConfigurationException {
         InteractionIdentifier interactionIdentifier = new InteractionIdentifier();
         interactionIdentifier.setInteractionId("123456");
         interactionIdentifier.setScopingEntityId("gov.nyc.health");
-        interactionIdentifier.setSubmissionTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+        // interactionIdentifier.setSubmissionTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
         return interactionIdentifier;
     }
 
