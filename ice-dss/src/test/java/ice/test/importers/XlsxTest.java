@@ -49,7 +49,31 @@ public class XlsxTest {
     @Test
     public void testImportFromFileV1() throws Exception {
         logger.info("importFromFile");
-        String filename = "ICE3 Test Cases - HepB.xlsx";
+        String filename = "ICE3 Test Cases - HepB - V1.xlsx";
+        Xlsx.importFromFile(filename, new TestImportCallback() {
+
+            @Override
+            public void callback(TestcaseWrapper testcase, String Group, boolean success) throws IceException {
+                try {
+                    CdsObjectAssist.cdsObjectToFile(testcase.getTestcase(), "imported-tests", testcase.getEncodedName());
+                } catch (FileNotFoundException e) {
+                    throw new IceException(e.getMessage());
+                } catch (IOException e) {
+                    throw new IceException(e.getMessage());
+                }
+            }
+        });
+        assertTrue(true);
+    }
+
+    /**
+     * Test of importFromFile method, of class XlsxV1.
+     * @throws Exception
+     */
+    @Test
+    public void testImportFromFileV2b() throws Exception {
+        logger.info("importFromFile");
+        String filename = "ICE3 Test Cases - HepB - V2.xlsx";
         Xlsx.importFromFile(filename, new TestImportCallback() {
 
             @Override
@@ -71,7 +95,7 @@ public class XlsxTest {
      * @throws Exception
      */
     @Test
-    public void testImportFromFileV2() throws Exception {
+    public void testImportFromFileV2a() throws Exception {
         logger.info("importFromFile");
         String filename = "ICE3 Test Cases - HepA.xlsx";
         Xlsx.importFromFile(filename, new TestImportCallback() {

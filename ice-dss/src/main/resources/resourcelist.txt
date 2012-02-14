@@ -35,6 +35,7 @@ META-INF/codesets/ICE3 Immunization Recommendation Reason^Disease Documented^Bes
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Due Now^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE223^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Due in Future^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE225^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^High Risk^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE224^C36.xml
+META-INF/codesets/ICE3 Immunization Recommendation Reason^Ignore^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE836^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Not Recommended (Not Specified)^ICE280^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Proof of Immunity^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE230^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation Reason^Too Old^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.6^ICE227^C36.xml
@@ -42,6 +43,7 @@ META-INF/codesets/ICE3 Immunization Recommendation Reason^Wrong Gender^Best avai
 META-INF/codesets/ICE3 Immunization Recommendation^Completed^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE995^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Conditional^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE220^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Future Recommeded^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE222^C36.xml
+META-INF/codesets/ICE3 Immunization Recommendation^Ignore^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE534^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Not Available^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE894^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Not Recommended^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE221^C36.xml
 META-INF/codesets/ICE3 Immunization Recommendation^Recommended^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.5^ICE219^C36.xml
@@ -52,6 +54,7 @@ META-INF/codesets/ICE3 Immunization Validity Focus^Hep B Component^Best availabl
 META-INF/codesets/ICE3 Immunization Validity Focus^Hib Component^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.1^ICE204^C36.xml
 META-INF/codesets/ICE3 Immunization Validity Focus^IPV Component^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.1^ICE206^C36.xml
 META-INF/codesets/ICE3 Immunization Validity^Accepted Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE996^C36.xml
+META-INF/codesets/ICE3 Immunization Validity^Ignore Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE573^C36.xml
 META-INF/codesets/ICE3 Immunization Validity^Invalid Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE208^C36.xml
 META-INF/codesets/ICE3 Immunization Validity^Valid Immunization^Best available OpenCDS concept determination method__2.16.840.1.113883.3.795.12.100.2^ICE207^C36.xml
 META-INF/codesets/SNOMED^Immunization-vaccination management^Best available OpenCDS concept determination method__2.16.840.1.113883.6.96^ICE201^C36.xml

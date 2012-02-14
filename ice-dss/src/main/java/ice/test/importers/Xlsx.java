@@ -40,10 +40,8 @@ public class Xlsx {
         logger.info("category: " + category);
         if ("V1".equals(category)) {
             XlsxV1.importFromFile(wb, callback);
-        } else if ("V2".equals(category)) {
-            XlsxV2.importFromFile(wb, callback);
         } else {
-            throw new IceException("Import format unspecified - must supply a version in the categories property of the workbook: either V1 or V2 - got: " + category);
+            XlsxV2.importFromFile(wb, callback);
         }
     }
 }

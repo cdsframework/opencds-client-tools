@@ -38,10 +38,10 @@ public class XlsxV2 {
         POIXMLProperties properties = wb.getProperties();
         CoreProperties coreProperties = properties.getCoreProperties();
         String category = coreProperties.getCategory();
-        logger.warn("category: " + category);
+        logger.trace("category: " + category);
         XSSFSheet sheet = wb.getSheet("Test Coverage Summary");
         int lastRowNum = sheet.getLastRowNum();
-        logger.warn("LastRowNum: " + lastRowNum);
+        logger.trace("LastRowNum: " + lastRowNum);
         int i = 0;
         int testCount = 0;
         while (i < lastRowNum) {
@@ -51,22 +51,27 @@ public class XlsxV2 {
                 XSSFCell cell = row.getCell(0);
                 if (cell != null) {
                     String cellFormula = cell.getCellFormula();
+                    logger.info("importing from cellFormula=" + cellFormula);
                     String testSheetName = cellFormula.substring(1, cellFormula.indexOf("!") - 1);
-                    logger.warn("testSheetName=" + testSheetName);
+                    logger.trace("testSheetName=" + testSheetName);
                     XSSFSheet testSheet = wb.getSheet(testSheetName);
+                    if (testSheet == null) {
+                        continue;
+                    }
+                    logger.trace("testSheet=" + testSheet);
                     String testSheetCellStart = cellFormula.substring(cellFormula.indexOf("!") + 1);
-                    logger.warn("testSheetCellStart=" + testSheetCellStart);
+                    logger.trace("testSheetCellStart=" + testSheetCellStart);
                     int testCurrentRowNum = Integer.parseInt(testSheetCellStart.substring(3)) - 1;
                     XSSFRow testCurrentRow = testSheet.getRow(testCurrentRowNum);
                     XSSFCell testNumberCell = testCurrentRow.getCell(0);
                     String testNumber = testNumberCell.getStringCellValue();
-                    logger.warn("testNumber=" + testNumber);
+                    logger.trace("testNumber=" + testNumber);
                     XSSFCell name = testCurrentRow.getCell(2);
                     if (!name.getStringCellValue().isEmpty()) {
                         String localName = name.getStringCellValue();
-                        logger.warn("localName=" + localName);
+                        logger.trace("localName=" + localName);
                         String globalName = testSheetName + ": " + localName;
-                        logger.warn("globalName=" + globalName);
+                        logger.trace("globalName=" + globalName);
                         testCount++;
                         TestcaseWrapper testcase = TestcaseWrapper.getTestcaseWrapper();
 
@@ -74,12 +79,12 @@ public class XlsxV2 {
                         String location = testSheetName + ", test # " + testNumber + ", row # " + (testCurrentRowNum + 1);
                         testcase.setFileLocation(location);
 
-                        logger.warn(location);
+                        logger.trace(location);
 
                         // test name + vaccine group
                         testcase.setName(localName);
                         String encodedName = StringUtils.getShaHashFromString(globalName);
-                        logger.warn("encodedName=" + encodedName);
+                        logger.trace("encodedName=" + encodedName);
                         testcase.setEncodedName(encodedName);
                         if (importedTestcases.contains(encodedName)) {
                             int c = 1;
@@ -92,7 +97,7 @@ public class XlsxV2 {
                             }
                         }
                         importedTestcases.add(encodedName);
-                        logger.warn("    Test name: " + testcase.getName());
+                        logger.trace("    Test name: " + testcase.getName());
                         XSSFCell vaccineGroup = testCurrentRow.getCell(10);
                         try {
                             double numericCellValue = vaccineGroup.getNumericCellValue();
@@ -100,7 +105,7 @@ public class XlsxV2 {
                         } catch (IllegalStateException e) {
                             testcase.setVaccinegroup(vaccineGroup.getStringCellValue());
                         }
-                        logger.warn("    Vaccine group: " + testcase.getVaccinegroup());
+                        logger.trace("    Vaccine group: " + testcase.getVaccinegroup());
 
                         // test focus
                         testCurrentRowNum++;
@@ -108,7 +113,7 @@ public class XlsxV2 {
                         XSSFCell focusCell = testCurrentRow.getCell(2);
                         String focus = focusCell.getStringCellValue();
                         testcase.setTestfocus(focus);
-                        logger.warn("    Test focus: " + focus);
+                        logger.trace("    Test focus: " + focus);
                         if (focus == null || focus.trim().isEmpty()) {
                             throw new UnsupportedOperationException("    Test focus: " + focus + " - " + location);
                         }
@@ -120,33 +125,33 @@ public class XlsxV2 {
                             comboString = comboString.split(" ")[0].trim();
                         }
                         boolean combo = "Yes".equalsIgnoreCase(comboString);
-                        logger.warn("    Test combo: " + combo);
+                        logger.trace("    Test combo: " + combo);
 
                         // series
                         XSSFCell series = testCurrentRow.getCell(9);
                         testcase.setSeries(series.getStringCellValue());
-                        logger.warn("    Series: " + testcase.getSeries());
+                        logger.trace("    Series: " + testcase.getSeries());
 
                         // dose number focus
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell doseFocus = testCurrentRow.getCell(2);
                         testcase.setDosefocus(doseFocus.getStringCellValue());
-                        logger.warn("    Dose focus: " + testcase.getDosefocus());
+                        logger.trace("    Dose focus: " + testcase.getDosefocus());
 
                         // rule to test description
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell ruleToTest = testCurrentRow.getCell(2);
                         testcase.setRuletotest(ruleToTest.getStringCellValue());
-                        logger.warn("    Rule to test: " + testcase.getRuletotest());
+                        logger.trace("    Rule to test: " + testcase.getRuletotest());
 
                         // notes
                         testCurrentRowNum++;
                         testCurrentRow = testSheet.getRow(testCurrentRowNum);
                         XSSFCell testNotes = testCurrentRow.getCell(2);
                         testcase.setNotes(testNotes.getStringCellValue());
-                        logger.warn("    Test notes: " + testcase.getNotes());
+                        logger.trace("    Test notes: " + testcase.getNotes());
 
                         // antigen
                         testCurrentRowNum += 2;
@@ -184,7 +189,7 @@ public class XlsxV2 {
 
                         if (antigen != null && immunityValue != null && immunityDate != null) {
                             testcase.addImmunityObservationResult(immunityDate, antigen, immunityValue, "IS_IMMUNE");
-                            logger.warn("    Immune: " + antigen + " - " + immunityValue + " - " + immunityDate);
+                            logger.trace("    Immune: " + antigen + " - " + immunityValue + " - " + immunityDate);
                         } else if (antigen != null || immunityValue != null || immunityDate != null) {
                             logger.error("Missing values on disease/immunity input:");
                             logger.error("    antigen: " + antigen);
@@ -208,7 +213,7 @@ public class XlsxV2 {
                         XSSFCell executionDate = testCurrentRow.getCell(2);
                         if (executionDate != null && executionDate.getDateCellValue() != null) {
                             testcase.setExecutiondate(executionDate.getDateCellValue());
-                            logger.warn("    Execution date: " + testcase.getExecutiondatetime());
+                            logger.trace("    Execution date: " + testcase.getExecutiondatetime());
                         } else {
                             logger.error("Execution Date is null.");
                         }
@@ -216,13 +221,13 @@ public class XlsxV2 {
                         // add the recommendation via the substanceAdministrationProposal and observationResult
                         XSSFCell recommendationCell = testCurrentRow.getCell(8);
                         String recommendation = recommendationCell.getStringCellValue();
-                        logger.warn("    Recommendation: " + recommendation);
+                        logger.trace("    Recommendation: " + recommendation);
                         XSSFCell recommendationReasonCell = testCurrentRow.getCell(9);
                         String recommendationReason = recommendationReasonCell.getStringCellValue();
-                        logger.warn("    Reason for recommendation: " + recommendationReasonCell);
+                        logger.trace("    Reason for recommendation: " + recommendationReasonCell);
                         XSSFCell dueDateCell = testCurrentRow.getCell(10);
                         Date dueDate = dueDateCell.getDateCellValue();
-                        logger.warn("    Date due: " + dueDate);
+                        logger.trace("    Date due: " + dueDate);
 
                         // convert DOB to ISO format and add to both vmr output and input
                         testCurrentRowNum++;
@@ -230,7 +235,7 @@ public class XlsxV2 {
                         XSSFCell dobCell = testCurrentRow.getCell(2);
                         if (dobCell != null && dobCell.getDateCellValue() != null) {
                             testcase.setPatientBirthTime(dobCell.getDateCellValue());
-                            logger.warn("    DOB: " + testcase.getPatientBirthTime());
+                            logger.trace("    DOB: " + testcase.getPatientBirthTime());
                         } else {
                             logger.error("DOB is null.");
                         }
@@ -249,7 +254,7 @@ public class XlsxV2 {
                             genderValue = "UN";
                         }
                         testcase.setPatientGender(genderValue);
-                        logger.warn("    Gender: " + testcase.getPatientGender());
+                        logger.trace("    Gender: " + testcase.getPatientGender());
 
                         // not in use yet
                         XSSFCell recommendedVaccineCell = testCurrentRow.getCell(10);
@@ -260,7 +265,7 @@ public class XlsxV2 {
                         } catch (IllegalStateException e) {
                             // ignore - its empty
                         }
-                        logger.warn("    Recommended vaccine: " + recommendedVaccine);
+                        logger.trace("    Recommended vaccine: " + recommendedVaccine);
 
                         if (testcase.getVaccinegroup() == null && recommendedVaccine == null) {
                             logger.error("Neither a vaccine group or code recommendation exists!");
@@ -288,21 +293,21 @@ public class XlsxV2 {
                             testCurrentRowNum++;
                             testCurrentRow = testSheet.getRow(testCurrentRowNum);
                             XSSFCell administeredVaccine = testCurrentRow.getCell(2);
-                            logger.warn("    Shot " + shotNum + " vaccine: " + administeredVaccine);
+                            logger.trace("    Shot " + shotNum + " vaccine: " + administeredVaccine);
                             XSSFCell administeredVaccineCvxCell = testCurrentRow.getCell(3);
                             String administeredVaccineCvx = administeredVaccineCvxCell.getRawValue();
                             if (administeredVaccineCvx != null && !administeredVaccineCvx.isEmpty()) {
-                                logger.warn("    Shot " + shotNum + " CVX: " + administeredVaccineCvx);
+                                logger.trace("    Shot " + shotNum + " CVX: " + administeredVaccineCvx);
                                 Date administrationDate = null;
                                 List<SubstanceAdministrationEvent> componentEvents = new LinkedList<SubstanceAdministrationEvent>();
                                 if (combo) {
-                                    logger.warn("  Processing combo evaluation...");
+                                    logger.trace("  Processing combo evaluation...");
                                     // date of administration
                                     testCurrentRowNum++;
                                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                                     XSSFCell administrationDateCell = testCurrentRow.getCell(2);
                                     administrationDate = administrationDateCell.getDateCellValue();
-                                    logger.warn("    Shot " + shotNum + " date of administration: " + administrationDate);
+                                    logger.trace("    Shot " + shotNum + " date of administration: " + administrationDate);
 
                                     for (int compNum : new int[]{1, 2, 3, 4}) {
                                         testCurrentRowNum++;
@@ -317,12 +322,12 @@ public class XlsxV2 {
                                         } catch (IllegalStateException e) {
                                             // ignore - it is null
                                         }
-                                        logger.warn("    Component Vaccine " + compNum + ": " + componentVaccine);
+                                        logger.trace("    Component Vaccine " + compNum + ": " + componentVaccine);
 
                                         // evaluation
                                         XSSFCell evaluationCell = testCurrentRow.getCell(4);
                                         String evaluation = evaluationCell.getStringCellValue();
-                                        logger.warn("    Component Vaccine evaluation " + compNum + ": " + evaluation);
+                                        logger.trace("    Component Vaccine evaluation " + compNum + ": " + evaluation);
 
                                         List<String> reasons = new ArrayList<String>();
 
@@ -331,7 +336,7 @@ public class XlsxV2 {
                                             String evaluationReason = evaluationReasonCell.getStringCellValue();
                                             if (evaluationReason != null && !evaluationReason.trim().isEmpty()) {
                                                 reasons.add(evaluationReason);
-                                                logger.warn("      found reason code: " + evaluationReason);
+                                                logger.trace("      found reason code: " + evaluationReason);
                                             }
                                         }
                                         if (componentVaccine != null) {
@@ -346,11 +351,11 @@ public class XlsxV2 {
                                         }
                                     }
                                 } else {
-                                    logger.warn("Processing single component evaluation...");
+                                    logger.trace("Processing single component evaluation...");
                                     // evaluation
                                     XSSFCell evaluationCell = testCurrentRow.getCell(4);
                                     String evaluation = evaluationCell.getStringCellValue();
-                                    logger.warn("    Vaccine evaluation " + shotNum + ": " + evaluation);
+                                    logger.trace("    Vaccine evaluation " + shotNum + ": " + evaluation);
 
                                     List<String> reasons = new ArrayList<String>();
 
@@ -359,7 +364,7 @@ public class XlsxV2 {
                                         String evaluationReason = evaluationReasonCell.getStringCellValue();
                                         if (evaluationReason != null && !evaluationReason.trim().isEmpty()) {
                                             reasons.add(evaluationReason);
-                                            logger.warn("      found reason code: " + evaluationReason);
+                                            logger.trace("      found reason code: " + evaluationReason);
                                         }
                                     }
 
@@ -367,7 +372,7 @@ public class XlsxV2 {
                                     testCurrentRow = testSheet.getRow(testCurrentRowNum);
                                     XSSFCell administrationDateCell = testCurrentRow.getCell(2);
                                     administrationDate = administrationDateCell.getDateCellValue();
-                                    logger.warn("    Shot " + shotNum + " date of administration: " + administrationDate);
+                                    logger.trace("    Shot " + shotNum + " date of administration: " + administrationDate);
 
                                     SubstanceAdministrationEvent substanceAdministrationEvent =
                                             testcase.getEvaluationSubstanceAdministrationEvent(
@@ -399,14 +404,14 @@ public class XlsxV2 {
                         int count = 0;
                         for (SubstanceAdministrationEvent sae : testcase.getSubstanceAdministrationEvents()) {
                             count++;
-                            logger.warn("Shot " + count
+                            logger.trace("Shot " + count
                                     + " present: " + sae.getSubstance().getSubstanceCode().getCode()
                                     + "/" + sae.getAdministrationTimeInterval().getHigh());
                             int count2 = 0;
                             for (RelatedClinicalStatement rcs : sae.getRelatedClinicalStatements()) {
                                 count2++;
                                 SubstanceAdministrationEvent csae = rcs.getSubstanceAdministrationEvent();
-                                logger.warn("Shot " + count
+                                logger.trace("Shot " + count
                                         + " Component " + count2
                                         + " present: " + csae.getSubstance().getSubstanceCode().getCode()
                                         + "/" + csae.getAdministrationTimeInterval().getHigh()
@@ -415,7 +420,7 @@ public class XlsxV2 {
                                 for (RelatedClinicalStatement crcs : csae.getRelatedClinicalStatements()) {
                                     count3++;
                                     ObservationResult cor = crcs.getObservationResult();
-                                    logger.warn("Shot " + count
+                                    logger.trace("Shot " + count
                                             + " Component " + count2
                                             + " OR " + count3
                                             + " present: " + cor.getObservationFocus().getCode()
@@ -425,13 +430,13 @@ public class XlsxV2 {
                         }
                         callback.callback(testcase, testSheetName, true);
                     } else {
-                        // logger.warn("Sheet '" + testSheetName + "' - Row " + i + ": test name was null.");
+                        // logger.trace("Sheet '" + testSheetName + "' - Row " + i + ": test name was null.");
                     }
                 } else {
-                    // logger.warn("cell is null");
+                    // logger.trace("cell is null");
                 }
             } else {
-                // logger.warn("Row " + i + " was null.");
+                // logger.trace("Row " + i + " was null.");
             }
         }
         logger.info("Number of tests imported: " + testCount);
