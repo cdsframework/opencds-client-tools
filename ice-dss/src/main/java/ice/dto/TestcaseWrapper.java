@@ -51,15 +51,15 @@ public class TestcaseWrapper {
         return output;
     }
 
-    public String getAuthor() throws IceException {
+    public String getAuthor() {
         return testcase.getAuthor();
     }
 
-    public void setAuthor(String value) throws IceException {
+    public void setAuthor(String value) {
         testcase.setAuthor(value);
     }
 
-    public String getCreatedate() throws IceException {
+    public String getCreatedate() {
         return DateUtils.getISODateFormat(testcase.getCreatedate());
     }
 
@@ -71,7 +71,7 @@ public class TestcaseWrapper {
         testcase.setCreatedate(value);
     }
 
-    public String getDosefocus() throws IceException {
+    public String getDosefocus() {
         return testcase.getDosefocus();
     }
 
@@ -79,11 +79,11 @@ public class TestcaseWrapper {
         testcase.setDosefocus(value);
     }
 
-    public String getExecutiondatetime() throws IceException {
+    public String getExecutiondatetime() {
         return DateUtils.getISODateFormat(testcase.getExecutiondate());
     }
 
-    public Date getExecutiondate() throws IceException, ParseException {
+    public Date getExecutiondate() throws ParseException {
         return testcase.getExecutiondate();
     }
 
@@ -95,7 +95,7 @@ public class TestcaseWrapper {
         testcase.setExecutiondate(value);
     }
 
-    public String getName() throws IceException {
+    public String getName() {
         return testcase.getName();
     }
 
@@ -103,7 +103,7 @@ public class TestcaseWrapper {
         testcase.setName(value);
     }
 
-    public String getNotes() throws IceException {
+    public String getNotes() {
         return testcase.getNotes();
     }
 
@@ -111,7 +111,7 @@ public class TestcaseWrapper {
         testcase.setNotes(value);
     }
 
-    public String getRuletotest() throws IceException {
+    public String getRuletotest() {
         return testcase.getRuletotest();
     }
 
@@ -119,7 +119,7 @@ public class TestcaseWrapper {
         testcase.setRuletotest(value);
     }
 
-    public String getSeries() throws IceException {
+    public String getSeries() {
         return testcase.getSeries();
     }
 
@@ -127,7 +127,7 @@ public class TestcaseWrapper {
         testcase.setSeries(value);
     }
 
-    public String getTestfocus() throws IceException {
+    public String getTestfocus() {
         return testcase.getTestfocus();
     }
 
@@ -135,7 +135,7 @@ public class TestcaseWrapper {
         testcase.setTestfocus(value);
     }
 
-    public String getVaccinegroup() throws IceException {
+    public String getVaccinegroup() {
         return testcase.getVaccinegroup();
     }
 
@@ -167,7 +167,7 @@ public class TestcaseWrapper {
         this.errorMessage = errorMessage;
     }
 
-    public String getPatientBirthTime() throws IceException {
+    public String getPatientBirthTime() {
         TS birthTime = input.getCdsObject().getVmrInput().getPatient().getDemographics().getBirthTime();
         String birthtimeValue = null;
         if (birthTime != null) {
@@ -176,7 +176,7 @@ public class TestcaseWrapper {
         return birthtimeValue;
     }
 
-    public Date getPatientBirthDate() throws IceException, ParseException {
+    public Date getPatientBirthDate() throws ParseException {
         return DateUtils.parseISODateFormat(getPatientBirthTime());
     }
 
@@ -190,7 +190,7 @@ public class TestcaseWrapper {
         output.setPatientBirthTime(value);
     }
 
-    public String getPatientGender() throws IceException {
+    public String getPatientGender() {
         return output.getCdsObject().getVmrOutput().getPatient().getDemographics().getGender().getCode();
     }
 
