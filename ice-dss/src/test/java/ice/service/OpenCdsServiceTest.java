@@ -89,19 +89,13 @@ public class OpenCdsServiceTest {
         // preform first to time get the static initialization of CdsObjectAssist out of the way
         CdsInputWrapper.getCdsInputWrapper();
 
+        start = System.nanoTime();
         CdsInputWrapper input = CdsInputWrapper.getCdsInputWrapper();
         input.setPatientGender("F");
         input.setPatientBirthTime("19830630");
         input.addSubstanceAdministrationEvent("45", "20080223", null);
-
-        start = System.nanoTime();
-        input = CdsInputWrapper.getCdsInputWrapper();
         Utilities.logDuration("getCdsInputWrapper", start);
 
-        start = System.nanoTime();
-        input.setPatientGender("F");
-        input.setPatientBirthTime("19830630");
-        input.addSubstanceAdministrationEvent("45", "20080223", null);
 //        input.addSubstanceAdministrationEvent("10", "20080223");
 //        input.addImmunityObservationResult("500", "VALID", "IS_IMMUNE");
 //
@@ -112,8 +106,6 @@ public class OpenCdsServiceTest {
 //        input.addSubstanceAdministrationEvent("43", "20080223");
 
 //        String inputXml = CdsObjectAssist.cdsObjectToString(input.getCdsObject(), CdsInput.class);
-
-        Utilities.logDuration("input init", start);
 
         String scopingEntityId = "org.opencds";
         String businessId = "bounce";

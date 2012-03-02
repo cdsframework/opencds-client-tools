@@ -277,7 +277,7 @@ public abstract class BaseCdsObject<T> {
                             + substanceAdministrationEvent.getAdministrationTimeInterval().getHigh());
                 } else {
                     logger.debug("Event is valid and reason is null or empty");
-                 //   interpretations = new String[]{"VALID_DOSE"};
+                    //   interpretations = new String[]{"VALID_DOSE"};
                 }
             }
             AdministrableSubstance substance = substanceAdministrationEvent.getSubstance();
@@ -325,19 +325,23 @@ public abstract class BaseCdsObject<T> {
 
     private static void setConceptCode(CD cd, CodeSystemOid codeSystemOid, String originalText) throws IceException {
         Map<String, String> codeset = CdsObjectAssist.getCodeSystemMap(codeSystemOid);
-        String code = null;
-        String displayName = null;
-        cd.setOriginalText(originalText);
-        for (Entry<String, String> entry : codeset.entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(originalText)) {
-                code = entry.getKey();
-                displayName = entry.getValue();
-                break;
+        if (codeset != null) {
+            String code = null;
+            String displayName = null;
+            cd.setOriginalText(originalText);
+            for (Entry<String, String> entry : codeset.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(originalText)) {
+                    code = entry.getKey();
+                    displayName = entry.getValue();
+                    break;
+                }
             }
-        }
-        if (code != null) {
-            cd.setCode(code);
-            cd.setDisplayName(displayName);
+            if (code != null) {
+                cd.setCode(code);
+                cd.setDisplayName(displayName);
+            } else {
+                throw new IceException("Code value '" + originalText + "' not found in codeset: " + codeSystemOid.toString());
+            }
         } else {
             throw new IceException("Code value '" + originalText + "' not found in codeset: " + codeSystemOid.toString());
         }
