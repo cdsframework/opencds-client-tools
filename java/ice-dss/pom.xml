@@ -178,7 +178,7 @@
                         <phase>install</phase>
                         <configuration>
                             <tasks>
-                                <copy todir="..\..\cir\lib" file="${project.build.directory}/${project.build.finalName}.${project.packaging}"/>
+                                <copy todir="..\..\mts\lib" file="${project.build.directory}/${project.build.finalName}.${project.packaging}"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -251,7 +251,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>ice-support</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

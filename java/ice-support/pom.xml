@@ -24,7 +24,7 @@
                         <phase>install</phase>
                         <configuration>
                             <tasks>
-                                <copy todir="..\..\cir\lib" file="${project.build.directory}/${project.build.finalName}.${project.packaging}"/>
+                                <copy todir="..\..\mts\lib" file="${project.build.directory}/${project.build.finalName}.${project.packaging}"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -40,6 +40,25 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.15</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jms</artifactId>
+                    <groupId>javax.jms</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jmxri</artifactId>
+                    <groupId>com.sun.jmx</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jmxtools</artifactId>
+                    <groupId>com.sun.jdmk</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <version>1.0.1</version>
