@@ -1,10 +1,10 @@
 syntax: glob
-ice-support/sample-out*.xml
-ice-support/target/
-ice-web/target/
-ice-support/opencds.log*
-ice-support/imported-tests/*.xml
-ice-dss/imported-tests/*
-ice-dss/opencds.log*
-ice-dss/target/
-ice-dss/imported-tests-v2/*
+java/ice-support/sample-out*.xml
+java/ice-support/target/
+java/ice-web/target/
+java/ice-support/opencds.log*
+java/ice-support/imported-tests/*.xml
+java/ice-dss/imported-tests/*
+java/ice-dss/opencds.log*
+java/ice-dss/target/
+java/ice-dss/imported-tests-v2/*
