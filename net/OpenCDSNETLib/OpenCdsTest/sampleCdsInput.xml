@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:cdsInput xmlns:ns2="org.opencds" xmlns:ns3="org.opencds.vmr.v1_0.schema.vmr" xmlns:ns4="org.opencds.vmr.v1_0.schema.cdsinput" xmlns:ns5="org.opencds.vmr.v1_0.schema.cdsoutput">
+  <templateId root="2.16.840.1.113883.3.795.11.1.1"/>
+  <cdsContext>
+    <cdsSystemUserPreferredLanguage code="en" codeSystem="1.2.3" displayName="English"/>
+  </cdsContext>
+  <vmrInput>
+    <templateId root="2.16.840.1.113883.3.795.11.1.1"/>
+    <patient>
+      <templateId root="2.16.840.1.113883.3.795.11.2.1.1"/>
+      <id root="2.16.840.1.113883.3.795.12.100.11" extension="70"/>
+      <demographics>
+        <birthTime value="20110401"/>
+        <gender code="F" codeSystem="2.16.840.1.113883.5.1" displayName="Female" originalText="F"/>
+      </demographics>
+      <clinicalStatements>
+        <observationResults/>
+        <substanceAdministrationEvents>
+          <substanceAdministrationEvent>
+            <templateId root="2.16.840.1.113883.3.795.11.9.1.1"/>
+            <id root="2.16.840.1.113883.3.795.12.100.10" extension="185"/>
+            <substanceAdministrationGeneralPurpose code="384810002" codeSystem="2.16.840.1.113883.6.5"/>
+            <substance>
+              <id root="c58872b0-30a2-4ed5-9e89-2cc1102a6775"/>
+              <substanceCode code="08" codeSystem="2.16.840.1.113883.12.292" displayName="HepB peds &lt; 20yrs" originalText="08"/>
+            </substance>
+            <administrationTimeInterval high="20110430" low="20110430"/>
+          </substanceAdministrationEvent>
+          <substanceAdministrationEvent>
+            <templateId root="2.16.840.1.113883.3.795.11.9.1.1"/>
+            <id root="2.16.840.1.113883.3.795.12.100.10" extension="184"/>
+            <substanceAdministrationGeneralPurpose code="384810002" codeSystem="2.16.840.1.113883.6.5"/>
+            <substance>
+              <id root="8c4f0ad9-8a3b-4039-9117-21ff2a5fdad6"/>
+              <substanceCode code="08" codeSystem="2.16.840.1.113883.12.292" displayName="HepB peds &lt; 20yrs" originalText="08"/>
+            </substance>
+            <administrationTimeInterval high="20110523" low="20110523"/>
+          </substanceAdministrationEvent>
+          <substanceAdministrationEvent>
+            <templateId root="2.16.840.1.113883.3.795.11.9.1.1"/>
+            <id root="2.16.840.1.113883.3.795.12.100.10" extension="183"/>
+            <substanceAdministrationGeneralPurpose code="384810002" codeSystem="2.16.840.1.113883.6.5"/>
+            <substance>
+              <id root="00d53629-52f0-44c3-b2c5-fa36f28fda04"/>
+              <substanceCode code="08" codeSystem="2.16.840.1.113883.12.292" displayName="HepB peds &lt; 20yrs" originalText="08"/>
+            </substance>
+            <administrationTimeInterval high="20110721" low="20110721"/>
+          </substanceAdministrationEvent>
+          <substanceAdministrationEvent>
+            <templateId root="2.16.840.1.113883.3.795.11.9.1.1"/>
+            <id root="2.16.840.1.113883.3.795.12.100.10" extension="182"/>
+            <substanceAdministrationGeneralPurpose code="384810002" codeSystem="2.16.840.1.113883.6.5"/>
+            <substance>
+              <id root="44736dfa-8600-495e-90ec-4229fae5b28c"/>
+              <substanceCode code="08" codeSystem="2.16.840.1.113883.12.292" displayName="HepB peds &lt; 20yrs" originalText="08"/>
+            </substance>
+            <administrationTimeInterval high="20110911" low="20110911"/>
+          </substanceAdministrationEvent>
+          <substanceAdministrationEvent>
+            <templateId root="2.16.840.1.113883.3.795.11.9.1.1"/>
+            <id root="2.16.840.1.113883.3.795.12.100.10" extension="181"/>
+            <substanceAdministrationGeneralPurpose code="384810002" codeSystem="2.16.840.1.113883.6.5"/>
+            <substance>
+              <id root="a4e59a97-93a2-4b37-b4c2-32554ad48e7a"/>
+              <substanceCode code="08" codeSystem="2.16.840.1.113883.12.292" displayName="HepB peds &lt; 20yrs" originalText="08"/>
+            </substance>
+            <administrationTimeInterval high="20110912" low="20110912"/>
+          </substanceAdministrationEvent>
+        </substanceAdministrationEvents>
+      </clinicalStatements>
+    </patient>
+  </vmrInput>
+</ns4:cdsInput>

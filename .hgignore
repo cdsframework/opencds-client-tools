@@ -8,3 +8,7 @@ java/ice-dss/imported-tests/*
 java/ice-dss/opencds.log*
 java/ice-dss/target/
 java/ice-dss/imported-tests-v2/*
+net/OpenCDSNETLib/OpenCDSNETLib/bin/
+net/OpenCDSNETLib/OpenCDSNETLib/obj/
+net/OpenCDSNETLib/OpenCdsTest/bin/
+net/OpenCDSNETLib/OpenCdsTest/obj/
