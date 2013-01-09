@@ -9,11 +9,11 @@
         <xjc:simple />
         <javaType name="java.util.Date"
                   xmlType="xs:date"
-                  parseMethod="ice.util.DateUtils.parseDate"
-                  printMethod="ice.util.DateUtils.printDate" />
+                  parseMethod="org.cdsframework.util.DateUtils.parseDate"
+                  printMethod="org.cdsframework.util.DateUtils.printDate" />
         <javaType name="java.util.Date"
                   xmlType="xs:dateTime"
-                  parseMethod="ice.util.DateUtils.parseDateTime"
-                  printMethod="ice.util.DateUtils.printDateTime" />
+                  parseMethod="org.cdsframework.util.DateUtils.parseDateTime"
+                  printMethod="org.cdsframework.util.DateUtils.printDateTime" />
      </globalBindings>
 </bindings>
