@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>gov.nyc.health.cir</groupId>
-  <artifactId>ice</artifactId>
+  <groupId>org.cdsframework</groupId>
+  <artifactId>cds-framework</artifactId>
   <version>1.0.1</version>
   <packaging>pom</packaging>
   <name>ice</name>
@@ -29,9 +29,8 @@
         </plugins>
     </build>
     <modules>
-    <module>ice-dss</module>
-    <module>ice-web</module>
-    <module>ice-support</module>
+    <module>cds-sample-client</module>
+    <module>cds-support</module>
   </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

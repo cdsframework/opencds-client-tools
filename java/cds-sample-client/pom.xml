@@ -3,14 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>ice</artifactId>
-        <groupId>gov.nyc.health.cir</groupId>
+        <artifactId>cds-framework</artifactId>
+        <groupId>org.cdsframework</groupId>
         <version>1.0.1</version>
     </parent>
-    <groupId>gov.nyc.health.cir</groupId>
-    <artifactId>ice-dss</artifactId>
+    <groupId>org.cdsframework.client</groupId>
     <version>1.0.1</version>
-    <name>ice-dss</name>
+    <artifactId>cds-sample-client</artifactId>
+    <name>cds-sample-client</name>
     <url>http://maven.apache.org</url>
     <build>
         <resources>
@@ -249,9 +249,10 @@
             <version>3.7</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ice-support</artifactId>
-            <version>${project.version}</version>
+        	<groupId>org.cdsframework.support</groupId>
+        	<artifactId>cds-support</artifactId>
+        	<version>1.0.1</version>
+        	<type>jar</type>
         </dependency>
     </dependencies>
 </project>

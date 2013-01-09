@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>ice</artifactId>
-        <groupId>gov.nyc.health.cir</groupId>
+        <artifactId>cds-framework</artifactId>
+        <groupId>org.cdsframework</groupId>
         <version>1.0.1</version>
     </parent>
-    <groupId>gov.nyc.health.cir</groupId>
-    <artifactId>ice-support</artifactId>
-    <name>ice-support</name>
+    <groupId>org.cdsframework.support</groupId>
+    <artifactId>cds-support</artifactId>
+    <name>cds-support</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
