@@ -11,9 +11,9 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.BindingProvider;
 import org.apache.log4j.Logger;
-import org.cdsframework.dto.support.CdsObjectAssist;
-import org.cdsframework.exception.IceException;
+import org.cdsframework.exceptions.CdsException;
 import org.cdsframework.util.Utilities;
+import org.cdsframework.util.support.cds.CdsObjectAssist;
 import org.omg.spec.cdss._201105.dss.DataRequirementItemData;
 import org.omg.spec.cdss._201105.dss.EntityIdentifier;
 import org.omg.spec.cdss._201105.dss.EvaluationRequest;
@@ -34,8 +34,8 @@ import org.omg.spec.cdss._201105.dsswsdl.RequiredDataNotProvidedExceptionFault;
 import org.omg.spec.cdss._201105.dsswsdl.UnrecognizedLanguageExceptionFault;
 import org.omg.spec.cdss._201105.dsswsdl.UnrecognizedScopedEntityExceptionFault;
 import org.omg.spec.cdss._201105.dsswsdl.UnsupportedLanguageExceptionFault;
-import org.opencds.CdsInput;
-import org.opencds.CdsOutput;
+import org.opencds.support.CdsInput;
+import org.opencds.support.CdsOutput;
 
 /**
  *
@@ -89,14 +89,14 @@ public class OpenCdsService {
         return new OpenCdsService(endPoint, requestTimeout, connectTimeout);
     }
 
-    public CdsOutput evaluate(CdsInput cdsInput, String scopingEntityId, String businessId, String version, Date executionDate) throws IceException {
+    public CdsOutput evaluate(CdsInput cdsInput, String scopingEntityId, String businessId, String version, Date executionDate) throws CdsException {
         byte[] cdsObjectToByteArray = CdsObjectAssist.cdsObjectToByteArray(cdsInput, CdsInput.class);
         byte[] evaluation = evaluate(cdsObjectToByteArray, scopingEntityId, businessId, version, executionDate);
         CdsOutput cdsOutput = CdsObjectAssist.cdsObjectFromByteArray(evaluation, CdsOutput.class);
         return cdsOutput;
     }
 
-    public byte[] evaluate(byte[] cdsInputByteArray, String scopingEntityId, String businessId, String version, Date executionDate) throws IceException {
+    public byte[] evaluate(byte[] cdsInputByteArray, String scopingEntityId, String businessId, String version, Date executionDate) throws CdsException {
         final String METHODNAME = "evaluate ";
         if (true) {
             logger.info(METHODNAME
@@ -134,61 +134,61 @@ public class OpenCdsService {
 
             start = System.nanoTime();
             if (response == null) {
-                throw new IceException("response is null!");
+                throw new CdsException("response is null!");
             }
             List<FinalKMEvaluationResponse> finalKMEvaluationResponse = response.getFinalKMEvaluationResponse();
             if (finalKMEvaluationResponse == null) {
-                throw new IceException("finalKMEvaluationResponse is null!");
+                throw new CdsException("finalKMEvaluationResponse is null!");
             }
             if (finalKMEvaluationResponse.size() != 1) {
-                throw new IceException("finalKMEvaluationResponse size wrong: " + finalKMEvaluationResponse.size());
+                throw new CdsException("finalKMEvaluationResponse size wrong: " + finalKMEvaluationResponse.size());
             }
             FinalKMEvaluationResponse kmEvaluationResponse = finalKMEvaluationResponse.get(0);
             List<KMEvaluationResultData> kmEvaluationResultData = kmEvaluationResponse.getKmEvaluationResultData();
             if (kmEvaluationResultData == null) {
-                throw new IceException("kmEvaluationResultData is null!");
+                throw new CdsException("kmEvaluationResultData is null!");
             }
             if (kmEvaluationResultData.size() != 1) {
-                throw new IceException("kmEvaluationResultData size wrong: " + kmEvaluationResultData.size());
+                throw new CdsException("kmEvaluationResultData size wrong: " + kmEvaluationResultData.size());
             }
             KMEvaluationResultData resultData = kmEvaluationResultData.get(0);
             if (resultData == null) {
-                throw new IceException("resultData is null!");
+                throw new CdsException("resultData is null!");
             }
             SemanticPayload data = resultData.getData();
             if (data == null) {
-                throw new IceException("data is null!");
+                throw new CdsException("data is null!");
             }
             List<byte[]> base64EncodedPayload = data.getBase64EncodedPayload();
             if (base64EncodedPayload == null) {
-                throw new IceException("base64EncodedPayload is null!");
+                throw new CdsException("base64EncodedPayload is null!");
             }
             if (base64EncodedPayload.size() != 1) {
-                throw new IceException("base64EncodedPayload size wrong: " + base64EncodedPayload.size());
+                throw new CdsException("base64EncodedPayload size wrong: " + base64EncodedPayload.size());
             }
             result = base64EncodedPayload.get(0);
             if (result == null) {
-                throw new IceException("bytes is null!");
+                throw new CdsException("bytes is null!");
             }
 
         } catch (DSSRuntimeExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (EvaluationExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (InvalidDriDataFormatExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (InvalidTimeZoneOffsetExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (RequiredDataNotProvidedExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (UnrecognizedLanguageExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (UnrecognizedScopedEntityExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (UnsupportedLanguageExceptionFault e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } catch (DatatypeConfigurationException e) {
-            throw new IceException(e.getMessage());
+            throw new CdsException(e.getMessage());
         } finally {
             logger.debug(METHODNAME + "end...");
         }

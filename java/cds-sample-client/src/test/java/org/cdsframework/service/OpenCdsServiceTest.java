@@ -1,8 +1,8 @@
 package org.cdsframework.service;
 
-import org.cdsframework.dto.CdsInputWrapper;
-import org.cdsframework.dto.support.CdsObjectAssist;
 import org.cdsframework.util.Utilities;
+import org.cdsframework.util.support.cds.CdsInputWrapper;
+import org.cdsframework.util.support.cds.CdsObjectAssist;
 import java.util.Date;
 import javax.xml.ws.WebServiceException;
 import org.apache.log4j.Logger;
@@ -13,8 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
-import org.opencds.CdsInput;
-import org.opencds.CdsOutput;
+import org.opencds.support.CdsInput;
+import org.opencds.support.CdsOutput;
 
 /**
  *

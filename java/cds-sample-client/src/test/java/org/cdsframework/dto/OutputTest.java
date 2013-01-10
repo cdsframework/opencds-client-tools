@@ -1,9 +1,8 @@
 package org.cdsframework.dto;
 
-import org.opencds.CdsOutput;
-import org.cdsframework.dto.support.CdsObjectAssist;
-import org.cdsframework.enumeration.EvaluationValidityType;
 import org.cdsframework.util.Utilities;
+import org.cdsframework.util.support.cds.CdsObjectAssist;
+import org.cdsframework.util.support.cds.CdsOutputWrapper;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -11,8 +10,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opencds.support.CdsOutput;
+import org.opencds.support.SubstanceAdministrationEvent;
+
 import static org.junit.Assert.*;
-import org.opencds.SubstanceAdministrationEvent;
 
 /**
  *
@@ -56,11 +57,11 @@ public class OutputTest {
         output.addImmunityObservationResult(new Date(), "070.30", "DISEASE_DOCUMENTED", "IS_IMMUNE");
 
         SubstanceAdministrationEvent hepBComponent1 =
-                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("45", "20080223", EvaluationValidityType.VALID, "100", "");
+                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("45", "20080223", "VALID", "100", "");
         SubstanceAdministrationEvent hepBComponent2 =
-                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", EvaluationValidityType.INVALID, "100", "BELOW_MINIMUM_INTERVAL");
+                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("08", "20080223", "INVALID", "100", "BELOW_MINIMUM_INTERVAL");
         SubstanceAdministrationEvent hepBComponent3 =
-                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("110", "20080223", EvaluationValidityType.INVALID, "100", "EXTRA_DOSE");
+                CdsOutputWrapper.getEvaluationSubstanceAdministrationEvent("110", "20080223", "INVALID", "100", "EXTRA_DOSE");
 
         output.addSubstanceAdministrationEvent("45", "20080223", null, new SubstanceAdministrationEvent[]{hepBComponent1, hepBComponent2});
 

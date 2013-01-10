@@ -1,15 +1,17 @@
 package org.cdsframework.dto;
 
 import java.util.Date;
-import org.opencds.CdsInput;
-import org.cdsframework.dto.support.CdsObjectAssist;
 import org.cdsframework.util.Utilities;
+import org.cdsframework.util.support.cds.CdsInputWrapper;
+import org.cdsframework.util.support.cds.CdsObjectAssist;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opencds.support.CdsInput;
+
 import static org.junit.Assert.*;
 
 /**

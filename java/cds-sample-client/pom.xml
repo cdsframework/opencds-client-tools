@@ -15,36 +15,6 @@
     <build>
         <resources>
             <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>src</directory>
-                <includes>
-                    <include>jax-ws-catalog.xml</include>
-                    <include>wsdl/**</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>src/main/resources/</directory>
-                <includes>
-                    <include>resourcelist.txt</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>META-INF/codesets</targetPath>
-                <directory>src/main/resources/codesets</directory>
-                <includes>
-                    <include>*.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>META-INF/xsd</targetPath>
-                <directory>src/main/resources/jaxb/testcase</directory>
-                <includes>
-                    <include>*.xsd</include>
-                    <include>*.xsl</include>
-                </includes>
-            </resource>
-            <resource>
                 <targetPath></targetPath>
                 <directory></directory>
                 <includes>
@@ -53,41 +23,6 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>1.10</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>opencds/evaluate.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlLocation>http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/evaluate.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-evaluate</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml</groupId>
-                        <artifactId>webservices-api</artifactId>
-                        <version>1.4</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir>
-                    <xnocompile>true</xnocompile>
-                    <verbose>true</verbose>
-                    <extension>true</extension>
-                    <catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -114,79 +49,6 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.8.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <args>
-                                <arg>-extension</arg>
-                            </args>
-                            <schemaIncludes>
-                                <include>jaxb/testcase/*.xsd</include>
-                            </schemaIncludes>
-                            <bindingIncludes>
-                                <include>jaxb/testcase/bindings.xjb</include>
-                            </bindingIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-testcase.episode</episodeFile>
-                            <generatePackage>org.opencds</generatePackage>
-                        </configuration>
-                        <id>jaxb-generate-testcase</id>
-                    </execution>
-                </executions>
-                <configuration>
-                    <catalog>src/main/resources/jaxb/catalog.xml</catalog>
-                    <catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
-                    <forceRegenerate>true</forceRegenerate>
-                    <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
-                    <verbose>true</verbose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>1</id>
-                        <phase>clean</phase>
-                        <configuration>
-                            <tasks>
-                                <property name="rsrc.dir" value="${project.resources[0].directory}\main\resources\codesets\"/>
-                                <property name="excludes" value="${project.resources[0].excludes}"/>
-                                <property name="rsrc.list.out" value="src/main/resources/resourcelist.txt"/>
-
-                                <fileset id="resources.list" dir="${rsrc.dir}" excludes="${excludes}"/>
-                                <pathconvert pathsep="${line.separator}" property="resources.str" refid="resources.list">
-                                    <filtermapper>
-                                        <replacestring from="${rsrc.dir}" to="META-INF/codesets/"/>
-                                    </filtermapper>
-                                </pathconvert>
-                                <echo file="${rsrc.list.out}" append="false" message="${resources.str}"/>
-                                <echo>Including resources found in ${rsrc.dir} in list written to ${rsrc.list.out}</echo>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>2</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <tasks>
-                                <copy todir="..\..\mts\lib" file="${project.build.directory}/${project.build.finalName}.${project.packaging}"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
     <repositories>
@@ -203,7 +65,7 @@
         </pluginRepository>
     </pluginRepositories>
     <properties>
-        <project.build.sourceEncoding>windows-1252</project.build.sourceEncoding>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
@@ -237,16 +99,6 @@
                     <groupId>com.sun.jdmk</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.7</version>
         </dependency>
         <dependency>
         	<groupId>org.cdsframework.support</groupId>

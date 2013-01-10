@@ -82,9 +82,6 @@
   <wsdl:portType name="Query">
 <wsdl:documentation>The Query Interfaces enables the discovery and characterization of knowledge modules.</wsdl:documentation>
     <wsdl:operation name="findKMs">
-<wsdl:documentation>Throws one of the exceptions if an exception condition is present.  If none of the exception conditions are present, returns knowledge modules fulfilling client search criteria as a RankedKMList object.  
-A search may identify KMs that fulfill search criteria perfectly or partially.  Search results are provided in a ranked list, with more relevant KMs listed first.  KMs included in the search result must have a relevance score of 1 to 100.  A KM meeting all client search criteria shall have a score of 100, while a KM that does not meet all client search criteria shall not have a score of 100.  Implementations of the scoring mechanism are vendor-specific.  One suggestion is to make the score the % of criteria that match.  For KMs with the same score, relative ordering in the result list denotes their relative relevance.
-Consumers can specify which traits, if any, to include in the KM descriptions returned.  Trait values are provided according to the client’s specified language.  Note that the language specified by the client must exactly match a language supported by the service.  Each KM description includes the status of the KM and its trait values as requested by the consumer.</wsdl:documentation>
       <wsdl:input message="dssWsdl:findKMsRequest">
     </wsdl:input>
       <wsdl:output message="dssWsdl:findKMsResponse">
@@ -152,8 +149,6 @@ When language-dependent trait values are available, returns trait values using t
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="listKMs">
-<wsdl:documentation>Throws one of the exceptions if an exception condition is present.  If none of the exception conditions are present, returns a list of all knowledge modules hosted by the service as a KMList object.  
-Consumers can specify which traits, if any, to include in the KM descriptions returned.  Trait values are provided according to the client’s specified language.  Note that the language specified by the client must exactly match a language supported by the service.  Each KM description includes the status of the KM and its trait values as requested by the consumer.</wsdl:documentation>
       <wsdl:input message="dssWsdl:listKMsRequest">
     </wsdl:input>
       <wsdl:output message="dssWsdl:listKMsResponse">
