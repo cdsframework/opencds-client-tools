@@ -9,3 +9,4 @@ java/cds-support/target/
 mts/lib
 java/cds-sample-client/imported-tests/*.xml
 java/cds-sample-client/imported-tests-v2/*.xml
+java/cds-sample-client/opencds.log*

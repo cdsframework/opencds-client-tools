@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.opencds.support.CdsInput;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -38,6 +39,7 @@ public class InputTest {
     public void tearDown() {
     }
 
+    @Ignore
     @Test
     public void testCdsInput() throws Exception {
         long start;

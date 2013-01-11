@@ -2,8 +2,8 @@ package org.cdsframework.util.support.cds.importers;
 
 import java.io.InputStream;
 import org.cdsframework.exceptions.CdsException;
-import org.cdsframework.util.Constants;
 import org.cdsframework.util.FileUtils;
+import org.cdsframework.util.support.cds.Constants;
 import org.cdsframework.util.support.cds.TestCaseWrapper;
 import org.cdsframework.util.support.cds.TestImportCallback;
 import org.opencds.support.TestCase;

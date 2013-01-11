@@ -74,6 +74,7 @@ public class CdsObjectAssistTest {
         assertTrue(true);
     }
 
+    @Ignore
     @Test
     public void testCdsObjectFromByteArray() throws Exception {
         logger.info("Starting testCdsObjectFromByteArray...");
@@ -94,6 +95,7 @@ public class CdsObjectAssistTest {
         assertTrue(true);
     }
 
+    @Ignore
     @Test
     public void testCdsObjectFromFile() throws Exception {
         logger.info("Starting testCdsObjectFromFile...");
@@ -110,6 +112,7 @@ public class CdsObjectAssistTest {
         assertTrue(true);
     }
 
+    @Ignore
     @Test
     public void testCdsObjectToFile() throws Exception {
         logger.info("Starting testCdsObjectToFile...");

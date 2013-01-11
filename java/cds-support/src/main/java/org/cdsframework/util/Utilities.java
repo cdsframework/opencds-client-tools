@@ -1,13 +1,11 @@
 package org.cdsframework.util;
 
-import org.apache.log4j.Logger;
-
 /**
  *
  * @author HLN Consulting, LLC
  */
 public class Utilities {
-    private final static Logger logger = Logger.getLogger(Utilities.class);
+    private final static LogUtils logger = LogUtils.getLogger(Utilities.class);
 
     public static void logDuration(String operation, long start) {
         StringBuilder sb = new StringBuilder();

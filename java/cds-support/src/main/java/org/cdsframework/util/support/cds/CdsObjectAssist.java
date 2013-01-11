@@ -23,7 +23,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
 import org.cdsframework.exceptions.CdsException;
-import org.cdsframework.util.Constants;
 import org.opencds.support.TestCase;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;

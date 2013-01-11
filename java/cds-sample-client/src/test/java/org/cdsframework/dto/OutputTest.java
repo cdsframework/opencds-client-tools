@@ -14,6 +14,7 @@ import org.opencds.support.CdsOutput;
 import org.opencds.support.SubstanceAdministrationEvent;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -39,6 +40,7 @@ public class OutputTest {
     public void tearDown() {
     }
 
+    @Ignore
     @Test
     public void testCdsOutput() throws Exception {
         long start;

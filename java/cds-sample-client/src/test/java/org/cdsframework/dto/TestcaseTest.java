@@ -15,6 +15,7 @@ import org.opencds.support.SubstanceAdministrationEvent;
 import org.opencds.support.TestCase;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -40,6 +41,7 @@ public class TestCaseTest {
     public void tearDown() {
     }
 
+    @Ignore
     @Test
     public void testTestcase() throws Exception {
         long start;

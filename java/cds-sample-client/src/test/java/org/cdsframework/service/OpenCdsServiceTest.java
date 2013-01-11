@@ -47,6 +47,7 @@ public class OpenCdsServiceTest {
      * Test of evaluate method, of class OpenCdsAssist.
      * @throws Exception
      */
+    @Ignore
     @Test(expected=WebServiceException.class)
     public void testEvaluateConnect() throws Exception {
         long start;
@@ -60,7 +61,7 @@ public class OpenCdsServiceTest {
         CdsInputWrapper cdsInputWrapper = CdsInputWrapper.getCdsInputWrapper();
         String scopingEntityId = "org.opencds";
         String businessId = "bounce";
-        String version = "1.0.0";
+        String version = "1.5.3";
         Date executionDate = new Date();
         start = System.nanoTime();
         CdsOutput output = service.evaluate(cdsInputWrapper.getCdsObject(), scopingEntityId, businessId, version, executionDate);
@@ -71,8 +72,8 @@ public class OpenCdsServiceTest {
      * Test of evaluate method, of class OpenCdsAssist.
      * @throws Exception
      */
-    @Test
     @Ignore
+    @Test
     public void testEvaluate() throws Exception {
         long start;
         logger.info("Starting testEvaluate...");
@@ -109,7 +110,7 @@ public class OpenCdsServiceTest {
 
         String scopingEntityId = "org.opencds";
         String businessId = "bounce";
-        String version = "1.0.0";
+        String version = "1.5.3";
         Date executionDate = new Date();
 
         start = System.nanoTime();

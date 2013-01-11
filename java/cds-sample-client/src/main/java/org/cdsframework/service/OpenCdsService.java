@@ -9,11 +9,13 @@ import java.util.Map;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import org.apache.log4j.Logger;
 import org.cdsframework.exceptions.CdsException;
+import org.cdsframework.util.LogUtils;
 import org.cdsframework.util.Utilities;
 import org.cdsframework.util.support.cds.CdsObjectAssist;
+import org.cdsframework.util.support.cds.Constants;
 import org.omg.spec.cdss._201105.dss.DataRequirementItemData;
 import org.omg.spec.cdss._201105.dss.EntityIdentifier;
 import org.omg.spec.cdss._201105.dss.EvaluationRequest;
@@ -43,10 +45,11 @@ import org.opencds.support.CdsOutput;
  */
 public class OpenCdsService {
 
-    private final static Logger logger = Logger.getLogger(OpenCdsService.class);
+    private final static LogUtils logger = LogUtils.getLogger(OpenCdsService.class);
     private final static int DEFAULT_TIMEOUT = 10 * 1000;
-    private final DecisionSupportService openCdsService = new DecisionSupportService();
-    private final Evaluation evaluatePort = openCdsService.getEvaluate();
+    private final static QName qName = new QName(Constants.getCdsNamespaceUri(), Constants.getCdsLocalPart());
+    private final static DecisionSupportService decisionSupportService = new DecisionSupportService(Constants.getCdsWsdlUrl(),qName);
+    private final static Evaluation evaluatePort = decisionSupportService.getEvaluate();
     private final String endPoint;
     private final int requestTimeout;
     private final int connectTimeout;

@@ -1,4 +1,4 @@
-package org.cdsframework.util;
+package org.cdsframework.util.support.cds;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +16,9 @@ public class Constants {
     private static final String CODE_SYSTEM_PROPERTY_FILE_LOCATION = "META-INF/codeSystems.properties";
     private static final String CDS_SYSTEM_DEFAULTS_FILE_LOCATION = "META-INF/cdsSystemDefaults.properties";
     private static String CDS_NAMESPACE;
-    private static URL OPENCDS_WSDL_URL;
+    private static URL CDS_WSDL_URL;
+    private static String CDS_NAMESPACE_URI;
+    private static String CDS_LOCAL_PART;
     private static String DEFAULT_LANG_CODE;
     private static String DEFAULT_LANG_DISPLAY_NAME;
     private static String DEFAULT_LANG_OID;
@@ -50,11 +52,25 @@ public class Constants {
         return CDS_NAMESPACE;
     }
 
-    public static URL getOpenCdsWsdlUrl() {
-        if (OPENCDS_WSDL_URL == null) {
-            OPENCDS_WSDL_URL = Constants.class.getClassLoader().getResource(getCdsSystemDefaultProperty("OPENCDS_WSDL_URL"));
+    public static URL getCdsWsdlUrl() {
+        if (CDS_WSDL_URL == null) {
+            CDS_WSDL_URL = Constants.class.getClassLoader().getResource(getCdsSystemDefaultProperty("CDS_WSDL_URL"));
         }
-        return OPENCDS_WSDL_URL;
+        return CDS_WSDL_URL;
+    }
+
+    public static String getCdsNamespaceUri() {
+        if (CDS_NAMESPACE_URI == null) {
+            CDS_NAMESPACE_URI = getCdsSystemDefaultProperty("CDS_NAMESPACE_URI");
+        }
+        return CDS_NAMESPACE_URI;
+    }
+
+    public static String getCdsLocalPart() {
+        if (CDS_LOCAL_PART == null) {
+            CDS_LOCAL_PART = getCdsSystemDefaultProperty("CDS_LOCAL_PART");
+        }
+        return CDS_LOCAL_PART;
     }
 
     public static String getDefaultLanguageCode() {
