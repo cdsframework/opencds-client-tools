@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OpenCdsConceptMappingSpecificationFile>
-	<specificationNotes>Created manually.</specificationNotes>
-    <openCdsConcept code="ICE999" displayName="Disease Immunity Reason"></openCdsConcept>
-    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.9" codeSystemName="ICE3 Disease Immunity Reason">
-    	<CD code="IS_IMMUNE" displayName="Is Immune" />
-    </membersForCodeSystem>
-</OpenCdsConceptMappingSpecificationFile>

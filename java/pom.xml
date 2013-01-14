@@ -29,7 +29,6 @@
         </plugins>
     </build>
     <modules>
-    <module>cds-sample-client</module>
     <module>cds-support</module>
   </modules>
     <properties>

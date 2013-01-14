@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OpenCdsConceptMappingSpecificationFile>
-	<specificationNotes>Created manually.</specificationNotes>
-    <openCdsConcept code="ICE44" displayName="HepB-dialysis"></openCdsConcept>
-    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.12.292" codeSystemName="Vaccines administered (CVX)">
-    	<CD code="44" displayName="HepB-dialysis" />
-    </membersForCodeSystem>
-</OpenCdsConceptMappingSpecificationFile>

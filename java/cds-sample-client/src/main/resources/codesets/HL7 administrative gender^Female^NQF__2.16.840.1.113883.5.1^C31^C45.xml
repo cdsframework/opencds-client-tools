@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OpenCdsConceptMappingSpecificationFile>
-	<specificationNotes>Created manually because HL7 code systems are not separated into individual code systems in Apelon.  Note that NQF specifies this as code 10174, but the formal HL7 code is F, which is used here.</specificationNotes>
-    <openCdsConcept code="C31" displayName="Female"></openCdsConcept>
-    <conceptDeterminationMethod code="C45" displayName="Best available NQF concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.5.1" codeSystemName="HL7 administrative gender">
-    	<CD code="F" displayName="Female"/>
-    </membersForCodeSystem>
-</OpenCdsConceptMappingSpecificationFile>     
