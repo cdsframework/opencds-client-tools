@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OpenCdsConceptMappingSpecificationFile>
-	<specificationNotes>Created manually.</specificationNotes>
-    <openCdsConcept code="ICE201" displayName="Immunization-vaccination management"></openCdsConcept>
-    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.6.5" codeSystemName="SNOMED">
-    	<CD code="384810002" displayName="Immunization/vaccination management (procedure)" />
-    </membersForCodeSystem>
-</OpenCdsConceptMappingSpecificationFile>

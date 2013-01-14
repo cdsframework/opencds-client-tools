@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate?wsdl" uri="wsdl/opencds/evaluate.wsdl"/>
-    <system systemId="http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate?wsdl=baseWsdl/dssBaseComponents.wsdl" uri="wsdl/opencds/evaluate.wsdl_baseWsdl/dssBaseComponents.wsdl"/>
-    <system systemId="http://dev.hln.info:8120/opencds-decision-support-service-1.0.0-SNAPSHOT/evaluate?xsd=OmgDssSchema.xsd" uri="wsdl/opencds/evaluate.xsd_OmgDssSchema.xsd"/>
-</catalog>

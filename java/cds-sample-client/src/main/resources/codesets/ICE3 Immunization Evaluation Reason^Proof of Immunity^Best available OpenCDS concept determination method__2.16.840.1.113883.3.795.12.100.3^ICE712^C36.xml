@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OpenCdsConceptMappingSpecificationFile>
-	<specificationNotes>Created manually.</specificationNotes>
-    <openCdsConcept code="ICE712" displayName="Evaluation Accepted (Proof of Immunity)"></openCdsConcept>
-    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.3" codeSystemName="ICE3 Immunization Evaluation Reason">
-    	<CD code="PROOF_OF_IMMUNITY" displayName="Proof of Immunity" />
-    </membersForCodeSystem>
-</OpenCdsConceptMappingSpecificationFile>

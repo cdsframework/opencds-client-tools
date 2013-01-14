@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<OpenCdsConceptMappingSpecificationFile>
-	<specificationNotes>Created manually.</specificationNotes>
-    <openCdsConcept code="C323" displayName="Immunization Validity (Other)"></openCdsConcept>
-    <conceptDeterminationMethod code="C36" displayName="Best available OpenCDS concept determination method"></conceptDeterminationMethod>
-    <membersForCodeSystem codeSystem="2.16.840.1.113883.3.795.12.100.1" codeSystemName="ICE3 Immunization Validity Focus">
-    	<CD code="999" displayName="Immunization Validity (Other)" />
-    </membersForCodeSystem>
-</OpenCdsConceptMappingSpecificationFile>
